@@ -74,16 +74,10 @@ class Matrix33(object):
                         new_yx, new_yy, new_yz, \
                         new_zx, new_zy, new_zz):
         '''
-        Construct a new matrix.
-        xx row 1, col 1
-        xy row 1, col 2
-        xz row 1, col 3
-        yx row 2, col 1
-        yy row 2, col 2
-        yz row 2, col 3
-        zx row 3, col 1
-        zy row 3, col 2
-        zz row 3, col 3
+        New Matrix
+        xx xy xz
+        yx yy yz
+        zx zy zz
         '''
         self.xx = float(new_xx)
         self.xy = float(new_xy)

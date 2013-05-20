@@ -5,15 +5,14 @@ Created on 2013-05-16
 '''
 
 from units.GeocentricCoordinates import get_instance
+from utils.Enumeration import enum
 
-def enum(**enums):
-    return type('Enum', (), enums)
+update_granularity = enum(Second=0, Minute=1, Hour=2, Day=3, Month=4, Year=5)
 
 class Source(object):
     '''
     classdocs
     '''
-    update_granularity = enum(Second=0, Minute=1, Hour=2, Day=3, Month=4, Year=5)
     granulatriy = None
     color = None
     geocentric_coords = None

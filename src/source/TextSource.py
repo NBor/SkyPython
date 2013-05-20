@@ -5,6 +5,7 @@ Created on 2013-05-16
 '''
 
 from Source import Source
+from units.GeocentricCoordinates import get_instance
 
 class TextSource(Source):
     '''
@@ -12,7 +13,8 @@ class TextSource(Source):
     '''
 
 
-    def __init__(self, new_label, color, geo_coords, new_offset=0.02, new_fontsize=15):
+    def __init__(self, new_label, color, geo_coords=get_instance(0.0, 0.0), \
+                 new_offset=0.02, new_fontsize=15):
         '''
         Constructor
         '''
@@ -26,3 +28,5 @@ if __name__ == "__main__":
     For debugging purposes
     Ready for testing
     '''
+    T = TextSource("Sun", 0xFA783B90)
+    print T.geocentric_coords.z

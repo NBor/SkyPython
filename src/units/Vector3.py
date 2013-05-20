@@ -14,7 +14,7 @@ class Vector3(object):
     y = 0
     z = 0
     
-    def assign(self, new_x=None, new_y=None, new_z=None, vector3=None):
+    def assign(self, new_x=0, new_y=0, new_z=0, vector3=None):
         if vector3 != None:
             self.x = vector3.x
             self.y = vector3.y
@@ -58,7 +58,7 @@ class Vector3(object):
     def to_string(self):
         return "x={0}, y={1}, z={2}".format(self.x, self.y, self.z)
 
-    def __init__(self, new_x=None, new_y=None, new_z=None, coord_list=None):
+    def __init__(self, new_x=0, new_y=0, new_z=0, coord_list=None):
         '''
         Constructor
         '''

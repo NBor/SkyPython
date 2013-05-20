@@ -8,7 +8,7 @@ from units.GeocentricCoordinates import GeocentricCoordinates
 from units.Matrix33 import Matrix33
 from units.RaDec import RaDec
 from units.Vector3 import Vector3
-from utils.TimeUtil import mean_sidereal_time
+from TimeUtil import mean_sidereal_time
 
 def degrees_to_radians(val):
     '''

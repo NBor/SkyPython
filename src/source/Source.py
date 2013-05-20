@@ -6,10 +6,15 @@ Created on 2013-05-16
 
 from units.GeocentricCoordinates import get_instance
 
+def enum(**enums):
+    return type('Enum', (), enums)
+
 class Source(object):
     '''
     classdocs
     '''
+    update_granularity = enum(Second=0, Minute=1, Hour=2, Day=3, Month=4, Year=5)
+    granulatriy = None
     color = None
     geocentric_coords = None
     name_list = []

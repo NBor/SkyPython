@@ -1,0 +1,22 @@
+# From StackOverflow on this issue:
+# Note, that if you have already committed the files you are trying to
+# ignore (i.e. Git is tracking them) then they can't be ignored.
+# You would have to untrack them first.
+
+###################################################
+# Ignore all those annoying .class and .pyc files #
+###################################################
+*.class
+*.pyc
+
+##################################################
+# For general project. Don't know if we need all #
+# of these...                                    #
+# http://www.sujee.net/tech/articles/gitignore/  #
+##################################################
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+

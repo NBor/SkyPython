@@ -6,7 +6,6 @@ Created on 2013-05-17
 import math
 from units.GeocentricCoordinates import GeocentricCoordinates
 from units.Matrix33 import Matrix33
-from units.RaDec import RaDec
 from units.Vector3 import Vector3
 from TimeUtil import mean_sidereal_time
 
@@ -96,7 +95,7 @@ def calculate_RADec_of_zenith(date_utc, lat_long_location):
     '''
     my_ra = mean_sidereal_time(date_utc, lat_long_location.longitude)
     my_dec = lat_long_location.latitude
-    return RaDec(my_ra, my_dec)
+    return my_ra, my_dec
 
 def matrix_multiply(m1, m2):
     '''
@@ -152,11 +151,13 @@ if __name__ == "__main__":
     '''
     import time
     import units.LatLong as LL
+    from units.RaDec import RaDec
     
     M = calculate_rotation_matrix(90, Vector3(1, 0, 0))
     print M.xx, M.xy, M.xz
     print M.yx, M.yy, M.yz
     print M.zx, M.zy, M.zz
-    radec = calculate_RADec_of_zenith(time.gmtime(), LL.LatLong(20, 16))
+    ra, dec = calculate_RADec_of_zenith(time.gmtime(), LL.LatLong(20, 16))
+    radec = RaDec(ra, dec)
     print radec.ra, radec.dec
     

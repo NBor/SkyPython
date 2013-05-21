@@ -7,6 +7,30 @@ Created on 2013-05-19
 import math
 from Vector3 import Vector3
 
+def get_instance(self, orbital_ele=None, planet=None, t_struct=None):
+    if orbital_ele == None and planet == None: raise Exception("both None")
+    
+    if orbital_ele == None:
+        orbital_ele = planet.get_orbital_element(t_struct)
+        
+    anomaly = orbital_ele.get_anomaly()
+    ecc = orbital_ele.eccentricity
+    radius = orbital_ele.distance * (1 - ecc * ecc) \
+        / (1 + ecc * math.cos(anomaly))
+    
+    per = orbital_ele.perihelion
+    asc = orbital_ele.ascending_node
+    inc = orbital_ele.inclination
+    xh = radius * (math.cos(asc) * math.cos(anomaly + per - asc) - \
+                   math.sin(asc) * math.sin(anomaly + per - asc) * \
+                   math.cos(inc))
+    yh = radius * (math.sin(asc) * math.cos(anomaly + per - asc) + \
+                   math.cos(asc) * math.sin(anomaly + per - asc) * \
+                   math.cos(inc))
+    zh = radius * (math.sin(anomaly + per - asc) * math.sin(inc))
+    
+    return HeliocentricCoordinates(radius, xh, yh, zh)
+
 class HeliocentricCoordinates(Vector3):
     '''
     classdocs
@@ -29,30 +53,6 @@ class HeliocentricCoordinates(Vector3):
         dy = self.y - helio_coord.y
         dz = self.z - helio_coord.z
         return math.sqrt(dx * dx + dy * dy + dz * dz)
-    
-    def get_instance(self, orbital_ele=None, planet=None, t_struct=None):
-        if orbital_ele == None and planet == None: raise Exception("both None")
-        
-        if orbital_ele == None:
-            orbital_ele = planet.get_orbital_element(t_struct)
-            
-        anomaly = orbital_ele.get_anomaly()
-        ecc = orbital_ele.eccentricity
-        radius = orbital_ele.distance * (1 - ecc * ecc) \
-            / (1 + ecc * math.cos(anomaly))
-        
-        per = orbital_ele.perihelion
-        asc = orbital_ele.ascending_node
-        inc = orbital_ele.inclination
-        xh = radius * (math.cos(asc) * math.cos(anomaly + per - asc) - \
-                       math.sin(asc) * math.sin(anomaly + per - asc) * \
-                       math.cos(inc))
-        yh = radius * (math.sin(asc) * math.cos(anomaly + per - asc) + \
-                       math.cos(asc) * math.sin(anomaly + per - asc) * \
-                       math.cos(inc))
-        zh = radius * (math.sin(anomaly + per - asc) * math.sin(inc))
-        
-        return HeliocentricCoordinates(radius, xh, yh, zh)
     
     def to_string(self):
         return "({0}, {1}, {2}, {3})".format(self.x, self.y, \

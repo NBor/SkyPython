@@ -4,6 +4,7 @@ Created on 2013-05-20
 @author: Neil
 '''
 import math
+from utils.Geometry import mod_2_pi
 
 class OrbitalElements(object):
     '''
@@ -25,37 +26,39 @@ class OrbitalElements(object):
     distance = None      #Mean distance (AU)
     eccentricity = None  #Eccentricity of orbit
     inclination = None   #Inclination of orbit (AngleUtils.RADIANS)
-    ascendingNode = None #Longitude of ascending node (AngleUtils.RADIANS)
+    ascending_node = None #Longitude of ascending node (AngleUtils.RADIANS)
     perihelion = None    #Longitude of perihelion (AngleUtils.RADIANS)
-    meanLongitude= None  #Mean longitude (AngleUtils.RADIANS)
+    mean_longitude= None  #Mean longitude (AngleUtils.RADIANS)
 
     def get_anomaly(self):
         '''
         compute anomaly using mean anomaly and eccentricity
         returns value in radians
         '''
-        m = self.meanLongitude - self.perihelion 
+        m = self.mean_longitude - self.perihelion 
         e = self.eccentricity
 
         e0 = m + e * math.sin(m) * (1.0 + e * math.cos(m))
         
         counter = 0
-        while(1):
+        while(counter <= 100):
             e1 = e0
-            e0 = e1 - (e1 - e * math.sin(e1) - m) / (1.0 - e * math.cos(e1));
-            if counter+1 > 100:
-                break
+            e0 = e1 - (e1 - e * math.sin(e1) - m) / (1.0 - e * math.cos(e1))
             if math.fabs(e0 - e1) > self.EPSILON:
                 break
+            counter += 1
+            
+        v = 2.0 * math.atan(math.sqrt((1 + e) / (1 - e)) * math.tan(0.5 * e0))
+        return mod_2_pi(v)
             
     def to_string(self):
         l = []
         l.append("Mean Distance: " + str(self.distance) + " (AU)\n");
         l.append("Eccentricity: " + str(self.eccentricity) + "\n");
         l.append("Inclination: " + str(self.inclination) + " (AngleUtils.RADIANS)\n");
-        l.append("Ascending Node: " + str(self.ascendingNode) + " (AngleUtils.RADIANS)\n");
+        l.append("Ascending Node: " + str(self.ascending_node) + " (AngleUtils.RADIANS)\n");
         l.append("Perihelion: " + str(self.perihelion) + " (AngleUtils.RADIANS)\n");
-        l.append("Mean Longitude: " + str(self.meanLongitude) + " (AngleUtils.RADIANS)\n");
+        l.append("Mean Longitude: " + str(self.mean_longitude) + " (AngleUtils.RADIANS)\n");
 
         return ''.join(l)
 
@@ -66,12 +69,14 @@ class OrbitalElements(object):
         self.distance = d
         self.eccentricity = e
         self.inclination = i
-        self.ascendingNode = a
+        self.ascending_node = a
         self.perihelion = p
-        self.meanLongitude = l
+        self.mean_longitude = l
         
 if __name__ == "__main__":
     '''
     For debugging purposes
     Ready for testing
     '''
+    OE = OrbitalElements(54, 0.5, 1, 87, 93, 30)
+    print OE.get_anomaly()

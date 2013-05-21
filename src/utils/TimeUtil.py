@@ -7,12 +7,13 @@ Created on 2013-05-19
 import time
 import math
 
-def julian_centuries(date=time.gmtime()):
+def julian_centuries(t_struct=time.gmtime()):
     '''
     Calculate the number of Julian Centuries from the epoch 2000.0
     (equivalent to Julian Day 2451545.0).
+    t_struct is a structure representing the current date (ex. time.gmtime())
     '''
-    jd = calculate_julian_day(date)
+    jd = calculate_julian_day(t_struct)
     delta = jd - 2451545.0
     return delta / 36525.0
 
@@ -22,6 +23,7 @@ def calculate_julian_day(t_struct=time.gmtime()):
     JD = 367 * Y - INT(7 * (Y + INT((M + 9)/12))/4) + INT(275 * M / 9)
          + D + 1721013.5 + UT/24
     Note that this is only valid for the year range 1900 - 2099.
+    t_struct is a structure representing the current date (ex. time.gmtime())
     '''
     hour = t_struct.tm_hour + (t_struct.tm_min / 60.0) + (t_struct.tm_sec / 3600.0)
     day = t_struct.tm_mday
@@ -59,12 +61,13 @@ def calc_gregorian_date(julian_day):
     # this needs to be in the UT time zone
     return [y, m, d, hours+12, minutes, seconds]
 
-def mean_sidereal_time(date, longitude):
+def mean_sidereal_time(t_struct, longitude):
     '''
     Calculate local mean sidereal time in degrees. Note that longitude is
     negative for western longitude values.
+    t_struct is a structure representing the current date (ex. time.gmtime())
     '''
-    jd = calculate_julian_day(date)
+    jd = calculate_julian_day(t_struct)
     delta = jd - 2451545.0
     
     gst = 280.461 + 360.98564737 * delta

@@ -8,7 +8,7 @@ class AstronomicalSource(object):
     '''
     classdocs
     '''
-    level = []
+    level = None
     names = []
     image_sources = []
     line_sources = []
@@ -31,12 +31,6 @@ class AstronomicalSource(object):
         '''
         Constructor
         '''
-        self.level = None
-        self.names = []
-        self.image_sources = []
-        self.line_sources = []
-        self.point_sources = []
-        self.text_sources = []
         
 if __name__ == "__main__":
     '''

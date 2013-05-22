@@ -15,7 +15,7 @@ class LineSource(Source):
     ra_decs = []
     line_width = None
 
-    def __init__(self, new_color=colors.WHITE, gcvs, lw=1.5):
+    def __init__(self, gcvs, new_color=colors.WHITE, lw=1.5):
         '''
         Constructor
         '''

@@ -11,6 +11,14 @@ class NewStarsLayer(FileBasedLayer):
     classdocs
     '''
 
+    def get_layer_id(self):
+        return -100
+    
+    def get_layer_name_id(self):
+        raise NotImplementedError("not implemented yet")
+    
+    def get_preference_id(self):
+        return "source_provider.0"
 
     def __init__(self):
         '''

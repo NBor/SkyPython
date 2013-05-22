@@ -11,7 +11,7 @@ class LineSource(Source):
     '''
     classdocs
     '''
-    GC_verticies = []
+    gc_verticies = []
     ra_decs = []
     line_width = None
 
@@ -21,7 +21,7 @@ class LineSource(Source):
         '''
         Source.__init__(self, new_color)
         self.line_width = lw
-        self.GC_verticies = gcvs
+        self.gc_verticies = gcvs
         
 if __name__ == "__main__":
     '''

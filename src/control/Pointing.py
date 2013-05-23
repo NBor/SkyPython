@@ -22,11 +22,11 @@ class Pointing(object):
 
     #Only the AstronomerModel should change this.
     def update_perpendicular(self, new_perpendicular):
-        self.perpendicular.assign(new_perpendicular)
+        self.gc_perpendicular.assign(vector3=new_perpendicular)
  
     #Only the AstronomerModel should change this.
     def update_line_of_sight(self, new_line_of_sight):
-        self.gc_line_of_sight.assign(new_line_of_sight)
+        self.gc_line_of_sight.assign(vector3=new_line_of_sight)
 
     def __init__(self, line_of_sight=GC(1, 0, 1), perp=GC(0, 1, 0)):
         '''

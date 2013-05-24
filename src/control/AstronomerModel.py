@@ -177,7 +177,7 @@ class AstronomerModel(object):
         self.calculate_pointing()
         return self.pointing
     
-    def update_pointing(self, line_of_sight, perpendicular):
+    def set_pointing(self, line_of_sight, perpendicular):
         '''
         Takes 2 vector3 objects as parameters
         '''

@@ -4,7 +4,10 @@ Created on 2013-05-16
 @author: Neil
 '''
 
-class AstronomicalSource(object):
+from Source import Source
+from utils.Colors import colors
+
+class AstronomicalSource(Source):
     '''
     classdocs
     '''
@@ -27,10 +30,11 @@ class AstronomicalSource(object):
     def add_label(self, label):
         self.text_sources.append(label)
 
-    def __init__(self):
+    def __init__(self, new_color=colors.WHITE):
         '''
         Constructor
         '''
+        Source.__init__(self, new_color)
         
 if __name__ == "__main__":
     '''

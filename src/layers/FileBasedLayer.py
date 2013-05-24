@@ -5,8 +5,9 @@ Created on 2013-05-22
 '''
 
 import sourceProto.SourceProto as SourceProto
-from sourceProto.ProtobufAstronomicalSource import ProtobufAstronomicalSource
 from SourceLayer import SourceLayer
+from source.AstronomicalSource import AstronomicalSource
+from sourceProto.ProtobufAstronomicalSource import ProtobufAstronomicalSource
 
 class FileBasedLayer(SourceLayer):
     '''
@@ -18,10 +19,19 @@ class FileBasedLayer(SourceLayer):
     
     def initialize(self):
         self.read_source_file(self.file_name)
-        # super initialize
+        self.init_astro_sources()
+        self.init()
         
     def init_astro_sources(self):
-        raise NotImplementedError("not implemented yet")
+        for proto_source in self.file_sources:
+            new_astro = AstronomicalSource()
+            new_astro.names = proto_source.names
+            new_astro.geocentric_coords = proto_source.get_geo_coords()
+            #new_astro.image_sources = proto_source. ???
+            new_astro.point_sources = proto_source.get_points()
+            new_astro.line_sources = proto_source.get_lines()
+            new_astro.text_sources = proto_source.get_labels()
+            self.astro_sources.append(new_astro)
         
     def read_source_file(self, file_name):
         astro_sources_proto = SourceProto.AstronomicalSourcesProto()
@@ -40,6 +50,7 @@ class FileBasedLayer(SourceLayer):
         '''
         Constructor
         '''
+        SourceLayer.__init__(self, False)
         self.file_name = file_string
         
 if __name__ == "__main__":

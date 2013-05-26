@@ -6,6 +6,7 @@ Created on 2013-05-26
 
 import math
 from units.GeocentricCoordinates import GeocentricCoordinates
+from utils.Matrix4x4 import create_identity
 
 class RenderState(object):
     '''
@@ -20,8 +21,8 @@ class RenderState(object):
     sin_up_angle = 0
     screen_width = 100
     screen_height = 100
-    #transform_to_device = Matrix4x4.createIdentity()
-    #transform_to_screen = Matrix4x4.createIdentity()
+    transform_to_device = create_identity()
+    transform_to_screen = create_identity()
     night_vision_mode = False
     active_sky_region_set = None
     
@@ -44,7 +45,8 @@ class RenderState(object):
         self.screen_height = height
         
     def set_tranformation_matrices(self, to_device, to_screen):
-        raise NotImplementedError("no 4x4 matrices")
+        self.transform_to_device = to_device
+        self.transform_to_screen = to_screen
     
     def __init__(self):
         '''

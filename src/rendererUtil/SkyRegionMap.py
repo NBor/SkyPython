@@ -28,22 +28,23 @@ class ActiveRegionData(object):
         self.screen_angle = angles
         self.active_standard_regions = active_regions
 
-class ObjectRegionData(object):
-    '''
-    classdata
-    '''
-    region = SkyRegionMap.CATCHALL_REGION_ID
-    region_center_dot_product = -1
-    
-    def __init__(self):
-        '''
-        constructor
-        '''
-
 class SkyRegionMap(object):
     '''
     classdocs
     '''
+    
+    class ObjectRegionData(object):
+        '''
+        classdata
+        '''
+        region = SkyRegionMap.CATCHALL_REGION_ID
+        region_center_dot_product = -1
+        
+        def __init__(self):
+            '''
+            constructor
+            '''
+    
     CATCHALL_REGION_ID = -1
     REGION_COVERAGE_ANGLE_IN_RADIANS = 0.396023592
     REGION_CENTERS32 = [ \
@@ -107,7 +108,7 @@ class SkyRegionMap(object):
         return self.get_object_region_data(gc_coords).region
     
     def get_object_region_data(self, gc_coords):
-        data = ObjectRegionData()
+        data = self.ObjectRegionData()
         
         i = 0
         for i in range(len(self.REGION_CENTERS32)):

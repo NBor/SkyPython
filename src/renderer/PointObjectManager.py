@@ -4,9 +4,10 @@ Created on 2013-05-25
 @author: Neil
 '''
 
+from RendererObjectManager import RendererObjectManager
 from rendererUtil.SkyRegionMap import SkyRegionMap
 
-class PointObjectManager(object):
+class PointObjectManager(RendererObjectManager):
     '''
     classdocs
     '''
@@ -53,10 +54,10 @@ class PointObjectManager(object):
     def draw_internal(self, gl):
         raise NotImplementedError("need OpenGL support")
 
-    def __init__(self, layer=None, texture_manager=None):
+    def __init__(self, new_layer=None, new_texture_manager=None):
         '''
-        Constructor
+        change inputs to not be default
         '''
-        # super.__init__() and change inputs to not be default
+        RendererObjectManager.__init__(self, new_layer, new_texture_manager)
         self.sky_regions.region_data_factory = self.RegionDataFactory()
         

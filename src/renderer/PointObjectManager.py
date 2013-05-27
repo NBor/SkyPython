@@ -54,7 +54,7 @@ class PointObjectManager(RendererObjectManager):
     def draw_internal(self, gl):
         raise NotImplementedError("need OpenGL support")
 
-    def __init__(self, new_layer=None, new_texture_manager=None):
+    def __init__(self, new_layer, new_texture_manager=None):
         '''
         change inputs to not be default
         '''

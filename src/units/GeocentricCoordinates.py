@@ -37,7 +37,7 @@ class GeocentricCoordinates(Vector3):
         self.z = l[2]
         
     def copy(self):
-        return GeocentricCoordinates(self, self.x, self.y, self.z)
+        return GeocentricCoordinates(self.x, self.y, self.z)
 
     def __init__(self, new_x, new_y, new_z):
         '''

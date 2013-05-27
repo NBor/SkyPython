@@ -37,13 +37,13 @@ class SkyRegionMap(object):
         '''
         classdata
         '''
-        region = SkyRegionMap.CATCHALL_REGION_ID
-        region_center_dot_product = -1
         
         def __init__(self):
             '''
             constructor
             '''
+            self.region = SkyRegionMap().CATCHALL_REGION_ID
+            self.region_center_dot_product = -1
     
     CATCHALL_REGION_ID = -1
     REGION_COVERAGE_ANGLE_IN_RADIANS = 0.396023592

@@ -125,6 +125,10 @@ class SkyRegionMap(object):
         self.region_coverage_angles = None
         
     def set_region_data(self, r_id, data):
+        '''
+        sets generic RenderingRegionData as specified by ObjectManager
+        which instantiated this class
+        '''
         self.region_data[r_id] = data
         
     def get_region_coverage_angle(self, r_id):
@@ -140,6 +144,10 @@ class SkyRegionMap(object):
         self.region_coverage_angles[r_id] = angle_in_radians
         
     def get_region_data(self, r_id):
+        '''
+        gets generic RenderingRegionData as specified by ObjectManager
+        which instantiated this class
+        '''
         data = None
         
         if r_id in self.region_data.keys():
@@ -159,7 +167,7 @@ class SkyRegionMap(object):
         if self.region_coverage_angles == None:
             for region in active_region_data.active_standard_regions:
                 if region in self.region_data.keys():
-                    data.append(object)
+                    data.append(self.region_data[region])
             return data
         else:
             for i in range(len(self.REGION_CENTERS32)):

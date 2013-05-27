@@ -24,12 +24,14 @@ class NewStarsLayer(FileBasedLayer):
         '''
         Constructor
         '''
-        FileBasedLayer.__init__(self, "../../assets/stars.binary")
+        FileBasedLayer.__init__(self, "assets/stars.binary")
         
 if __name__ == "__main__":
     '''
     For debugging purposes
     '''
+    import os
+    os.chdir("../../")
     SL = NewStarsLayer()
     SL.initialize()
     first_protobuf_source = SL.file_sources[0]

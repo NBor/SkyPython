@@ -6,6 +6,7 @@ Created on 2013-05-14
 
 from layers.LayerManager import LayerManager
 from layers.NewStarsLayer import NewStarsLayer
+from source.AstronomicalSource import AstronomicalSource
 from control.AstronomerModel import AstronomerModel
 from renderer.PointObjectManager import PointObjectManager
 from renderer.SkyRenderer import SkyRenderer
@@ -28,10 +29,16 @@ def start_application():
     model = AstronomerModel(ZMDC())
     POM = PointObjectManager(-100, None)
     
-    layer_manager.layers[0].init_astro_sources()
-    points = []
-    for source in layer_manager.layers[0].astro_sources:
-        points += source.point_sources
+    points = []    
+    for proto_source in layer_manager.layers[0].astro_sources:
+        new_astro = AstronomicalSource()
+        new_astro.names = proto_source.names
+        new_astro.geocentric_coords = proto_source.get_geo_coords()
+        new_astro.image_sources = proto_source.get_images()
+        new_astro.point_sources = proto_source.get_points()
+        new_astro.line_sources = proto_source.get_lines()
+        new_astro.text_sources = proto_source.get_labels()
+        points += new_astro.point_sources
     POM.update_objects(points, None)
     
     sky_renderer = SkyRenderer()

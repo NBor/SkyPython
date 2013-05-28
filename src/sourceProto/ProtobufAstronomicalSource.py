@@ -41,6 +41,9 @@ class ProtobufAstronomicalSource(object):
         gc = self.astro_source_proto.search_location
         return get_instance(gc.right_ascension, gc.declination)
     
+    def get_images(self):
+        return []
+    
     def get_points(self):
         point_list = []
         for p in self.astro_source_proto.point:

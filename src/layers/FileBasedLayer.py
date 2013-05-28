@@ -18,20 +18,12 @@ class FileBasedLayer(SourceLayer):
     file_sources = []
     
     def initialize(self):
+        # Need to execute this in a background thread
         self.read_source_file(self.file_name)
-        self.init_astro_sources()
         self.init()
         
-    def init_astro_sources(self):
-        for proto_source in self.file_sources:
-            new_astro = AstronomicalSource()
-            new_astro.names = proto_source.names
-            new_astro.geocentric_coords = proto_source.get_geo_coords()
-            #new_astro.image_sources = proto_source. ???
-            new_astro.point_sources = proto_source.get_points()
-            new_astro.line_sources = proto_source.get_lines()
-            new_astro.text_sources = proto_source.get_labels()
-            self.astro_sources.append(new_astro)
+    def initialize_astro_sources(self, sources):
+        sources += self.file_sources
         
     def read_source_file(self, file_name):
         astro_sources_proto = SourceProto.AstronomicalSourcesProto()
@@ -57,7 +49,9 @@ if __name__ == "__main__":
     '''
     For debugging purposes
     '''
-    FBL = FileBasedLayer("../../assets/constellations.binary")
+    import os
+    os.chdir("../..")
+    FBL = FileBasedLayer("assets/stars.binary")
     FBL.initialize()
     first_protobuf_source = FBL.file_sources[0]
     gc = first_protobuf_source.get_geo_coords()

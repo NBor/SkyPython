@@ -4,11 +4,24 @@ Created on 2013-05-24
 @author: Neil
 '''
 
+from NewStarsLayer import NewStarsLayer
+from NewConstellationsLayer import NewConstellationsLayer
+from NewMessierLayer import NewMessierLayer
+
+def instantiate_layer_manager():
+    '''
+    Need to implement all the other layers
+    '''
+    layer_manager = LayerManager()
+    layer_manager.add_layer(NewStarsLayer())
+    layer_manager.add_layer(NewConstellationsLayer())
+    layer_manager.add_layer(NewMessierLayer())
+    return layer_manager
+
 class LayerManager(object):
     '''
     classdocs
     '''
-    layers = []
 
     def add_layer(self, layer):
         self.layers.append(layer)
@@ -39,4 +52,4 @@ class LayerManager(object):
         '''
         Constructor
         '''
-        
+        self.layers = []

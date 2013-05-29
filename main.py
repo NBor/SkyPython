@@ -5,37 +5,22 @@ Created on 2013-05-14
 '''
 
 from layers.LayerManager import LayerManager
-from layers.NewStarsLayer import NewStarsLayer
-from layers.NewConstellationsLayer import NewConstellationsLayer
-from layers.NewMessierLayer import NewMessierLayer
+from layers.LayerManager import instantiate_layer_manager
 from source.AstronomicalSource import AstronomicalSource
 from control.AstronomerModel import AstronomerModel
 from renderer.PointObjectManager import PointObjectManager
 from renderer.SkyRenderer import SkyRenderer
 from control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
 
-def instantiate_layer_manager(layer_manager):
-    '''
-    Need to implement all the other layers
-    '''
-    if layer_manager == None:
-        layer_manager = LayerManager()
-        layer_manager.add_layer(NewStarsLayer())
-        layer_manager.add_layer(NewConstellationsLayer())
-        layer_manager.add_layer(NewMessierLayer())
-        return layer_manager
-    else:
-        return layer_manager
-
 def start_application():
-    layer_manager = instantiate_layer_manager(None)
+    layer_manager = instantiate_layer_manager()
     layer_manager.init_layers()
     model = AstronomerModel(ZMDC())
     POM = PointObjectManager(-100, None)
     
     points = []
     print layer_manager.layers
-    for proto_source in layer_manager.layers[2].astro_sources:
+    for proto_source in layer_manager.layers[0].astro_sources:
         new_astro = AstronomicalSource()
         new_astro.names = proto_source.names
         new_astro.geocentric_coords = proto_source.get_geo_coords()

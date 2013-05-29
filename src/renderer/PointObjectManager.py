@@ -16,16 +16,16 @@ class PointObjectManager(RendererObjectManager):
         '''
         classdocs
         '''
-        sources = []
-        vertex_buffer = []
-        color_buffer = []
-        text_coord_buffer = []
-        index_buffer = []
     
         def __init__(self):
             '''
             constructor
             '''
+            self.sources = []
+            self.vertex_buffer = []
+            self.color_buffer = []
+            self.text_coord_buffer = []
+            self.index_buffer = []
        
     class RegionDataFactory(object):
         '''
@@ -76,7 +76,12 @@ class PointObjectManager(RendererObjectManager):
                 else:
                     region = self.sky_regions.get_object_region(point.geocentric_coords)
                 # self.sky_regions.get_region_data(region) is a RegionData instance
-                self.sky_regions.get_region_data(region).sources.append(point)
+                data_for_region = self.sky_regions.get_region_data(region)
+                data_for_region.sources.append(point)
+            
+            for region_key in self.sky_regions.region_data.keys():
+                print region_key, len(self.sky_regions.get_region_data(region_key).sources)
+            exit(0)
         else:
             self.sky_regions.get_region_data(region).sources = points
 # 
@@ -200,9 +205,10 @@ class PointObjectManager(RendererObjectManager):
         # Render all of the active sky regions.
         active_regions = self.render_state.active_sky_region_set
         active_region_data = self.sky_regions.get_data_for_active_regions(active_regions)
+        print active_regions.active_standard_regions
+        print active_region_data
         for data in active_region_data:
-            print "here is!!!!"
-            print data.sources
+            print len(data.sources)
 #       if (data.mVertexBuffer.size() == 0) {
 #         continue;
 #       }

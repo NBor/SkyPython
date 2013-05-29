@@ -19,8 +19,8 @@ class RenderState(object):
     up_angle = 0
     cos_up_angle = 1
     sin_up_angle = 0
-    screen_width = 100
-    screen_height = 100
+    screen_width = 480 # originally 100
+    screen_height = 800 # originally 100
     transform_to_device = create_identity()
     transform_to_screen = create_identity()
     night_vision_mode = False

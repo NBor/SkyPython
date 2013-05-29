@@ -15,7 +15,6 @@ class FileBasedLayer(SourceLayer):
     '''
     executor_for_multiple_threads = None
     file_name = ""
-    file_sources = []
     
     def initialize(self):
         # Need to execute this in a background thread
@@ -44,6 +43,7 @@ class FileBasedLayer(SourceLayer):
         '''
         SourceLayer.__init__(self, False)
         self.file_name = file_string
+        self.file_sources = []
         
 if __name__ == "__main__":
     '''

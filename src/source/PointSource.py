@@ -17,9 +17,6 @@ class PointSource(Source):
     '''
     classdocs
     '''
-    size = None
-    point_shape = None
-
 
     def __init__(self, new_color, new_size, geo_coords=get_instance(0.0, 0.0), \
                  new_shape=shape_enum.CIRCLE):

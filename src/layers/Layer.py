@@ -8,8 +8,6 @@ class Layer(object):
     '''
     classdocs
     '''
-    render_map = {}
-    render_controller = None
     
     def register_with_renderer(self, rend_controller):
         self.render_map.clear()
@@ -46,4 +44,5 @@ class Layer(object):
         '''
         Constructor
         '''
-        
+        self.render_map = {}
+        self.render_controller = None

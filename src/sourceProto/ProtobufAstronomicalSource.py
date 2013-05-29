@@ -26,9 +26,6 @@ class ProtobufAstronomicalSource(object):
                  SourceProto.NEBULA : shape_enum.NEBULA, \
                  SourceProto.HUBBLE_DEEP_FIELD : shape_enum.HUBBLE_DEEP_FIELD}
     
-    astro_source_proto = None
-    names = []
-    
     def set_names(self, APS):
         '''
         ISSUE!!! somehow we need to conver these numbers into
@@ -84,6 +81,7 @@ class ProtobufAstronomicalSource(object):
         '''
         Constructor
         '''
+        self.names = []
         self.astro_source_proto = astronomical_source_proto
         self.set_names(astronomical_source_proto)
         

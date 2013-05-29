@@ -27,12 +27,6 @@ class SourceLayer(Layer):
             '''
             self.source_layer = layer
     
-    text_sources = []
-    image_sources = []
-    point_sources = []
-    line_sources = []
-    astro_sources = []
-    
     search_index = {}
     # prefix_store = prefixstore class
     should_update = False
@@ -80,4 +74,8 @@ class SourceLayer(Layer):
         Constructor
         '''
         self.should_update = boolean
-        
+        self.text_sources = []
+        self.image_sources = []
+        self.point_sources = []
+        self.line_sources = []
+        self.astro_sources = []

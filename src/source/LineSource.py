@@ -11,15 +11,13 @@ class LineSource(Source):
     '''
     classdocs
     '''
-    gc_verticies = []
-    ra_decs = []
-    line_width = None
 
     def __init__(self, gcvs, new_color=colors.WHITE, lw=1.5):
         '''
         Constructor
         '''
         Source.__init__(self, new_color)
+        self.ra_decs = []
         self.line_width = lw
         self.gc_verticies = gcvs
         

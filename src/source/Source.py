@@ -13,11 +13,6 @@ class Source(object):
     '''
     classdocs
     '''
-    granulatriy = None
-    color = None
-    geocentric_coords = None
-    name_list = []
-
 
     def __init__(self, new_color, geo_coords=get_instance(0.0, 0.0)):
         '''
@@ -25,6 +20,8 @@ class Source(object):
         '''
         self.color = new_color
         self.geocentric_coords = geo_coords
+        self.granulatriy = None
+        self.name_list = []
         
 if __name__ == "__main__":
     '''

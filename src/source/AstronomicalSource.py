@@ -11,12 +11,6 @@ class AstronomicalSource(Source):
     '''
     classdocs
     '''
-    level = None
-    names = []
-    image_sources = []
-    line_sources = []
-    point_sources = []
-    text_sources = []
             
     def add_image(self, image):
         self.image_sources.append(image)
@@ -35,6 +29,12 @@ class AstronomicalSource(Source):
         Constructor
         '''
         Source.__init__(self, new_color)
+        self.level = None
+        self.names = []
+        self.image_sources = []
+        self.line_sources = []
+        self.point_sources = []
+        self.text_sources = []
         
 if __name__ == "__main__":
     '''

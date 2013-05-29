@@ -26,17 +26,6 @@ class ImageSource(Source):
     //            u
     '''
     image_scale = 1
-    requires_blending = False
-    bitmap_image = None
-    
-    # horizontal corner
-    ux = 0
-    uy = 0
-    uz = 0
-    # vertical corner
-    vx = 0
-    vy = 0
-    vz = 0
 
     def get_horizontal_corner(self):
         return [self.ux, self.uy, self.uz]
@@ -71,6 +60,17 @@ class ImageSource(Source):
         self.image_scale = im_scale
         self.set_up_vector(up_v)
         self.set_image_by_id(new_id)
+        self.requires_blending = False
+        self.bitmap_image = None
+    
+        # horizontal corner
+        self.ux = 0
+        self.uy = 0
+        self.uz = 0
+        # vertical corner
+        self.vx = 0
+        self.vy = 0
+        self.vz = 0
         
 if __name__ == "__main__":
     '''

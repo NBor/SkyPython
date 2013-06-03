@@ -62,7 +62,7 @@ class SkyRenderer(object):
     
         for managers in self.layers_to_managers.values():
             for manager in managers:
-                manager.draw(None)
+                manager.draw(gl)
         #checkForErrors(gl);
         
         # Queue updates for the next frame.
@@ -70,10 +70,10 @@ class SkyRenderer(object):
         #  update.run();
         #}
         
-    def on_surfaced_created(self):
+    def on_surfaced_created(self, gl):
         raise NotImplementedError("not implemented yet")
     
-    def on_surface_changed(self):
+    def on_surface_changed(self, gl):
         raise NotImplementedError("not implemented yet")
     
     def set_radius_of_view(self, deg):

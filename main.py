@@ -4,6 +4,10 @@ Created on 2013-05-14
 @author: Neil
 '''
 
+import sys
+from PySide.QtGui import QApplication
+
+from skypython.SkyPython import SkyPython
 from layers.LayerManager import LayerManager
 from layers.LayerManager import instantiate_layer_manager
 from source.AstronomicalSource import AstronomicalSource
@@ -19,7 +23,6 @@ def start_application():
     POM = PointObjectManager(-100, None)
     
     points = []
-    print layer_manager.layers
     for proto_source in layer_manager.layers[0].astro_sources:
         new_astro = AstronomicalSource()
         new_astro.names = proto_source.names
@@ -33,8 +36,13 @@ def start_application():
     
     sky_renderer = SkyRenderer()
     sky_renderer.add_object_manager(POM)
-
-    sky_renderer.on_draw_frame(None)
+    
+    app = QApplication(sys.argv)
+    w = SkyPython(sky_renderer)
+    w.show()
+    app.exec_()
 
 if __name__ == '__main__':
     start_application()
+    
+    

@@ -4,6 +4,10 @@ Created on 2013-05-25
 @author: Neil
 '''
 
+from numpy import array, float32
+import numpy.random as rdn
+
+from OpenGL.arrays import vbo
 from RendererObjectManager import RendererObjectManager
 from rendererUtil.SkyRegionMap import SkyRegionMap
 
@@ -78,10 +82,6 @@ class PointObjectManager(RendererObjectManager):
                 # self.sky_regions.get_region_data(region) is a RegionData instance
                 data_for_region = self.sky_regions.get_region_data(region)
                 data_for_region.sources.append(point)
-            
-            for region_key in self.sky_regions.region_data.keys():
-                print region_key, len(self.sky_regions.get_region_data(region_key).sources)
-            exit(0)
         else:
             self.sky_regions.get_region_data(region).sources = points
 # 
@@ -205,10 +205,35 @@ class PointObjectManager(RendererObjectManager):
         # Render all of the active sky regions.
         active_regions = self.render_state.active_sky_region_set
         active_region_data = self.sky_regions.get_data_for_active_regions(active_regions)
-        print active_regions.active_standard_regions
-        print active_region_data
+        
+        coord_list = []
         for data in active_region_data:
-            print len(data.sources)
+            for source in data.sources:
+                coord_list.append([source.geocentric_coords.x, source.geocentric_coords.y])
+        
+        # generate random data points
+        data = array(coord_list, dtype=float32)
+        # initialize the GL widget
+        count = data.shape[0]
+        
+        # create a Vertex Buffer Object with the specified data
+        vertex_bo = vbo.VBO(data)
+        
+        #-----------------------------------------------------------------------
+        # clear the buffer
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+        # set yellow color for subsequent drawing rendering calls
+        gl.glColor(1,1,1)            
+        # bind the VBO 
+        vertex_bo.bind()
+        #-----------------------------------------------------------------------
+        # tell OpenGL that the VBO contains an array of vertices
+        gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
+        # these vertices contain 2 single precision coordinates
+        gl.glVertexPointer(2, gl.GL_FLOAT, 0, vertex_bo)
+        # draw "count" points from the VBO
+        gl.glDrawArrays(gl.GL_POINTS, 0, count)
+                
 #       if (data.mVertexBuffer.size() == 0) {
 #         continue;
 #       }

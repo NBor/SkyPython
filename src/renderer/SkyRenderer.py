@@ -3,10 +3,11 @@ Created on 2013-05-26
 
 @author: Neil
 '''
-
+from OpenGL import GL
 import math
-from PointObjectManager import PointObjectManager
 from RenderState import RenderState
+from PointObjectManager import PointObjectManager
+from rendererUtil.GLBuffer import GLBuffer
 from rendererUtil.SkyRegionMap import SkyRegionMap
 
 class SkyRenderer(object):
@@ -58,7 +59,7 @@ class SkyRenderer(object):
                 self.render_state.radius_of_view,
                 self.render_state.screen_width / float(self.render_state.screen_height))
     
-        #gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
     
         for managers in self.layers_to_managers.values():
             for manager in managers:
@@ -71,7 +72,48 @@ class SkyRenderer(object):
         #}
         
     def on_surfaced_created(self, gl):
-        raise NotImplementedError("not implemented yet")
+        gl.glEnable(gl.GL_DITHER);
+
+        # Some one-time OpenGL initialization can be made here
+        # probably based on features of this particular context
+        gl.glHint(gl.GL_PERSPECTIVE_CORRECTION_HINT,
+                  gl.GL_FASTEST)
+        
+        gl.glClearColor(0, 0, 0, 0)
+        gl.glEnable(gl.GL_CULL_FACE)
+        gl.glShadeModel(gl.GL_SMOOTH)
+        gl.glDisable(gl.GL_DEPTH_TEST)
+        
+        # Release references to all of the old textures.
+        #mTextureManager.reset()
+        
+        extensions = GL.glGetString(GL.GL_EXTENSIONS)
+        
+        # Determine if the phone supports VBOs or not, and set this on the GLBuffer.
+        # TODO(jpowell): There are two extension strings which seem applicable.
+        # There is GL_OES_vertex_buffer_object and GL_ARB_vertex_buffer_object.
+        # I can't find any documentation which explains the difference between
+        # these two.  Most phones which support one seem to support both,
+        # except for the Nexus One, which only supports ARB but doesn't seem
+        # to benefit from using VBOs anyway.  I should figure out what the
+        # difference is and use ARB too, if I can.
+        can_use_vbo = False
+        if "GL_OES_vertex_buffer_object" in extensions:
+            can_use_vbo = True
+            
+            # VBO support on the Cliq and Behold is broken and say they can
+            # use them when they can't.  Explicitly disable it for these devices.
+            bad_models = ["MB200", "MB220", "Behold" ]
+            #for (String model : bad_models) {
+            #    if (android.os.Build.MODEL.contains(model)) {
+            #        can_use_vbo = false;
+            #    }
+            #}
+            setattr(GLBuffer, "can_use_VBO", can_use_vbo)
+            
+            # Reload all of the managers.
+            for rom in self.all_managers:
+                rom.reload(gl, True)
     
     def on_surface_changed(self, gl):
         raise NotImplementedError("not implemented yet")

@@ -24,7 +24,7 @@ class VertexBuffer(object):
         #fixed_y = 0xFFFFFFFF & int(vector3.y * 65536.0)
         #fixed_z = 0xFFFFFFFF & int(vector3.z * 65536.0)
         #self.vertex_buffer = np.append(self.vertex_buffer, [fixed_x, fixed_y, fixed_z], 0)
-        self.vertex_buffer = np.append(self.vertex_buffer, [vector3.x, vector3.y, vector3.z], 0)
+        self.vertex_buffer = np.append(self.vertex_buffer, [vector3.z, vector3.y, vector3.x], 0)
     
     def set(self, gl):
         if self.num_vertices == 0:

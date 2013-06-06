@@ -98,7 +98,7 @@ class SkyRenderer(object):
         # to benefit from using VBOs anyway.  I should figure out what the
         # difference is and use ARB too, if I can.
         can_use_vbo = False
-        if "GL_OES_vertex_buffer_object" in extensions:
+        if "GL_OES_vertex_buffer_object" in extensions: # this will never pass at the moment
             can_use_vbo = True
             
             # VBO support on the Cliq and Behold is broken and say they can
@@ -115,8 +115,16 @@ class SkyRenderer(object):
             for rom in self.all_managers:
                 rom.reload(gl, True)
     
-    def on_surface_changed(self, gl):
-        raise NotImplementedError("not implemented yet")
+    def on_surface_changed(self, gl, width, height):
+        
+        self.render_state.set_screen_size(width, height)
+        #self.overlayManager.resize(gl, width, height)
+
+        # Need to set the matrices.
+        self.must_update_view = True
+        self.must_update_projection = True
+
+        gl.glViewport(0, 0, width, height)
     
     def set_radius_of_view(self, deg):
         self.render_state.radius_of_view = deg

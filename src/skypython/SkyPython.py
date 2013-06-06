@@ -61,11 +61,10 @@ class SkyPython(QGLWidget, QMainWindow):
         """
         # update the window size
         self.width, self.height = width, height
-        # paint within the whole window
-        GL.glViewport(0, 0, width, height)
+        self.sky_renderer.on_surface_changed(GL, width, height)
         # set orthographic projection (2D only)
-        GL.glMatrixMode(GL.GL_PROJECTION)
-        GL.glLoadIdentity()
+        #GL.glMatrixMode(GL.GL_PROJECTION)
+        #GL.glLoadIdentity()
         # the window corner OpenGL coordinates are (-+1, -+1)
-        GL.glOrtho(-1, 1, -1, 1, -1, 1)
+        #GL.glOrtho(-1, 1, -1, 1, -1, 1)
         

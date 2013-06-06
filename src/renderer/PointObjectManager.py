@@ -14,7 +14,7 @@ from RendererObjectManager import RendererObjectManager
 from rendererUtil.SkyRegionMap import SkyRegionMap
 from rendererUtil.IndexBuffer import IndexBuffer
 from rendererUtil.VertexBuffer import VertexBuffer
-from rendererUtil.ColorBuffer import ColorBuffer
+from rendererUtil.NightVisionColorBuffer import NightVisionBuffer
 from rendererUtil.TextCoordBuffer import TextCoordBuffer
 from utils.VectorUtil import normalized, cross_product
 
@@ -36,7 +36,7 @@ class PointObjectManager(RendererObjectManager):
             self.vertex_buffer = VertexBuffer(0, True)
             self.index_buffer = IndexBuffer(0, True)
             self.text_coord_buffer = TextCoordBuffer(0, True)
-            self.color_buffer = ColorBuffer(0, True)
+            self.color_buffer = NightVisionBuffer(0, True)
        
     class RegionDataFactory(object):
         '''
@@ -182,17 +182,22 @@ class PointObjectManager(RendererObjectManager):
                 data.vertex_buffer.add_point(bottom_right_pos)
                 data.color_buffer.add_color(color)
                 
-                data.vertex_buffer.add_point(top_right_pos);
-                data.color_buffer.add_color(color);
-            #data.sources = None
+                data.vertex_buffer.add_point(top_right_pos)
+                data.color_buffer.add_color(color)
+                
+            data.sources = None
     
     def reload(self, gl, bool_full_reload):
-        print "Not implemented"
-        #raise NotImplementedError("need OpenGL support")
+        #self.texture_ref = textureManager().getTextureFromResource(gl, R.drawable.stars_texture);
+        for data in self.sky_regions.region_data.values():
+            data.vertex_buffer.reload()
+            data.color_buffer.reload()
+            data.text_coord_buffer.reload()
+            data.index_buffer.reload()
     
     def draw_internal(self, gl):
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
-        #gl.glEnableClientState(gl.GL_COLOR_ARRAY)
+        gl.glEnableClientState(gl.GL_COLOR_ARRAY)
         #gl.glEnableClientState(gl.GL_TEXTURE_COORD_ARRAY)
         
         gl.glEnable(gl.GL_CULL_FACE)
@@ -206,13 +211,12 @@ class PointObjectManager(RendererObjectManager):
         
         #self.texture_ref.bind(gl)
         
-        gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_MODULATE)
+        #gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_MODULATE)
         
         # Render all of the active sky regions.
         active_regions = self.render_state.active_sky_region_set
         active_region_data = self.sky_regions.get_data_for_active_regions(active_regions)
         
-        gl.glColor(1,1,1)
         coord_list = []
         for data in active_region_data:
 #             for source in data.sources:
@@ -243,7 +247,7 @@ class PointObjectManager(RendererObjectManager):
                 continue
             
             data.vertex_buffer.set(gl)
-            #data.color_buffer.set(gl)#, self.render_state.night_vision_mode)
+            data.color_buffer.set(gl, self.render_state.night_vision_mode)
             #data.text_coord_buffer.set(gl)
             #print data.vertex_buffer.vertex_buffer#, data.color_buffer.color_buffer, data.index_buffer.index_buffer
             data.index_buffer.draw(gl, gl.GL_TRIANGLES)

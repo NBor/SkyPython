@@ -19,12 +19,13 @@ class ColorBuffer(object):
     def reload(self):
         self.gl_buffer.reload()
         
-    def add_color(self, col=None, a=None, r=None, g=None, b=None):
-        if col == None:
-            color = ((a & 0xff) << 24) | ((b & 0xff) << 16) | ((g & 0xff) << 8) | (r & 0xff)
-            self.color_buffer = np.append(self.color_buffer, [color], 0)
-        else:
-            self.color_buffer = np.append(self.color_buffer, [col], 0)
+    def add_color(self, a, r, g, b):
+        #if col == None:
+        #    color = ((a & 0xff) << 24) | ((b & 0xff) << 16) | ((g & 0xff) << 8) | (r & 0xff)
+        #    self.color_buffer = np.append(self.color_buffer, [color], 0)
+        #else:
+        #    self.color_buffer = np.append(self.color_buffer, [col], 0)
+        self.color_buffer = np.append(self.color_buffer, [r, g, b, a], 0)
     
     def set(self, gl):
         if self.num_vertices == 0:

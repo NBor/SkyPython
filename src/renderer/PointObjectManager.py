@@ -5,9 +5,6 @@ Created on 2013-05-25
 '''
 
 import math
-from numpy import array, float32
-import numpy.random as rdn
-from OpenGL.arrays import vbo
 
 from units.Vector3 import Vector3
 from RendererObjectManager import RendererObjectManager
@@ -57,7 +54,7 @@ class PointObjectManager(RendererObjectManager):
     texture_ref = None
     
     def update_objects(self, points, update_type):
-        only_update_points = True
+        #only_update_points = True
         # We only care about updates to positions, ignore any other updates.
 #     if (updateType.contains(UpdateType.Reset)) {
 #       only_update_points = false;
@@ -204,57 +201,31 @@ class PointObjectManager(RendererObjectManager):
         gl.glFrontFace(gl.GL_CW)
         gl.glCullFace(gl.GL_BACK)
         
-        #gl.glEnable(gl.GL_ALPHA_TEST)
-        #gl.glAlphaFunc(gl.GL_GREATER, 0.5)
+        gl.glEnable(gl.GL_ALPHA_TEST)
+        gl.glAlphaFunc(gl.GL_GREATER, 0.5)
         
         gl.glEnable(gl.GL_TEXTURE_2D)
         
         #self.texture_ref.bind(gl)
         
-        #gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_MODULATE)
+        gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_MODULATE)
         
         # Render all of the active sky regions.
         active_regions = self.render_state.active_sky_region_set
         active_region_data = self.sky_regions.get_data_for_active_regions(active_regions)
         
-        coord_list = []
         for data in active_region_data:
-#             for source in data.sources:
-#                 coord_list.append([source.geocentric_coords.z, source.geocentric_coords.y])
-#         
-#         # generate random data points
-#         data = array(coord_list, dtype=float32)
-#         # initialize the GL widget
-#         count = data.shape[0]
-#         
-#         # create a Vertex Buffer Object with the specified data
-#         vertex_bo = vbo.VBO(data)
-#         
-#         #-----------------------------------------------------------------------
-#         # set yellow color for subsequent drawing rendering calls
-#         gl.glColor(1,1,1)            
-#         # bind the VBO 
-#         vertex_bo.bind()
-#         #-----------------------------------------------------------------------
-#         # tell OpenGL that the VBO contains an array of vertices
-#         #gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
-#         # these vertices contain 2 single precision coordinates
-#         gl.glVertexPointer(2, gl.GL_FLOAT, 0, vertex_bo)
-#         # draw "count" points from the VBO
-#         gl.glDrawArrays(gl.GL_POINTS, 0, count)
-            
             if data.vertex_buffer.num_vertices == 0:
                 continue
             
             data.vertex_buffer.set(gl)
             data.color_buffer.set(gl, self.render_state.night_vision_mode)
             #data.text_coord_buffer.set(gl)
-            #print data.vertex_buffer.vertex_buffer#, data.color_buffer.color_buffer, data.index_buffer.index_buffer
             data.index_buffer.draw(gl, gl.GL_TRIANGLES)
             
         #gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY)
         gl.glDisable(gl.GL_TEXTURE_2D)
-        #gl.glDisable(gl.GL_ALPHA_TEST)
+        gl.glDisable(gl.GL_ALPHA_TEST)
             
     def __init__(self, new_layer, new_texture_manager):
         '''

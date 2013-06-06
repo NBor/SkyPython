@@ -30,9 +30,9 @@ class VertexBuffer(object):
         if self.num_vertices == 0:
             return 
         if self.use_vbo and self.gl_buffer.can_use_VBO:
-            print self.gl_buffer.buffer_id
+            #print self.gl_buffer.buffer_id
             self.gl_buffer.bind(gl, self.vertex_buffer, 4*len(self.vertex_buffer))
-            print self.gl_buffer.buffer_id
+            #print self.gl_buffer.buffer_id
             gl.glVertexPointer(3, gl.GL_FLOAT, 0, None)
         else:
             gl.glVertexPointer(3, gl.GL_FLOAT, 0, self.vertex_buffer)

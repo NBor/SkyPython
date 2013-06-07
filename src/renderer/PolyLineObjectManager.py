@@ -10,7 +10,7 @@ from rendererUtil.VertexBuffer import VertexBuffer
 from rendererUtil.TextCoordBuffer import TextCoordBuffer
 from rendererUtil.NightVisionColorBuffer import NightVisionBuffer
 from rendererUtil.IndexBuffer import IndexBuffer
-from utils.VectorUtil import difference, sum, normalized, cross_product
+from utils.VectorUtil import difference, sum_vectors, normalized, cross_product
 
 
 class PolyLineObjectManager(RendererObjectManager):
@@ -65,9 +65,9 @@ class PolyLineObjectManager(RendererObjectManager):
                 p2 = coords_list[i+1]
                 u = difference(p2, p1)
                 # The normal to the quad should face the origin at its midpoint.
-                avg = sum(p1, p2)
+                avg = sum_vectors(p1, p2)
                 avg.scale(0.5)
-                # I'm assuming that the points will already be on a unit sphere.  If this is not the case,
+                # I'm assum_vectorsing that the points will already be on a unit sphere.  If this is not the case,
                 # then we should normalize it here.
                 v = normalized(cross_product(u, avg))
                 v.scale(size_factor * l_source.line_width)
@@ -81,19 +81,19 @@ class PolyLineObjectManager(RendererObjectManager):
                 tb.add_text_coord(0, 1)
                 
                 # Upper left corner
-                vb.add_point(sum(p1, v))
+                vb.add_point(sum_vectors(p1, v))
                 cb.add_color(color)
-                tb.add_tex_coord(0, 0)
+                tb.add_text_coord(0, 0)
                 
                 # Lower left corner
                 vb.add_point(difference(p2, v))
                 cb.add_color(color)
-                tb.add_tex_coord(1, 1)
+                tb.add_text_coord(1, 1)
                 
                 # Upper left corner
-                vb.add_point(sum(p2, v))
+                vb.add_point(sum_vectors(p2, v))
                 cb.add_color(color)
-                tb.add_tex_coord(1, 0)
+                tb.add_text_coord(1, 0)
                 
                 
                 # Add the indices
@@ -114,7 +114,7 @@ class PolyLineObjectManager(RendererObjectManager):
                 ib.add_index(top_right)
         self.opaque = bool_opaque
 
-    def reload(self, full_reload=False):
+    def reload(self, gl, full_reload=False):
         #self.texture_ref = textureManager().getTextureFromResource(gl, R.drawable.line);
         self.vertex_buffer.reload()
         self.color_buffer.reload()
@@ -122,7 +122,7 @@ class PolyLineObjectManager(RendererObjectManager):
         self.index_buffer.reload()
         
     def draw_internal(self, gl):
-        if len(self.index_buffer) == 0:
+        if self.index_buffer.num_indices == 0:
             return
         
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
@@ -145,13 +145,13 @@ class PolyLineObjectManager(RendererObjectManager):
         self.vertex_buffer.set(gl)
         self.color_buffer.set(gl, self.render_state.night_vision_mode)
         self.text_coord_buffer.set(gl)
-        self.index_buffer.draw(gl, gl.TRIANGES)
+        self.index_buffer.draw(gl, gl.GL_TRIANGLES)
         
         if not self.opaque:
             gl.glDisable(gl.GL_BLEND)
             
         gl.glDisable(gl.GL_TEXTURE_2D)
-        gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY)
+        #gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY)
 
     def __init__(self, new_layer, new_texture_manager):
         '''

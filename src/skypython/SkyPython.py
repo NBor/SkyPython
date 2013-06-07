@@ -10,6 +10,7 @@ from PySide.QtGui import QMainWindow
 
 from source.AstronomicalSource import AstronomicalSource
 from renderer.PointObjectManager import PointObjectManager
+from renderer.PolyLineObjectManager import PolyLineObjectManager
 
 class SkyPython(QGLWidget, QMainWindow):
     '''
@@ -36,9 +37,16 @@ class SkyPython(QGLWidget, QMainWindow):
         self.layer_manager.init_layers()
         
         POM = PointObjectManager(-100, None)
+        PLOM = PolyLineObjectManager(-100, None)
+        
+        astro_source_list = []
+        for x in self.layer_manager.layers:
+            astro_source_list += x.astro_sources
     
         points = []
-        for proto_source in self.layer_manager.layers[0].astro_sources:
+        lines = []
+        for proto_source in astro_source_list:
+            print proto_source
             new_astro = AstronomicalSource()
             new_astro.names = proto_source.names
             new_astro.geocentric_coords = proto_source.get_geo_coords()
@@ -47,9 +55,12 @@ class SkyPython(QGLWidget, QMainWindow):
             new_astro.line_sources = proto_source.get_lines()
             new_astro.text_sources = proto_source.get_labels()
             points += new_astro.point_sources
+            lines += new_astro.line_sources
         POM.update_objects(points, None)
+        PLOM.update_objects(lines, None)
         
         self.sky_renderer.add_object_manager(POM)
+        self.sky_renderer.add_object_manager(PLOM)
  
     def paintGL(self):
         """Paint the scene.

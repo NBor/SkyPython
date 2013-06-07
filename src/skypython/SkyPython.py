@@ -8,6 +8,7 @@ from OpenGL import GL
 from PySide.QtOpenGL import QGLWidget
 from PySide.QtGui import QMainWindow
 
+from renderer.RendererObjectManager import RendererObjectManager
 from source.AstronomicalSource import AstronomicalSource
 from renderer.PointObjectManager import PointObjectManager
 from renderer.PolyLineObjectManager import PolyLineObjectManager
@@ -46,7 +47,6 @@ class SkyPython(QGLWidget, QMainWindow):
         points = []
         lines = []
         for proto_source in astro_source_list:
-            print proto_source
             new_astro = AstronomicalSource()
             new_astro.names = proto_source.names
             new_astro.geocentric_coords = proto_source.get_geo_coords()
@@ -56,8 +56,8 @@ class SkyPython(QGLWidget, QMainWindow):
             new_astro.text_sources = proto_source.get_labels()
             points += new_astro.point_sources
             lines += new_astro.line_sources
-        POM.update_objects(points, None)
-        PLOM.update_objects(lines, None)
+        POM.update_objects(points, set([0]))
+        PLOM.update_objects(lines, set([0]))
         
         self.sky_renderer.add_object_manager(POM)
         self.sky_renderer.add_object_manager(PLOM)

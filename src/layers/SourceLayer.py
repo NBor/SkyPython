@@ -57,11 +57,20 @@ class SourceLayer(Layer):
                 self.closure = self.SourceUpdateClosure(self)
             self.add_update_closure()
             
-    def refresh_sources(self, redraw_bool):
-        raise NotImplementedError("updateTypes")
+    def refresh_sources(self, update_types=set()): # this needs to be synchronized!
+        #for astro_source in self.astro_sources:
+        #    update_types = set(update_types + astro_source.update())
+
+        if len(update_types) != 0:
+            self.redraw(update_types)
     
-    def redraw(self):
-        raise NotImplementedError("updateTypes")
+    def redraw(self, update_types=set()):
+        if len(update_types) == 0:
+            r = RendererObjectManager(0, None)
+            self.refresh_sources(set([r.update_type.Reset]))
+        else:
+            Layer.redraw(self, self.point_sources, self.line_sources, \
+                         self.text_sources, self.image_sources, update_types)
             
     def search_by_object_name(self):
         raise NotImplementedError("haven't done searching yet")

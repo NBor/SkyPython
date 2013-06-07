@@ -18,11 +18,10 @@ class PolyLineObjectManager(RendererObjectManager):
     classdocs
     '''
     def update_objects(self, lines, update_type):
-#         # We only care about updates to positions, ignore any other updates.
-#         if (!updateType.contains(UpdateType.Reset) && 
-#             !updateType.contains(UpdateType.UpdatePositions)) {
-#           return;
-#         }
+        # We only care about updates to positions, ignore any other updates.
+        if not (self.update_type.Reset in update_type) and \
+                not (self.update_type.UpdatePositions in update_type):
+            return
 
         num_line_segments = 0;
         for l_source in lines:

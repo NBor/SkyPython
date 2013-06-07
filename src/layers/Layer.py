@@ -4,10 +4,18 @@ Created on 2013-05-28
 @author: Neil
 '''
 
+import threading
+
+from source.PointSource import PointSource
+from source.LineSource import LineSource
+from source.TextSource import TextSource
+from source.ImageSource import ImageSource
+
 class Layer(object):
     '''
     classdocs
     '''
+    reentrant_lock = threading.RLock()
     
     def register_with_renderer(self, rend_controller):
         self.render_map.clear()
@@ -25,14 +33,46 @@ class Layer(object):
         if self.render_controller != None:
             self.render_controller.remove_update_callback(closure)
             
-    def redraw(self):
-        raise NotImplementedError("not done yet")
+    def redraw(self, points, lines, texts, images, update_type):
+        if self.render_controller == None:
+            return
+        
+        self.reentrant_lock.acquire()
+        try:
+            atomic = self.render_controller.create_atomic()
+            self.setSources(points, update_type, PointSource, atomic)
+            self.setSources(lines, update_type, LineSource, atomic)
+            self.setSources(texts, update_type, TextSource, atomic)
+            self.setSources(images, update_type, ImageSource, atomic)
+            self.render_controller.queue_atomic(atomic)
+        finally:
+            pass
+        self.reentrant_lock.release()
     
-    def set_sources(self):
-        raise NotImplementedError("not done yet")
+    def set_sources(self, sources, update_type, clazz, atomic):       
+        if sources == None: 
+            return
+        
+        manager = None
+        if clazz not in self.render_map:
+            self.create_render_manager(clazz, atomic)
+            self.render_map[clazz] = manager
+        else:
+            manager = self.render_map[clazz]
+            
+        manager.queue_objects(sources, update_type, atomic)
     
-    def create_render_manager(self):
-        raise NotImplementedError("not done yet")
+    def create_render_manager(self, clazz, controller):
+        if clazz is PointSource:
+            return controller.create_point_manager(self.get_layer_id())
+        elif clazz is LineSource:
+            return controller.create_line_manager(self.get_layer_id())
+        elif clazz is TextSource:
+            return controller.create_text_manager(self.get_layer_id())
+        elif clazz is ImageSource:
+            return controller.create_image_manager(self.get_layer_id())
+        else:
+            raise Exception("class is of unknown type")
     
     def get_preference_id(self):
         return "source_provider." + self.layerNameId()

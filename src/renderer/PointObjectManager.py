@@ -54,22 +54,17 @@ class PointObjectManager(RendererObjectManager):
     texture_ref = None
     
     def update_objects(self, points, update_type):
-        #only_update_points = True
+        only_update_points = True
         # We only care about updates to positions, ignore any other updates.
-#     if (updateType.contains(UpdateType.Reset)) {
-#       only_update_points = false;
-#     } else if (updateType.contains(UpdateType.UpdatePositions)) {
-#       // Sanity check: make sure the number of points is unchanged.
-#       if (points.size() != self.num_points) {
-#         Log.e("PointObjectManager",
-#               "Updating PointObjectManager a different number of points: update had " +
-#               points.size() + " vs " + self.num_points + " before");
-#         return;
-#       }
-#     } else {
-#       return;
-#     }
-# 
+        if self.update_type.Reset in update_type:
+            only_update_points = False
+        elif self.update_type.UpdatePositions in update_type:
+            # Sanity check: make sure the number of points is unchanged.
+            if len(points) != self.num_points:
+                return
+        else:
+            return
+        
         self.num_points = len(points)
         
         self.sky_regions.clear()

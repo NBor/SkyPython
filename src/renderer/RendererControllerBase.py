@@ -5,6 +5,7 @@ Created on 2013-05-28
 '''
 
 from utils.Enumeration import enum
+from utils.Runnable import Runnable
 
 class RenderManager(object):
     '''
@@ -13,11 +14,26 @@ class RenderManager(object):
     # Render Object Manager
     manager = None
     
-    def queue_enabled(self):
-        raise NotImplementedError("not done")
+    def queue_enabled(self, enable_bool, controller):
+        def run_method():
+            self.manager.enable(enable_bool)
+        
+        msg = "Enabling" if enable_bool else "Disabling" + " manager " + str(self.manager)
+        controller.queue_runnable(msg, command_type.Data, Runnable(run_method))
     
-    def queue_max_field_of_view(self):
-        raise NotImplementedError("not done")
+    def queue_max_field_of_view(self, fov, controller):
+        def run_method():
+            self.manager.max_radius_of_view = fov
+        
+        msg = "Setting manager max field of view: " + str(fov)
+        controller.queueRunnable(msg, command_type.Data, Runnable(run_method))
+        
+    def queue_objects(self, sources, update_type, controller):
+        def run_method():
+            self.manager.update_objects(sources, update_type)
+        
+        msg = "Setting source objects"
+        controller.queue_runnable(msg, command_type.Data, Runnable(run_method))
     
     def __init__(self, mgr):
         '''
@@ -25,84 +41,32 @@ class RenderManager(object):
         '''
         self.manager = mgr
         
-class PointManager(RenderManager):
-    '''
-    classdocs
-    '''
-    
-    def queue_objects(self):
-        raise NotImplementedError("not done")
-    
-    def __init__(self, point_object_manager):
-        '''
-        constructor
-        '''
-        RenderManager.__init__(self, point_object_manager)
-        
-class LineManager(RenderManager):
-    '''
-    classdocs
-    '''
-    
-    def queue_objects(self):
-        raise NotImplementedError("not done")
-    
-    def __init__(self, line_object_manager):
-        '''
-        constructor
-        '''
-        RenderManager.__init__(self, line_object_manager)
-        
-class LabelManager(RenderManager):
-    '''
-    classdocs
-    '''
-    
-    def queue_objects(self):
-        raise NotImplementedError("not done")
-    
-    def __init__(self, label_object_manager):
-        '''
-        constructor
-        '''
-        RenderManager.__init__(self, label_object_manager)
-        
-class ImageManager(RenderManager):
-    '''
-    classdocs
-    '''
-    
-    def queue_objects(self):
-        raise NotImplementedError("not done")
-    
-    def __init__(self, image_object_manager):
-        '''
-        constructor
-        '''
-        RenderManager.__init__(self, image_object_manager)
-        
-############################################################################
 command_type = enum(VIEW=0, DATA=1, SYNCHRONIZATION=3)
 
 class RendererControllerBase(object):
     '''
     classdocs
     '''
-    renderer = None
     
     def create_point_manager(self, layer_id):
-        manager = PointManager(self.renderer.create_point_manager(layer_id))
-        #queueAddManager(manager);
+        manager = RenderManager(self.renderer.create_point_manager(layer_id))
+        self.queue_add_manager(manager)
         return manager
         
     def create_line_manager(self, layer_id):
-        raise NotImplementedError("no manager")
+        manager = RenderManager(self.renderer.create_line_manager(layer_id))
+        self.queue_add_manager(manager)
+        return manager
     
     def create_label_manager(self, layer_id):
-        raise NotImplementedError("no manager")
+        manager = RenderManager(self.renderer.create_label_manager(layer_id))
+        self.queue_add_manager(manager)
+        return manager
     
     def create_image_manager(self, layer_id):
-        raise NotImplementedError("no manager")
+        manager = RenderManager(self.renderer.create_image_manager(layer_id))
+        self.queue_add_manager(manager)
+        return manager
 
     def queue_night_vision_mode(self):
         raise NotImplementedError("not done this class")
@@ -137,19 +101,24 @@ class RendererControllerBase(object):
     def remove_update_callback(self, closure):
         raise NotImplementedError("not done this class")
 
-    def queue_add_manager(self):
-        ############################################################################ Important to finish this
-        raise NotImplementedError("not done this class")
+    def queue_add_manager(self, render_manager):
+        def run_method():
+            self.renderer.add_object_manager(render_manager.manager)
+        
+        msg = "Adding manager: " + str(render_manager)
+        self.queue_runnable(msg, command_type.Data, Runnable(run_method))
     
     def wait_until_finished(self):
         raise NotImplementedError("not done this class")
     
-    def queue_runnable(self):
-        raise NotImplementedError("not done this class")
+    def queue_runnable(self, msg, cmd_type, runnable, q=None):
+        if q == None:
+            q = self.querer
+        q.queue_event(runnable)
 
     def __init__(self, skyrenderer):
         '''
         Constructor
         '''
         self.renderer = skyrenderer
-        
+        self.queuer = None

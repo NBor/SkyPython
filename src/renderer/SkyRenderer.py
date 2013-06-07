@@ -7,6 +7,7 @@ from OpenGL import GL
 import math
 from RenderState import RenderState
 from PointObjectManager import PointObjectManager
+from PolyLineObjectManager import PolyLineObjectManager
 from rendererUtil.GLBuffer import GLBuffer
 from rendererUtil.SkyRegionMap import SkyRegionMap
 
@@ -205,8 +206,8 @@ class SkyRenderer(object):
     def create_point_manager(self, new_layer):
         return PointObjectManager(new_layer, self.texture_manager)
     
-    def create_poly_line_manager(self):
-        raise NotImplementedError("not implemented yet")
+    def create_poly_line_manager(self, new_layer):
+        return PolyLineObjectManager(new_layer, self.texture_manager)
     
     def create_label_manager(self):
         raise NotImplementedError("not implemented yet")

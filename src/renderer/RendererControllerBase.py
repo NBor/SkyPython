@@ -11,8 +11,6 @@ class RenderManager(object):
     '''
     classdocs
     '''
-    # Render Object Manager
-    manager = None
     
     def queue_enabled(self, enable_bool, controller):
         def run_method():
@@ -30,7 +28,8 @@ class RenderManager(object):
         
     def queue_objects(self, sources, update_type, controller):
         def run_method():
-            self.manager.update_objects(sources, update_type)
+            if self.manager != None: ########################################################## remove this line
+                self.manager.update_objects(sources, update_type)
         
         msg = "Setting source objects"
         controller.queue_runnable(msg, command_type.DATA, Runnable(run_method))
@@ -39,6 +38,7 @@ class RenderManager(object):
         '''
         constructor
         '''
+        # Render Object Manager
         self.manager = mgr
         
 command_type = enum(VIEW=0, DATA=1, SYNCHRONIZATION=3)
@@ -107,7 +107,8 @@ class RendererControllerBase(object):
 
     def queue_add_manager(self, render_manager):
         def run_method():
-            self.renderer.add_object_manager(render_manager.manager)
+            if render_manager.manager != None: ################################ remove this line
+                self.renderer.add_object_manager(render_manager.manager)
         
         msg = "Adding manager: " + str(render_manager)
         self.queue_runnable(msg, command_type.DATA, Runnable(run_method))

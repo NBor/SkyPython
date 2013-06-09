@@ -50,7 +50,6 @@ class PointObjectManager(RendererObjectManager):
     NUM_STARS_IN_TEXTURE = 2
     MINIMUM_NUM_POINTS_FOR_REGIONS = 200
     COMPUTE_REGIONS = True
-    sky_regions = SkyRegionMap()
     texture_ref = None
     
     def update_objects(self, points, update_type):
@@ -227,6 +226,7 @@ class PointObjectManager(RendererObjectManager):
         change inputs to not be default
         '''
         RendererObjectManager.__init__(self, new_layer, new_texture_manager)
+        self.sky_regions = SkyRegionMap()
         self.sky_regions.region_data_factory = self.RegionDataFactory()
         self.num_points = 0
         

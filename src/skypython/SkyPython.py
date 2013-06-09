@@ -68,6 +68,9 @@ class SkyPython(QGLWidget, QMainWindow):
             self.RendererModelUpdateClosure(self.model, self.renderer_controller))
         
         self.layer_manager.register_with_renderer(self.renderer_controller)
+        
+        #controller = ControllerGroup.createControllerGroup(this);
+        #controller.setModel(model);
     
     def __init__(self):
         QGLWidget.__init__(self)
@@ -76,7 +79,7 @@ class SkyPython(QGLWidget, QMainWindow):
         self.model = AstronomerModel(ZMDC())
         self.initialize_model_view_controller()
         
-        # put the window at the screen position (100, 100)
+        # put the window at the screen position (100, 30)
         self.setGeometry(100, 30, self.width, self.height)
         self.show()
  
@@ -84,32 +87,9 @@ class SkyPython(QGLWidget, QMainWindow):
         """Initialize OpenGL, VBOs, upload data on the GPU, etc.
         """
         self.sky_renderer.on_surfaced_created(GL)
-        self.layer_manager.init_layers()
         
-        POM = PointObjectManager(-100, None)
-        PLOM = PolyLineObjectManager(-100, None)
-        
-        astro_source_list = []
-        for x in self.layer_manager.layers:
-            astro_source_list += x.astro_sources
-    
-        points = []
-        lines = []
-        for proto_source in astro_source_list:
-            new_astro = AstronomicalSource()
-            new_astro.names = proto_source.names
-            new_astro.geocentric_coords = proto_source.get_geo_coords()
-            new_astro.image_sources = proto_source.get_images()
-            new_astro.point_sources = proto_source.get_points()
-            new_astro.line_sources = proto_source.get_lines()
-            new_astro.text_sources = proto_source.get_labels()
-            points += new_astro.point_sources
-            lines += new_astro.line_sources
-        POM.update_objects(points, set([0]))
-        PLOM.update_objects(lines, set([0]))
-        
-        self.sky_renderer.add_object_manager(POM)
-        self.sky_renderer.add_object_manager(PLOM)
+        for ele in list(self.renderer_controller.queuer.queue):
+            ele.run()
  
     def paintGL(self):
         """Paint the scene.

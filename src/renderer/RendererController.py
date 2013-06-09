@@ -18,7 +18,6 @@ class RendererController(RendererControllerBase):
         '''
         classdocs
         '''
-        queuer = Queue()
         NEXT_ID = 0
         lock = threading.Lock()
         
@@ -35,6 +34,7 @@ class RendererController(RendererControllerBase):
             constructor
             '''
             RendererControllerBase.__init__(self, skyrenderer)
+            self.queuer = Queue()
             
             #Use lock to synchronize
             with self.lock:
@@ -49,8 +49,8 @@ class RendererController(RendererControllerBase):
     
     def queue_atomic(self, atomic):
         def run_method():
-            events = atomic.releaseEvents()
-            for runnable in events:
+            events = atomic.release_events()
+            for runnable in list(events.queue):
                 runnable.run()
         
         msg = "Applying " + atomic.to_string()

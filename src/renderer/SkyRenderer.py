@@ -61,7 +61,7 @@ class SkyRenderer(object):
                 self.render_state.screen_width / float(self.render_state.screen_height))
     
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
-    
+        
         for managers in self.layers_to_managers.values():
             for manager in managers:
                 manager.draw(gl)

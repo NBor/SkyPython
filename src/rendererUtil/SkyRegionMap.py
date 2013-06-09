@@ -12,9 +12,6 @@ class ActiveRegionData(object):
     '''
     classdocs
     '''
-    region_center_dot_products = []
-    screen_angle = 45
-    active_standard_regions = []
     
     def region_is_active(self, region_num, coverage_angle):
         return self.region_center_dot_products[region_num] > \
@@ -25,7 +22,7 @@ class ActiveRegionData(object):
         constructor
         '''
         self.region_center_dot_products = dot_products
-        self.screen_angle = angles
+        self.screen_angle = angles #default at 45 degrees
         self.active_standard_regions = active_regions
 
 class SkyRegionMap(object):
@@ -81,9 +78,6 @@ class SkyRegionMap(object):
         GeocentricCoordinates(0.850649050437, -0.525733955204, 0.000001879409),
         GeocentricCoordinates(0.934173759073, -0.000002136454, -0.356818422675)]
     
-    region_coverage_angles = None
-    region_data = {}
-    region_data_factory = None
     
     def get_active_regions(self, look_dir, fovy_in_degrees, aspect):
         half_fovy = degrees_to_radians(fovy_in_degrees) / 2.0
@@ -180,6 +174,9 @@ class SkyRegionMap(object):
         '''
         Constructor
         '''
+        self.region_coverage_angles = None
+        self.region_data = {}
+        self.region_data_factory = None
         
 if __name__ == "__main__":
     '''

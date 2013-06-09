@@ -16,6 +16,7 @@ def instantiate_layer_manager():
     layer_manager.add_layer(NewStarsLayer())
     layer_manager.add_layer(NewConstellationsLayer())
     layer_manager.add_layer(NewMessierLayer())
+    layer_manager.init_layers()
     return layer_manager
 
 class LayerManager(object):

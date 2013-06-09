@@ -4,6 +4,7 @@ Created on 2013-05-28
 @author: Neil
 '''
 
+import threading
 from Queue import Queue
 from RendererControllerBase import RendererControllerBase
 from renderer.RendererControllerBase import command_type
@@ -19,9 +20,10 @@ class RendererController(RendererControllerBase):
         '''
         queuer = Queue()
         NEXT_ID = 0
+        lock = threading.Lock()
         
         def to_string(self):
-            return "AtomicSection" + self.m_ID
+            return "AtomicSection " + str(self.m_ID)
         
         def release_events(self):
             temp = self.queuer
@@ -51,7 +53,7 @@ class RendererController(RendererControllerBase):
             for runnable in events:
                 runnable.run()
         
-        msg = "Applying " + atomic.toString()
+        msg = "Applying " + atomic.to_string()
         self.queue_runnable(msg, command_type.SYNCHRONIZATION, Runnable(run_method))
 
     def __init__(self, skyrenderer, gl_surface_view=None):

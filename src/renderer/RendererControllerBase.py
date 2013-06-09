@@ -19,21 +19,21 @@ class RenderManager(object):
             self.manager.enable(enable_bool)
         
         msg = "Enabling" if enable_bool else "Disabling" + " manager " + str(self.manager)
-        controller.queue_runnable(msg, command_type.Data, Runnable(run_method))
+        controller.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
     def queue_max_field_of_view(self, fov, controller):
         def run_method():
             self.manager.max_radius_of_view = fov
         
         msg = "Setting manager max field of view: " + str(fov)
-        controller.queueRunnable(msg, command_type.Data, Runnable(run_method))
+        controller.queueRunnable(msg, command_type.DATA, Runnable(run_method))
         
     def queue_objects(self, sources, update_type, controller):
         def run_method():
             self.manager.update_objects(sources, update_type)
         
         msg = "Setting source objects"
-        controller.queue_runnable(msg, command_type.Data, Runnable(run_method))
+        controller.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
     def __init__(self, mgr):
         '''
@@ -96,7 +96,11 @@ class RendererControllerBase(object):
         raise NotImplementedError("not done this class")
     
     def add_update_closure(self, closure):
-        raise NotImplementedError("not done this class")
+        def run_method():
+            self.renderer.add_update_closure(closure)
+        
+        msg = "Setting update callback"
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
     def remove_update_callback(self, closure):
         raise NotImplementedError("not done this class")
@@ -106,19 +110,18 @@ class RendererControllerBase(object):
             self.renderer.add_object_manager(render_manager.manager)
         
         msg = "Adding manager: " + str(render_manager)
-        self.queue_runnable(msg, command_type.Data, Runnable(run_method))
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
     def wait_until_finished(self):
         raise NotImplementedError("not done this class")
     
     def queue_runnable(self, msg, cmd_type, runnable, q=None):
         if q == None:
-            q = self.querer
-        q.queue_event(runnable)
+            q = self.queuer
+        q.put(runnable)
 
     def __init__(self, skyrenderer):
         '''
         Constructor
         '''
         self.renderer = skyrenderer
-        self.queuer = None

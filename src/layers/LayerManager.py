@@ -30,8 +30,12 @@ class LayerManager(object):
         for layer in self.layers:
             layer.initialize()
             
-    def register_with_renderer(self):
-        raise NotImplementedError("not implemented")
+    def register_with_renderer(self, renderer_controller):
+        for layer in self.layers:
+            layer.register_with_renderer(renderer_controller)
+            #prefId = layer.getPreferenceId()
+            #visible_bool = sharedPreferences.getBoolean(prefId, true)
+            #layer.set_visible(visible_bool)
     
     def on_shared_preference_change(self):
         raise NotImplementedError("not implemented")

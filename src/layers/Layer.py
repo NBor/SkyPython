@@ -40,22 +40,21 @@ class Layer(object):
         self.reentrant_lock.acquire()
         try:
             atomic = self.render_controller.create_atomic()
-            self.setSources(points, update_type, PointSource, atomic)
-            self.setSources(lines, update_type, LineSource, atomic)
-            self.setSources(texts, update_type, TextSource, atomic)
-            self.setSources(images, update_type, ImageSource, atomic)
+            self.set_sources(points, update_type, PointSource, atomic)
+            self.set_sources(lines, update_type, LineSource, atomic)
+            self.set_sources(texts, update_type, TextSource, atomic)
+            self.set_sources(images, update_type, ImageSource, atomic)
             self.render_controller.queue_atomic(atomic)
         finally:
-            pass
-        self.reentrant_lock.release()
+            self.reentrant_lock.release()
     
     def set_sources(self, sources, update_type, clazz, atomic):       
         if sources == None: 
             return
         
         manager = None
-        if clazz not in self.render_map:
-            self.create_render_manager(clazz, atomic)
+        if clazz not in self.render_map.keys():
+            manager = self.create_render_manager(clazz, atomic)
             self.render_map[clazz] = manager
         else:
             manager = self.render_map[clazz]
@@ -68,7 +67,7 @@ class Layer(object):
         elif clazz is LineSource:
             return controller.create_line_manager(self.get_layer_id())
         elif clazz is TextSource:
-            return controller.create_text_manager(self.get_layer_id())
+            return controller.create_label_manager(self.get_layer_id())
         elif clazz is ImageSource:
             return controller.create_image_manager(self.get_layer_id())
         else:

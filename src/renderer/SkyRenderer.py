@@ -36,7 +36,7 @@ class SkyRenderer(object):
     must_update_view = True
     must_update_projection = True
     
-    update_closures = {}
+    update_closures = []
     update_listener = None #Need to finish this
     
     all_managers = []
@@ -132,10 +132,12 @@ class SkyRenderer(object):
         self.must_update_projection = True
         
     def add_update_closure(self, update):
-        raise NotImplementedError("not implemented yet")
+        self.update_closures.append(update)
     
     def remove_update_callback(self, update):
-        raise NotImplementedError("not implemented yet")
+        if update in self.update_closures:
+            i = self.update_closures.index(update)
+            self.update_closures.pop(i)
     
     def set_view_updirection(self, gc_up):
         raise NotImplementedError("Overlay manager not implemented yet")
@@ -152,11 +154,14 @@ class SkyRenderer(object):
             self.layers_to_managers[m.layer] = [m]
             
     def remove_object_manager(self, m):
-        index = self.all_managers.index(m)
-        self.all_managers.pop(index)
+        if m in self.all_managers:
+            index = self.all_managers.index(m)
+            self.all_managers.pop(index)
         
-        index = self.layers_to_managers[m.layer].index(m)
-        self.layers_to_managers[m.layer].pop(index)
+        if m.layer in self.layers_to_managers.keys() and \
+                m in self.layers_to_managers[m.layer]:
+            index = self.layers_to_managers[m.layer].index(m)
+            self.layers_to_managers[m.layer].pop(index)
     
     def enable_sky_gradient(self):
         raise NotImplementedError("not implemented yet")
@@ -206,14 +211,14 @@ class SkyRenderer(object):
     def create_point_manager(self, new_layer):
         return PointObjectManager(new_layer, self.texture_manager)
     
-    def create_poly_line_manager(self, new_layer):
+    def create_line_manager(self, new_layer):
         return PolyLineObjectManager(new_layer, self.texture_manager)
     
-    def create_label_manager(self):
-        raise NotImplementedError("not implemented yet")
+    def create_label_manager(self, new_layer):
+        print "label manager not implemented yet"
     
-    def create_image_manager(self):
-        raise NotImplementedError("not implemented yet")
+    def create_image_manager(self, new_layer):
+        print "image manager not implemented yet"
 
     def __init__(self):
         '''

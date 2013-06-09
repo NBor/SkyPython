@@ -29,8 +29,6 @@ class SourceLayer(Layer):
     
     search_index = {}
     # prefix_store = prefixstore class
-    should_update = False
-    closure = None
     
     def init(self):
         self.astro_sources = []
@@ -48,14 +46,15 @@ class SourceLayer(Layer):
                     self.search_index[str(name).lower()] = \
                         SearchResult(name, gc_search_loaction)
                     # prefix_store.add(str(name).lower())
-        #self.update_layer_for_controller_change()
+        self.update_layer_for_controller_change()
         
     def update_layer_for_controller_change(self):
-        self.refresh_sources(False)
+        r = RendererObjectManager(0, None)
+        self.refresh_sources(set([r.update_type.Reset]))
         if self.should_update:
             if self.closure == None:
                 self.closure = self.SourceUpdateClosure(self)
-            self.add_update_closure()
+            self.add_update_closure(self.closure)
             
     def refresh_sources(self, update_types=set()): # this needs to be synchronized!
         #for astro_source in self.astro_sources:
@@ -82,6 +81,8 @@ class SourceLayer(Layer):
         '''
         Constructor
         '''
+        Layer.__init__(self)
+        self.closure = None
         self.should_update = boolean
         self.text_sources = []
         self.image_sources = []

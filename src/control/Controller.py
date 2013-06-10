@@ -8,14 +8,13 @@ class Controller(object):
     '''
     classdocs
     '''
-    model = None
-    enabled = True
-
 
     def __init__(self):
         '''
         Constructor
         '''
+        self.model = None
+        self.enabled = True
         
 if __name__ == "__main__":
     '''

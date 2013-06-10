@@ -11,6 +11,7 @@ from PySide.QtGui import QMainWindow
 
 from layers.LayerManager import instantiate_layer_manager
 from control.AstronomerModel import AstronomerModel
+from control.ControllerGroup import create_controller_group
 from renderer.SkyRenderer import SkyRenderer
 from renderer.RendererController import RendererController
 from control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
@@ -58,6 +59,7 @@ class SkyPython(QGLWidget, QMainWindow):
     width, height = 480, 800
     layer_manager = None
     model = None
+    controller = None
     sky_renderer = None
     renderer_controller = None
     
@@ -69,8 +71,8 @@ class SkyPython(QGLWidget, QMainWindow):
         
         self.layer_manager.register_with_renderer(self.renderer_controller)
         
-        #controller = ControllerGroup.createControllerGroup(this);
-        #controller.setModel(model);
+        self.controller = create_controller_group()
+        self.controller.set_model(self.model)
     
     def __init__(self):
         QGLWidget.__init__(self)

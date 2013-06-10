@@ -6,7 +6,6 @@ Created on 2013-05-22
 
 import sourceProto.SourceProto as SourceProto
 from SourceLayer import SourceLayer
-from source.AstronomicalSource import AstronomicalSource
 from sourceProto.ProtobufAstronomicalSource import ProtobufAstronomicalSource
 
 class FileBasedLayer(SourceLayer):

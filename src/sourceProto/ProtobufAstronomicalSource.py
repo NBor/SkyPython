@@ -11,6 +11,12 @@ from source.PointSource import PointSource
 from source.TextSource import TextSource
 from source.LineSource import LineSource
 
+def build_strings_from_file(filename, index_to_string):
+    with open(filename, 'r') as f_handle:
+        for line in f_handle:
+            key_value = line.strip().split(',')
+            index_to_string[int(key_value[0])] = key_value[1]
+
 class ProtobufAstronomicalSource(object):
     '''
     classdocs
@@ -26,13 +32,14 @@ class ProtobufAstronomicalSource(object):
                  SourceProto.NEBULA : shape_enum.NEBULA, \
                  SourceProto.HUBBLE_DEEP_FIELD : shape_enum.HUBBLE_DEEP_FIELD}
     
+    strings = {}
+    
     def set_names(self, APS):
         '''
-        ISSUE!!! somehow we need to conver these numbers into
-        actual stings! strings in a Strings.xml file
+        Strings are loaded from strings.txt in the assets folder.
         '''
         for name_id in APS.name_ids:
-            self.names.append(name_id)
+            self.names.append(self.strings[name_id])
     
     def get_geo_coords(self):
         gc = self.astro_source_proto.search_location
@@ -52,14 +59,13 @@ class ProtobufAstronomicalSource(object):
     
     def get_labels(self):
         '''
-        ISSUE!!! somehow we need to conver these numbers into
-        actual stings! strings in a Strings.xml file
+        Strings are loaded from strings.txt in the assets folder.
         '''
         label_list = []
         for l in self.astro_source_proto.label:
             gc_proto = l.location
             gc = get_instance(gc_proto.right_ascension, gc_proto.declination)
-            label_list.append(TextSource(str(l.string_index), l.color, \
+            label_list.append(TextSource(self.strings[l.string_index], l.color,
                                          gc, l.offset, l.font_size))
         return label_list
     
@@ -81,6 +87,9 @@ class ProtobufAstronomicalSource(object):
         '''
         Constructor
         '''
+        if len(self.strings.keys()) == 0:
+            build_strings_from_file("assets/Strings.txt", self.strings)
+            
         self.names = []
         self.astro_source_proto = astronomical_source_proto
         self.set_names(astronomical_source_proto)

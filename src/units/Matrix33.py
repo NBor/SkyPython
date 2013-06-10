@@ -5,9 +5,9 @@ Created on 2013-05-19
 '''
 
 def get_rowmatrix_from_vectors(v1, v2, v3):
-    return Matrix33(v1.x, v1.x, v1.x, \
-                    v2.y, v2.y, v2.y, \
-                    v3.z, v3.z, v3.z)
+    return Matrix33(v1.x, v1.y, v1.z, \
+                    v2.x, v2.y, v2.z, \
+                    v3.x, v3.y, v3.z)
 
 def get_colmatrix_from_vectors(v1, v2, v3):
     return Matrix33(v1.x, v2.x, v3.x, \

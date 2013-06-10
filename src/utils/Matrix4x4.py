@@ -78,7 +78,7 @@ def create_perspective_projection(width, height, fovy_in_radians):
         0, 0, -(far + near) / (far - near), -1,
         0, 0, -2*far*near / (far - near), 0])
 
-def create_view(self, look_dir, up, right):
+def create_view(look_dir, up, right):
     return Matrix4x4([ \
         right.x,
         up.x,

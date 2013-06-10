@@ -37,7 +37,7 @@ class SkyPython(QGLWidget, QMainWindow):
             up_x = pointing.gc_perpendicular.x
             up_y = pointing.gc_perpendicular.y
             up_z = pointing.gc_perpendicular.z
-     
+            
             self.renderer_controller.queue_set_view_orientation(direction_x, direction_y, direction_z, \
                                                              up_x, up_y, up_z)
             
@@ -89,7 +89,7 @@ class SkyPython(QGLWidget, QMainWindow):
         """Initialize OpenGL, VBOs, upload data on the GPU, etc.
         """
         self.sky_renderer.on_surfaced_created(GL)
-        
+            
         for ele in list(self.renderer_controller.queuer.queue):
             ele.run()
  

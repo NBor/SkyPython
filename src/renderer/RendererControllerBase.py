@@ -6,6 +6,7 @@ Created on 2013-05-28
 
 from utils.Enumeration import enum
 from utils.Runnable import Runnable
+from distutils.cmd import Command
 
 class RenderManager(object):
     '''
@@ -71,17 +72,33 @@ class RendererControllerBase(object):
     def queue_night_vision_mode(self):
         raise NotImplementedError("not done this class")
     
-    def queue_field_of_view(self):
-        raise NotImplementedError("not done this class")
+    def queue_field_of_view(self, fov):
+        def run_method():
+            self.renderer.set_radius_of_view(fov)
+        
+        msg = "Setting fov: " + str(fov)
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
-    def queue_text_angle(self):
-        raise NotImplementedError("not done this class")
+    def queue_text_angle(self, angle_in_radians):
+        def run_method():
+            self.renderer.set_text_angle(angle_in_radians)
+            
+        msg = "Setting text angle: " + str(angle_in_radians)
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
-    def queue_viewer_up_direction(self):
-        raise NotImplementedError("not done this class")
+    def queue_viewer_up_direction(self, gc_up):
+        def run_method():
+            self.renderer.set_viewer_up_direction(gc_up)
+        
+        msg = "Setting up direction: " + str(gc_up)
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
-    def queue_set_view_orientation(self):
-        raise NotImplementedError("not done this class")
+    def queue_set_view_orientation(self, dirX, dirY, dirZ, upX, upY, upZ):
+        def run_method():
+            self.renderer.set_view_orientation(dirX, dirY, dirZ, upX, upY, upZ)
+        
+        msg = "Setting view orientation"
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
     def queue_enable_sky_gradient(self):
         raise NotImplementedError("not done this class")

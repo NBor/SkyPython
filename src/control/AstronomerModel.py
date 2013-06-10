@@ -111,8 +111,8 @@ class AstronomerModel(object):
         screen_up_in_space_space = \
             Geometry.matrix_vector_multiply(transform, self.SCREEN_UP_IN_PHONE_COORDS)
             
-        self.pointing.updateLineOfSight(view_in_space_space)
-        self.pointing.updatePerpendicular(screen_up_in_space_space)
+        self.pointing.update_line_of_sight(view_in_space_space)
+        self.pointing.update_perpendicular(screen_up_in_space_space)
         
     def calculate_local_north_and_up_in_celestial_coords(self, force_update):
         current_time = int(time.time() * 1000)
@@ -122,8 +122,8 @@ class AstronomerModel(object):
         
         self.celestial_coords_last_updated = current_time
         self.update_magnetic_correction()
-        up = Geometry.calculate_RADec_of_zenith(self.get_time(), self.location)
-        self.up_celestial = get_instance(up.ra, up.dec)
+        up_ra, up_dec = Geometry.calculate_RADec_of_zenith(self.get_time(), self.location)
+        self.up_celestial = get_instance(up_ra, up_dec)
         z = self.AXIS_OF_EARTHS_ROTATION
         z_dotu = Geometry.scalar_product(self.up_celestial, z)
         self.true_north_celestial = \

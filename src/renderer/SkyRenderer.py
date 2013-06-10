@@ -10,6 +10,9 @@ from PointObjectManager import PointObjectManager
 from PolyLineObjectManager import PolyLineObjectManager
 from rendererUtil.GLBuffer import GLBuffer
 from rendererUtil.SkyRegionMap import SkyRegionMap
+from units.GeocentricCoordinates import GeocentricCoordinates
+from utils import Matrix4x4
+from utils.VectorUtil import cross_product
 
 class SkyRenderer(object):
     '''
@@ -51,7 +54,7 @@ class SkyRenderer(object):
         
         self.managers_to_reload = []
     
-        #maybeUpdateMatrices(gl);
+        #self.maybe_update_matrices(gl)
     
         # Determine which sky regions should be rendered.
         self.render_state.active_sky_region_set = \
@@ -68,9 +71,8 @@ class SkyRenderer(object):
         #checkForErrors(gl);
         
         # Queue updates for the next frame.
-        #for (UpdateClosure update : mUpdateClosures) {
-        #  update.run();
-        #}
+        for update in self.update_closures:
+            update.run()
         
     def on_surfaced_created(self, gl):
         gl.glEnable(gl.GL_DITHER);
@@ -139,8 +141,9 @@ class SkyRenderer(object):
             i = self.update_closures.index(update)
             self.update_closures.pop(i)
     
-    def set_view_updirection(self, gc_up):
-        raise NotImplementedError("Overlay manager not implemented yet")
+    def set_viewer_up_direction(self, gc_up):
+        #mOverlayManager.setViewerUpDirection(up);
+        print "Overlay manager not implemented yet"
     
     def add_object_manager(self, m):
         m.render_state = self.render_state
@@ -188,7 +191,34 @@ class SkyRenderer(object):
         
     def set_view_orientation(self, dir_x, dir_y, dir_z,
                              up_x, up_y, up_z):
-        raise NotImplementedError("not implemented yet")
+        # Normalize the look direction
+        dir_len = math.sqrt(dir_x*dir_x + dir_y*dir_y + dir_z*dir_z)
+        one_over_dir_len = 1.0 / float(dir_len)
+        dir_x *= one_over_dir_len
+        dir_y *= one_over_dir_len
+        dir_z *= one_over_dir_len
+        
+        # We need up to be perpendicular to the look direction, so we subtract
+        # off the projection of the look direction onto the up vector
+        look_dot_up = dir_x * up_x + dir_y * up_y + dir_z * up_z
+        up_x -= look_dot_up * dir_x
+        up_y -= look_dot_up * dir_y
+        up_z -= look_dot_up * dir_z
+        
+        # Normalize the up vector
+        up_len = math.sqrt(up_x*up_x + up_y*up_y + up_z*up_z)
+        one_over_up_len = 1.0 / float(up_len)
+        up_x *= one_over_up_len
+        up_y *= one_over_up_len
+        up_z *= one_over_up_len
+        
+        self.render_state.set_look_dir(GeocentricCoordinates(dir_x, dir_y, dir_z))
+        self.render_state.set_up_dir(GeocentricCoordinates(up_x, up_y, up_z))
+        
+        self.must_update_view = True
+        
+        #mOverlayManager.setViewOrientation(new GeocentricCoordinates(dir_x, dir_y, dir_z),
+        #                                   new GeocentricCoordinates(up_x, up_y, up_z));
     
     def get_width(self):
         return self.render_state.screen_width
@@ -200,13 +230,54 @@ class SkyRenderer(object):
         raise NotImplementedError("not implemented yet")
     
     def update_view(self, gl):
-        raise NotImplementedError("not implemented yet")
+        # Get a vector perpendicular to both, pointing to the right, by taking
+        # lookDir cross up.
+        look_dir = self.render_state.look_dir
+        up_dir = self.render_state.up_dir
+        right = cross_product(look_dir, up_dir)
+        
+        self.view_matrix = Matrix4x4.create_view(look_dir, up_dir, right)
+        
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glLoadMatrixf(self.view_matrix.values)
     
     def update_perspective(self, gl):
-        raise NotImplementedError("not implemented yet")
+        self.projection_matrix = Matrix4x4.create_perspective_projection(
+        self.render_state.screen_width,
+        self.render_state.screen_height,
+        self.render_state.radius_of_view * 3.141593 / 360.0)
+        
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glLoadMatrixf(self.projection_matrix.values)
+        
+        # Switch back to the model view matrix.
+        gl.glMatrixMode(gl.GL_MODELVIEW)
     
     def maybe_update_matrices(self, gl):
-        raise NotImplementedError("not implemented yet")
+        update_transform = self.must_update_view or self.must_update_projection
+        if self.must_update_view:
+            self.update_view(gl)
+            self.must_update_view = False
+        if self.must_update_projection:
+            self.update_perspective(gl)
+            self.must_update_projection = False
+            
+        if update_transform:
+            # Device coordinates are a square from (-1, -1) to (1, 1).  Screen
+            # coordinates are (0, 0) to (width, height).  Both coordinates
+            # are useful in different circumstances, so we'll pre-compute
+            # matrices to do the transformations from world coordinates
+            # into each of these.
+            transform_to_device = Matrix4x4.multiply_MM(self.projection_matrix, self.view_matrix)
+            
+            translate = Matrix4x4.create_translation(1.0, 1.0, 0.0)
+            scale = Matrix4x4.create_scaling(self.render_state.screen_width * 0.5, 
+                                             self.render_state.screen_height * 0.5, 1)
+            
+            transform_to_screen = \
+            Matrix4x4.multiply_MM(Matrix4x4.multiply_MM(scale, translate), transform_to_device)
+            
+            self.render_state.set_tranformation_matrices(transform_to_device, transform_to_screen)
     
     def create_point_manager(self, new_layer):
         return PointObjectManager(new_layer, self.texture_manager)

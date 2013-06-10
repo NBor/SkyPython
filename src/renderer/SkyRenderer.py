@@ -106,7 +106,7 @@ class SkyRenderer(object):
             
             # VBO support on the Cliq and Behold is broken and say they can
             # use them when they can't.  Explicitly disable it for these devices.
-            bad_models = ["MB200", "MB220", "Behold" ]
+            #bad_models = ["MB200", "MB220", "Behold" ]
             #for (String model : bad_models) {
             #    if (android.os.Build.MODEL.contains(model)) {
             #        can_use_vbo = false;

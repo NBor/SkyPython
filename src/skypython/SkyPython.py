@@ -15,10 +15,6 @@ from control.ControllerGroup import create_controller_group
 from renderer.SkyRenderer import SkyRenderer
 from renderer.RendererController import RendererController
 from control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
-from renderer.RendererObjectManager import RendererObjectManager
-from source.AstronomicalSource import AstronomicalSource
-from renderer.PointObjectManager import PointObjectManager
-from renderer.PolyLineObjectManager import PolyLineObjectManager
 
 class SkyPython(QGLWidget, QMainWindow):
     '''
@@ -90,8 +86,8 @@ class SkyPython(QGLWidget, QMainWindow):
         """
         self.sky_renderer.on_surfaced_created(GL)
             
-        for ele in list(self.renderer_controller.queuer.queue):
-            ele.run()
+        for runnable in list(self.renderer_controller.queuer.queue):
+            runnable.run()
  
     def paintGL(self):
         """Paint the scene.

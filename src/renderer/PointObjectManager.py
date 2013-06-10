@@ -53,10 +53,11 @@ class PointObjectManager(RendererObjectManager):
     texture_ref = None
     
     def update_objects(self, points, update_type):
-        only_update_points = True
+        #only_update_points = True
         # We only care about updates to positions, ignore any other updates.
         if self.update_type.Reset in update_type:
-            only_update_points = False
+            #only_update_points = False
+            pass
         elif self.update_type.UpdatePositions in update_type:
             # Sanity check: make sure the number of points is unchanged.
             if len(points) != self.num_points:

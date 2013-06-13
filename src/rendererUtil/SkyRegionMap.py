@@ -41,6 +41,19 @@ class SkyRegionMap(object):
             '''
             self.region = SkyRegionMap().CATCHALL_REGION_ID
             self.region_center_dot_product = -1
+               
+    class RegionDataFactory(object):
+        '''
+        classdocs
+        '''
+        def construct(self):
+            raise Exception("This method must be overwritten")
+        
+        def __init__(self, construct_method):
+            '''
+            constructor
+            '''
+            self.construct = construct_method
     
     CATCHALL_REGION_ID = -1
     REGION_COVERAGE_ANGLE_IN_RADIANS = 0.396023592

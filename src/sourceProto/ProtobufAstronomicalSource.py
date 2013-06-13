@@ -11,7 +11,7 @@ from source.PointSource import PointSource
 from source.TextSource import TextSource
 from source.LineSource import LineSource
 
-def build_strings_from_file(filename, index_to_string):
+def construct_id_to_string_map(filename, index_to_string):
     with open(filename, 'r') as f_handle:
         for line in f_handle:
             key_value = line.strip().split(',')
@@ -88,7 +88,7 @@ class ProtobufAstronomicalSource(object):
         Constructor
         '''
         if len(self.strings.keys()) == 0:
-            build_strings_from_file("assets/Strings.txt", self.strings)
+            construct_id_to_string_map("assets/Strings.txt", self.strings)
             
         self.names = []
         self.astro_source_proto = astronomical_source_proto

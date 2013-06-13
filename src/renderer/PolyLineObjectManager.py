@@ -10,8 +10,10 @@ from rendererUtil.VertexBuffer import VertexBuffer
 from rendererUtil.TextCoordBuffer import TextCoordBuffer
 from rendererUtil.NightVisionColorBuffer import NightVisionBuffer
 from rendererUtil.IndexBuffer import IndexBuffer
+from rendererUtil.TextureManager import TextureManager
 from utils.VectorUtil import difference, sum_vectors, normalized, cross_product
 
+DRAWABLE_LINE = int("0x7f02003a", 0)
 
 class PolyLineObjectManager(RendererObjectManager):
     '''
@@ -114,7 +116,8 @@ class PolyLineObjectManager(RendererObjectManager):
         self.opaque = bool_opaque
 
     def reload(self, gl, full_reload=False):
-        #self.texture_ref = textureManager().getTextureFromResource(gl, R.drawable.line);
+        TM = TextureManager()
+        self.texture_ref = TM.get_texture_from_resource(gl, DRAWABLE_LINE)
         self.vertex_buffer.reload()
         self.color_buffer.reload()
         self.text_coord_buffer.reload()
@@ -126,10 +129,10 @@ class PolyLineObjectManager(RendererObjectManager):
         
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
         gl.glEnableClientState(gl.GL_COLOR_ARRAY)
-        #gl.glEnableClientState(gl.GL_TEXTURE_COORD_ARRAY)
+        gl.glEnableClientState(gl.GL_TEXTURE_COORD_ARRAY)
             
         gl.glEnable(gl.GL_TEXTURE_2D)
-        #self.texture_ref.bind(gl)
+        self.texture_ref.bind(gl)
         
         gl.glEnable(gl.GL_CULL_FACE)
         gl.glFrontFace(gl.GL_CW)
@@ -150,7 +153,7 @@ class PolyLineObjectManager(RendererObjectManager):
             gl.glDisable(gl.GL_BLEND)
             
         gl.glDisable(gl.GL_TEXTURE_2D)
-        #gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY)
+        gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY)
 
     def __init__(self, new_layer, new_texture_manager):
         '''

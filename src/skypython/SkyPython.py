@@ -82,7 +82,8 @@ class SkyPython(QGLWidget, QMainWindow):
         self.show()
  
     def initializeGL(self):
-        """Initialize OpenGL, VBOs, upload data on the GPU, etc.
+        """
+        Initialize OpenGL.
         """
         self.sky_renderer.on_surfaced_created(GL)
             
@@ -90,12 +91,14 @@ class SkyPython(QGLWidget, QMainWindow):
             runnable.run()
  
     def paintGL(self):
-        """Paint the scene.
+        """
+        Render image.
         """
         self.sky_renderer.on_draw_frame(GL)
  
     def resizeGL(self, width, height):
-        """Called upon window resizing: reinitialize the viewport.
+        """
+        Upon window resizing, reinitialize the windo.
         """
         # update the window size
         self.width, self.height = width, height

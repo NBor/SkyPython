@@ -13,7 +13,10 @@ from rendererUtil.IndexBuffer import IndexBuffer
 from rendererUtil.VertexBuffer import VertexBuffer
 from rendererUtil.NightVisionColorBuffer import NightVisionBuffer
 from rendererUtil.TextCoordBuffer import TextCoordBuffer
+from rendererUtil.TextureManager import TextureManager
 from utils.VectorUtil import normalized, cross_product
+
+DRAWABLE_STARS_TEXTURE = int("0x7f02005d", 0)
 
 class PointObjectManager(RendererObjectManager):
     '''
@@ -34,18 +37,6 @@ class PointObjectManager(RendererObjectManager):
             self.index_buffer = IndexBuffer(0, True)
             self.text_coord_buffer = TextCoordBuffer(0, True)
             self.color_buffer = NightVisionBuffer(0, True)
-       
-    class RegionDataFactory(object):
-        '''
-        classdocs
-        '''
-        def construct(self):
-            return PointObjectManager.RegionData()
-        
-        def __init__(self):
-            '''
-            constructor
-            '''
             
     NUM_STARS_IN_TEXTURE = 2
     MINIMUM_NUM_POINTS_FOR_REGIONS = 200
@@ -180,7 +171,8 @@ class PointObjectManager(RendererObjectManager):
             data.sources = None
     
     def reload(self, gl, bool_full_reload):
-        #self.texture_ref = textureManager().getTextureFromResource(gl, R.drawable.stars_texture);
+        TM = TextureManager()
+        self.texture_ref = TM.get_texture_from_resource(gl, DRAWABLE_STARS_TEXTURE)
         for data in self.sky_regions.region_data.values():
             data.vertex_buffer.reload()
             data.color_buffer.reload()
@@ -190,7 +182,7 @@ class PointObjectManager(RendererObjectManager):
     def draw_internal(self, gl):
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
         gl.glEnableClientState(gl.GL_COLOR_ARRAY)
-        #gl.glEnableClientState(gl.GL_TEXTURE_COORD_ARRAY)
+        gl.glEnableClientState(gl.GL_TEXTURE_COORD_ARRAY)
         
         gl.glEnable(gl.GL_CULL_FACE)
         gl.glFrontFace(gl.GL_CW)
@@ -201,7 +193,7 @@ class PointObjectManager(RendererObjectManager):
         
         gl.glEnable(gl.GL_TEXTURE_2D)
         
-        #self.texture_ref.bind(gl)
+        self.texture_ref.bind(gl)
         
         gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_MODULATE)
         
@@ -215,10 +207,10 @@ class PointObjectManager(RendererObjectManager):
             
             data.vertex_buffer.set(gl)
             data.color_buffer.set(gl, self.render_state.night_vision_mode)
-            #data.text_coord_buffer.set(gl)
+            data.text_coord_buffer.set(gl)
             data.index_buffer.draw(gl, gl.GL_TRIANGLES)
             
-        #gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY)
+        gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY)
         gl.glDisable(gl.GL_TEXTURE_2D)
         gl.glDisable(gl.GL_ALPHA_TEST)
             
@@ -226,8 +218,12 @@ class PointObjectManager(RendererObjectManager):
         '''
         change inputs to not be default
         '''
+        def construct_method():
+            return PointObjectManager.RegionData()
+        
         RendererObjectManager.__init__(self, new_layer, new_texture_manager)
         self.sky_regions = SkyRegionMap()
-        self.sky_regions.region_data_factory = self.RegionDataFactory()
+        self.sky_regions.region_data_factory = \
+            self.sky_regions.RegionDataFactory(construct_method)
         self.num_points = 0
         

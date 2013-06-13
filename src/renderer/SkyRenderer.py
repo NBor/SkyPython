@@ -8,6 +8,9 @@ import math
 from RenderState import RenderState
 from PointObjectManager import PointObjectManager
 from PolyLineObjectManager import PolyLineObjectManager
+from LabelObjectManager import LabelObjectManager
+from ImageObjectManager import ImageObjectManager
+from rendererUtil.TextureManager import TextureManager
 from rendererUtil.GLBuffer import GLBuffer
 from rendererUtil.SkyRegionMap import SkyRegionMap
 from units.GeocentricCoordinates import GeocentricCoordinates
@@ -88,7 +91,7 @@ class SkyRenderer(object):
         gl.glDisable(gl.GL_DEPTH_TEST)
         
         # Release references to all of the old textures.
-        #mTextureManager.reset()
+        self.texture_manager.reset()
         
         extensions = GL.glGetString(GL.GL_EXTENSIONS)
         
@@ -286,16 +289,16 @@ class SkyRenderer(object):
         return PolyLineObjectManager(new_layer, self.texture_manager)
     
     def create_label_manager(self, new_layer):
-        print "label manager not implemented yet"
+        return LabelObjectManager(new_layer, self.texture_manager)
     
     def create_image_manager(self, new_layer):
-        print "image manager not implemented yet"
+        return ImageObjectManager(new_layer, self.texture_manager)
 
     def __init__(self):
         '''
         Constructor
         '''
-        #mTextureManager = new TextureManager(res);
+        self.texture_manager = TextureManager()
     
         # The skybox should go behind everything.
         #mSkyBox = new SkyBox(Integer.MIN_VALUE, mTextureManager);

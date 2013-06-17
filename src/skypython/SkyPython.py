@@ -5,9 +5,8 @@ Created on 2013-06-03
 '''
 
 import math
-from OpenGL import GL
-from PySide.QtOpenGL import QGLWidget
-from PySide.QtGui import QMainWindow
+from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
+from PySide.QtGui import QGraphicsPixmapItem, QPixmap
 
 from layers.LayerManager import instantiate_layer_manager
 from control.AstronomerModel import AstronomerModel
@@ -16,7 +15,7 @@ from renderer.SkyRenderer import SkyRenderer
 from renderer.RendererController import RendererController
 from control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
 
-class SkyPython(QGLWidget, QMainWindow):
+class SkyPython(QMainWindow):
     '''
     classdocs
     '''
@@ -51,8 +50,6 @@ class SkyPython(QGLWidget, QMainWindow):
             self.model = m_model
             self.renderer_controller = controller
     
-    # default window size
-    width, height = 480, 800
     layer_manager = None
     model = None
     controller = None
@@ -60,7 +57,19 @@ class SkyPython(QGLWidget, QMainWindow):
     renderer_controller = None
     
     def initialize_model_view_controller(self):
+        self.view = QGraphicsView()
+        self.scene = QGraphicsScene()
         self.sky_renderer = SkyRenderer()
+        
+        #self.view.setViewport(self.sky_renderer)
+        #self.view.setScene(self.scene)
+        self.setCentralWidget(self.sky_renderer)
+        
+#         pixmap = QPixmap("assets/drawable/stardroid_big_image.png")
+#         pixItem = QGraphicsPixmapItem(pixmap)
+#         self.scene.addItem(pixItem)
+#         self.view.fitInView(pixItem)
+        
         self.renderer_controller = RendererController(self.sky_renderer, None)
         self.renderer_controller.add_update_closure(\
             self.RendererModelUpdateClosure(self.model, self.renderer_controller))
@@ -69,43 +78,20 @@ class SkyPython(QGLWidget, QMainWindow):
         
         self.controller = create_controller_group()
         self.controller.set_model(self.model)
+        
+        for runnable in list(self.renderer_controller.queuer.queue):
+            runnable.run()
     
     def __init__(self):
-        QGLWidget.__init__(self)
+        QMainWindow.__init__(self)
         
         self.layer_manager = instantiate_layer_manager()
         self.model = AstronomerModel(ZMDC())
         self.initialize_model_view_controller()
         
         # put the window at the screen position (100, 30)
-        self.setGeometry(100, 30, self.width, self.height)
+        # with size 480 by 800
+        self.setGeometry(100, 30, 480, 800)
         self.show()
- 
-    def initializeGL(self):
-        """
-        Initialize OpenGL.
-        """
-        self.sky_renderer.on_surfaced_created(GL)
-            
-        for runnable in list(self.renderer_controller.queuer.queue):
-            runnable.run()
- 
-    def paintGL(self):
-        """
-        Render image.
-        """
-        self.sky_renderer.on_draw_frame(GL)
- 
-    def resizeGL(self, width, height):
-        """
-        Upon window resizing, reinitialize the windo.
-        """
-        # update the window size
-        self.width, self.height = width, height
-        self.sky_renderer.on_surface_changed(GL, width, height)
-        # set orthographic projection (2D only)
-        #GL.glMatrixMode(GL.GL_PROJECTION)
-        #GL.glLoadIdentity()
-        # the window corner OpenGL coordinates are (-+1, -+1)
-        #GL.glOrtho(-1, 1, -1, 1, -1, 1)
+        
         

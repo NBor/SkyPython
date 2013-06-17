@@ -30,7 +30,8 @@ class RendererObjectManager(object):
             self.draw_internal(gl)
             
     def queue_for_reload(self, bool_full_reload):
-        raise NotImplementedError("need to call self.listener.queue_for_reload")
+        print "queue for reload called at RendererObjectManager, need to implement listener"
+        #raise NotImplementedError("need to call self.listener.queue_for_reload")
 
     def __init__(self, new_layer, new_texture_manager):
         '''

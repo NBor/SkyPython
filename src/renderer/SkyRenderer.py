@@ -3,8 +3,10 @@ Created on 2013-05-26
 
 @author: Neil
 '''
-from OpenGL import GL
+
 import math
+from OpenGL import GL
+from PySide.QtOpenGL import QGLWidget
 from RenderState import RenderState
 from PointObjectManager import PointObjectManager
 from PolyLineObjectManager import PolyLineObjectManager
@@ -17,7 +19,7 @@ from units.GeocentricCoordinates import GeocentricCoordinates
 from utils import Matrix4x4
 from utils.VectorUtil import cross_product
 
-class SkyRenderer(object):
+class SkyRenderer(QGLWidget):
     '''
     classdocs
     '''
@@ -50,14 +52,14 @@ class SkyRenderer(object):
     managers_to_reload = []
     layers_to_managers = {}
     
-    def on_draw_frame(self, gl):
+    def paintGL(self):
         # Initialize any of the unloaded managers.
         for m_reload_data in self.managers_to_reload:
-            m_reload_data.manager.reload(gl, m_reload_data.full_reload)
+            m_reload_data.manager.reload(GL, m_reload_data.full_reload)
         
         self.managers_to_reload = []
     
-        #self.maybe_update_matrices(gl)
+        #self.maybe_update_matrices(GL)
     
         # Determine which sky regions should be rendered.
         self.render_state.active_sky_region_set = \
@@ -66,29 +68,29 @@ class SkyRenderer(object):
                 self.render_state.radius_of_view,
                 self.render_state.screen_width / float(self.render_state.screen_height))
     
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT)
         
         for managers in self.layers_to_managers.values():
             for manager in managers:
-                manager.draw(gl)
-        #checkForErrors(gl);
+                manager.draw(GL)
+        #checkForErrors(GL);
         
         # Queue updates for the next frame.
         for update in self.update_closures:
             update.run()
         
-    def on_surfaced_created(self, gl):
-        gl.glEnable(gl.GL_DITHER);
+    def initializeGL(self):
+        GL.glEnable(GL.GL_DITHER);
 
         # Some one-time OpenGL initialization can be made here
         # probably based on features of this particular context
-        gl.glHint(gl.GL_PERSPECTIVE_CORRECTION_HINT,
-                  gl.GL_FASTEST)
+        GL.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT,
+                  GL.GL_FASTEST)
         
-        gl.glClearColor(0, 0, 0, 0)
-        gl.glEnable(gl.GL_CULL_FACE)
-        gl.glShadeModel(gl.GL_SMOOTH)
-        gl.glDisable(gl.GL_DEPTH_TEST)
+        GL.glClearColor(0, 0, 0, 0)
+        GL.glEnable(GL.GL_CULL_FACE)
+        GL.glShadeModel(GL.GL_SMOOTH)
+        GL.glDisable(GL.GL_DEPTH_TEST)
         
         # Release references to all of the old textures.
         self.texture_manager.reset()
@@ -119,18 +121,18 @@ class SkyRenderer(object):
             
             # Reload all of the managers.
             for rom in self.all_managers:
-                rom.reload(gl, True)
+                rom.reload(GL, True)
     
-    def on_surface_changed(self, gl, width, height):
+    def resizeGL(self, width, height):
         
         self.render_state.set_screen_size(width, height)
-        #self.overlayManager.resize(gl, width, height)
+        #self.overlayManager.resize(GL, width, height)
 
         # Need to set the matrices.
         self.must_update_view = True
         self.must_update_projection = True
 
-        gl.glViewport(0, 0, width, height)
+        GL.glViewport(0, 0, width, height)
     
     def set_radius_of_view(self, deg):
         self.render_state.radius_of_view = deg
@@ -289,7 +291,7 @@ class SkyRenderer(object):
         return PolyLineObjectManager(new_layer, self.texture_manager)
     
     def create_label_manager(self, new_layer):
-        return LabelObjectManager(new_layer, self.texture_manager)
+        return LabelObjectManager(self, new_layer, self.texture_manager)
     
     def create_image_manager(self, new_layer):
         return ImageObjectManager(new_layer, self.texture_manager)
@@ -298,6 +300,7 @@ class SkyRenderer(object):
         '''
         Constructor
         '''
+        QGLWidget.__init__(self)
         self.texture_manager = TextureManager()
     
         # The skybox should go behind everything.

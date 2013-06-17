@@ -5,7 +5,8 @@ Created on 2013-06-11
 '''
 
 import numpy as np
-import Image as PIL
+from PySide.QtGui import QImage
+from PySide.QtOpenGL import QGLWidget
 
 def construct_id_to_image_map(filename, id_map):
     with open(filename) as f_handle:
@@ -88,11 +89,13 @@ class TextureManager(object):
             
     def create_texture_from_resource(self, gl, resource_id):
         '''
-        Unlike the original java source, here numpy arrays and PIL are used
+        Unlike the original java source, convertToGLFormat is used
         '''
         text = self.create_texture_internal(gl)
-        img = PIL.open("assets/drawable/" + self.images[resource_id] + ".png")
-        img_data = np.array(list(img.getdata()), np.int8)
+        img = QImage("assets/drawable/" + self.images[resource_id] + ".png")
+#         img_data = np.frombuffer(img.bits(), dtype=np.uint8).reshape(\
+#             [img.height(), img.width(), -1])
+        img = QGLWidget.convertToGLFormat(img)
         
         text.bind(gl)
         gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
@@ -100,8 +103,10 @@ class TextureManager(object):
         gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE);
         gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, gl.GL_CLAMP_TO_EDGE);
         
-        gl.glTexImage2D(gl.GL_TEXTURE_2D,  0, gl.GL_RGB, img.size[0], img.size[1], 
-                      0, gl.GL_RGB, gl.GL_UNSIGNED_BYTE, img_data)
+#         gl.glTexImage2D(gl.GL_TEXTURE_2D,  0, gl.GL_RGB, img.width(), img.height(), 
+#                       0, gl.GL_RGB, gl.GL_UNSIGNED_BYTE, img_data)
+        gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGB, img.width(), img.height(), 0, gl.GL_RGBA, 
+                        gl.GL_UNSIGNED_BYTE, str(img.bits()))
         
         return text
     

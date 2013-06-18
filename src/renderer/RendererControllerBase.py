@@ -67,8 +67,12 @@ class RendererControllerBase(object):
         self.queue_add_manager(manager)
         return manager
 
-    def queue_night_vision_mode(self):
-        raise NotImplementedError("not done this class")
+    def queue_night_vision_mode(self, enable_bool):
+        def run_method():
+            self.renderer.render_state.night_vision_mode = enable_bool
+        
+        msg = "Setting night vision mode: " + str(enable_bool)
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
     def queue_field_of_view(self, fov):
         def run_method():
@@ -98,11 +102,19 @@ class RendererControllerBase(object):
         msg = "Setting view orientation"
         self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
-    def queue_enable_sky_gradient(self):
-        raise NotImplementedError("not done this class")
+    def queue_enable_sky_gradient(self, sun_pos):
+        def run_method():
+            self.renderer.enable_sky_gradient(sun_pos)
+        
+        msg = "Enabling sky gradient at: " + str(sun_pos)
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
-    def queue_diable_sky_gradient(self):
-        raise NotImplementedError("not done this class")
+    def queue_disable_sky_gradient(self):
+        def run_method():
+            self.renderer.disable_sky_gradient()
+        
+        msg = "Disabling sky gradient"
+        self.queue_runnable(msg, command_type.DATA, Runnable(run_method))
     
     def queue_enable_search_overlay(self):
         raise NotImplementedError("not done this class")

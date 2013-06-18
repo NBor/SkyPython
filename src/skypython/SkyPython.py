@@ -85,8 +85,8 @@ class SkyPython(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         
-        self.layer_manager = instantiate_layer_manager()
         self.model = AstronomerModel(ZMDC())
+        self.layer_manager = instantiate_layer_manager(self.model)
         self.initialize_model_view_controller()
         
         # put the window at the screen position (100, 30)

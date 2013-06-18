@@ -8,6 +8,7 @@ import math
 from OpenGL import GL
 from PySide.QtOpenGL import QGLWidget
 from RenderState import RenderState
+from SkyBox import SkyBox
 from PointObjectManager import PointObjectManager
 from PolyLineObjectManager import PolyLineObjectManager
 from LabelObjectManager import LabelObjectManager
@@ -30,27 +31,11 @@ class SkyRenderer(QGLWidget):
         def __init__(self, mgr, reload_bool):
             self.manager = mgr
             self.full_reload = reload_bool
-    
-    sky_box = None
-    overlayManager = None
-
-    render_state = RenderState()
-    
-    projection_matrix = None
-    view_matrix = None
 
     # Indicates whether the transformation matrix has changed since the last
     # time we started rendering
     must_update_view = True
     must_update_projection = True
-    
-    update_closures = []
-    update_listener = None #Need to finish this
-    
-    all_managers = []
-    texture_manager = None
-    managers_to_reload = []
-    layers_to_managers = {}
     
     def paintGL(self):
         # Initialize any of the unloaded managers.
@@ -171,11 +156,12 @@ class SkyRenderer(QGLWidget):
             index = self.layers_to_managers[m.layer].index(m)
             self.layers_to_managers[m.layer].pop(index)
     
-    def enable_sky_gradient(self):
-        raise NotImplementedError("not implemented yet")
+    def enable_sky_gradient(self, sun_position):
+        self.sky_box.set_sun_position(sun_position)
+        self.sky_box.enabled = True
     
     def disable_sky_gradient(self):
-        raise NotImplementedError("not implemented yet")
+        self.sky_box.enabled = False
     
     def enable_search_overlay(self, gc_target, target_name):
         raise NotImplementedError("not implemented yet")
@@ -183,8 +169,8 @@ class SkyRenderer(QGLWidget):
     def disable_search_overlay(self):
         raise NotImplementedError("not implemented yet")
     
-    def set_night_vision_mode(self):
-        raise NotImplementedError("not implemented yet")
+    def set_night_vision_mode(self, enabled_bool):
+        self.render_state.night_vision_mode = enabled_bool
     
     def set_text_angle(self, rad):
         TWO_OVER_PI = 2.0 / math.pi
@@ -302,15 +288,27 @@ class SkyRenderer(QGLWidget):
         '''
         QGLWidget.__init__(self)
         self.texture_manager = TextureManager()
+        self.render_state = RenderState()
+        
+        self.projection_matrix = None
+        self.view_matrix = None
+        
+        self.update_closures = []
+        self.update_listener = None #Need to finish this
+        
+        self.all_managers = []
+        self.managers_to_reload = []
+        self.layers_to_managers = {}
     
         # The skybox should go behind everything.
-        #mSkyBox = new SkyBox(Integer.MIN_VALUE, mTextureManager);
-        #mSkyBox.enable(false);
-        #addObjectManager(mSkyBox);
+        self.sky_box = SkyBox(0x10000000, self.texture_manager)
+        self.sky_box.enabled = False
+        self.add_object_manager(self.sky_box)
     
         #The overlays go on top of everything.
         #mOverlayManager = new OverlayManager(Integer.MAX_VALUE, mTextureManager);
         #addObjectManager(mOverlayManager);
+        self.overlayManager = None
         
         
         

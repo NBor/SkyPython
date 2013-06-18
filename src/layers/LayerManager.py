@@ -8,8 +8,9 @@ from NewStarsLayer import NewStarsLayer
 from NewConstellationsLayer import NewConstellationsLayer
 from NewMessierLayer import NewMessierLayer
 from GridLayer import GridLayer
+from SkyGradientLayer import SkyGradientLayer
 
-def instantiate_layer_manager():
+def instantiate_layer_manager(model):
     '''
     Need to implement all the other layers
     '''
@@ -22,7 +23,7 @@ def instantiate_layer_manager():
     #Ecliptic layer
     #horizon layer
     #meteorshower layer
-    #skygradient layer
+    layer_manager.add_layer(SkyGradientLayer(model))
     layer_manager.init_layers()
     return layer_manager
 

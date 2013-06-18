@@ -127,10 +127,11 @@ class LabelMaker(object):
                 metrics = None
                 
                 if draw_to_canvas:
-                    b = ((int(label.color) & 0x00FF0000) >> 16) 
-                    g = ((int(label.color) & 0x0000FF00) >> 8)
-                    r = (int(label.color) & 0x000000FF)
-                    text_paint.setPen(QColor(r, g, b, 0x000000FF))
+                    mask = 0x000000FF
+                    b = (label.color >> 16) & mask 
+                    g = (label.color >> 8) & mask
+                    r = label.color & mask
+                    text_paint.setPen(QColor(r, g, b))
                     text_paint.setFont(QFont('Veranda', font_size))# * mRes.getDisplayMetrics().density))
                     
                     # Paint.ascent is negative, so negate it.

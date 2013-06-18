@@ -44,10 +44,10 @@ class LabelObjectManager(RendererObjectManager):
             
             # The distance this should be rendered underneath the specified position, in world coordinates.
             self.rgb = text_source.color
-            self.a = 0xff
-            self.r = (self.rgb >> 16) & 0xff
-            self.g = (self.rgb >> 8) & 0xff
-            self.b = self.rgb & 0xff
+            self.a = 0xFF
+            self.b = (self.rgb >> 16) & 0xFF
+            self.g = (self.rgb >> 8) & 0xFF
+            self.r = self.rgb & 0xFF
             # fixed point values
             #self.fixed_a = int(65536.0 * self.a / 255.0) & 0xFFFFFFFF
             #self.fixed_b = int(65536.0 * self.b / 255.0) & 0xFFFFFFFF
@@ -156,9 +156,9 @@ class LabelObjectManager(RendererObjectManager):
         gl.glVertexPointer(2, gl.GL_FLOAT, 0, self.quad_buffer)
         gl.glTexCoordPointer(2, gl.GL_FLOAT, 0, label.text_coords)
         if self.render_state.night_vision_mode:
-            gl.glColor4f(1, 0, 0, label.a)
+            gl.glColor4ub(0xFF, 0, 0, label.a)
         else:
-            gl.glColor4f(label.r, label.g, label.b, label.a)
+            gl.glColor4ub(label.r, label.g, label.b, label.a)
             
         gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 4)
         

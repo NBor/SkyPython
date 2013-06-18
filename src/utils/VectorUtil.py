@@ -14,9 +14,9 @@ def dot_product(p1, p2):
     return float(p1.x * p2.x + p1.y * p2.y + p1.z * p2.z)
 
 def cross_product(p1, p2):
-    return Vector3(p1.y * p2.z - p1.z * p2.y, \
-                      -p1.x * p2.z + p1.z * p2.x, \
-                       p1.x * p2.y - p1.y * p2.x)
+    return Vector3(p1.y * p2.z - p1.z * p2.y,
+                   -p1.x * p2.z + p1.z * p2.x,
+                   p1.x * p2.y - p1.y * p2.x)
     
 def angle_between(p1, p2):
     return math.acos(dot_product(p1, p2) / float((length(p1) * length(p2))))

@@ -15,10 +15,10 @@ class RenderState(object):
     camera_pos = GeocentricCoordinates(0, 0, 0)
     look_dir = GeocentricCoordinates(1, 0, 0)
     up_dir = GeocentricCoordinates(0, 1, 0)
-    radius_of_view = 45  # in degrees
-    up_angle = 0
-    cos_up_angle = 1
-    sin_up_angle = 0
+    radius_of_view = 45.0  # in degrees
+    up_angle = 0.0
+    cos_up_angle = 1.0
+    sin_up_angle = 0.0
     screen_width = 480 # originally 100
     screen_height = 800 # originally 100
     transform_to_device = create_identity()

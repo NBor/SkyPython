@@ -11,19 +11,19 @@ def create_identity():
     return create_scaling(1, 1, 1)
     
 def create_scaling(x, y, z):
-    return Matrix4x4([float(x), 0, 0, 0, \
-                      0, float(y), 0, 0, \
-                      0, 0, float(z), 0, \
+    return Matrix4x4([float(x), 0, 0, 0,
+                      0, float(y), 0, 0,
+                      0, 0, float(z), 0,
                       0, 0, 0, 1])
         
 def create_translation(x, y, z):
-    return Matrix4x4([1, 0, 0, 0, \
-                      0, 1, 0, 0, \
-                      0, 0, 1, 0, \
+    return Matrix4x4([1, 0, 0, 0,
+                      0, 1, 0, 0,
+                      0, 0, 1, 0,
                       float(x), float(y), float(z), 1])
         
 def create_rotation(angle, vector3):
-    m = [0] *16
+    m = [0.0] *16
     x_sqr = vector3.x * vector3.x
     y_sqr = vector3.y * vector3.y
     z_sqr = vector3.z * vector3.z
@@ -31,7 +31,7 @@ def create_rotation(angle, vector3):
     sin_angle = math.sin(angle)
     
     cos_angle = math.cos(angle)
-    one_minus_cos_angle = 1 - cos_angle
+    one_minus_cos_angle = 1.0 - cos_angle
     
     x_sin_angle = vector3.x * sin_angle
     y_sin_angle = vector3.y * sin_angle
@@ -68,15 +68,15 @@ def create_perspective_projection(width, height, fovy_in_radians):
     near = 0.01
     far = 10000.0
     
-    inverse_aspect_ratio = height / width
+    inverse_aspect_ratio = height / float(width)
     
     one_over_tan_half_radius_of_view = 1.0 / math.tan(fovy_in_radians)
     
     return Matrix4x4([
         inverse_aspect_ratio * one_over_tan_half_radius_of_view, 0, 0, 0,
         0, one_over_tan_half_radius_of_view, 0, 0, 
-        0, 0, -(far + near) / (far - near), -1,
-        0, 0, -2*far*near / (far - near), 0])
+        0, 0, -(far + near) / float(far - near), -1,
+        0, 0, -2.0*far*near / float(far - near), 0])
 
 def create_view(look_dir, up, right):
     return Matrix4x4([ \
@@ -153,6 +153,6 @@ class Matrix4x4(object):
         Constructor
         '''
         if len(contents) == 16:
-            self.values = contents[:]
+            self.values = [float(x) for x in contents]
         else:
             raise IndexError("input not of len 16")

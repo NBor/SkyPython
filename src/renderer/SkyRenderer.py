@@ -5,6 +5,7 @@ Created on 2013-05-26
 '''
 
 import math
+import numpy as np
 from OpenGL import GL
 from PySide.QtOpenGL import QGLWidget
 from RenderState import RenderState
@@ -44,7 +45,7 @@ class SkyRenderer(QGLWidget):
         
         self.managers_to_reload = []
     
-        #self.maybe_update_matrices(GL)
+        self.maybe_update_matrices(GL)
     
         # Determine which sky regions should be rendered.
         self.render_state.active_sky_region_set = \
@@ -223,23 +224,43 @@ class SkyRenderer(QGLWidget):
     def update_view(self, gl):
         # Get a vector perpendicular to both, pointing to the right, by taking
         # lookDir cross up.
-        look_dir = self.render_state.look_dir
-        up_dir = self.render_state.up_dir
+        look_dir = self.render_state.look_dir.copy()
+        up_dir = self.render_state.up_dir.copy()
         right = cross_product(look_dir, up_dir)
         
         self.view_matrix = Matrix4x4.create_view(look_dir, up_dir, right)
         
         gl.glMatrixMode(gl.GL_MODELVIEW)
-        gl.glLoadMatrixf(self.view_matrix.values)
+#         self.view_matrix.values = [0.0, 0.0, -1.0, 0.0,
+#                                    0.0, 1.0, -0.0, 0.0,
+#                                    1.0, 0.0, -0.0, 0.0,
+#                                    0.0, 0.0, 0.0, 1.0]
+#         self.view_matrix.values = [0.0, 0.0, -1.0, 0.0,
+#                                    0.0, 1.0, -0.0, 0.0,
+#                                    1.0, 0.0, -0.0, 0.0,
+#                                    0.0, 0.0, 0.0, 1.0]
+        matrix = np.array(self.view_matrix.values, dtype=np.float32)
+        gl.glLoadMatrixf(matrix)
+        gl.glLoadIdentity()
     
     def update_perspective(self, gl):
         self.projection_matrix = Matrix4x4.create_perspective_projection(
-        self.render_state.screen_width,
-        self.render_state.screen_height,
-        self.render_state.radius_of_view * 3.141593 / 360.0)
+                self.get_width(),
+                self.get_height(),
+                self.render_state.radius_of_view * 3.141593 / 360.0)
         
         gl.glMatrixMode(gl.GL_PROJECTION)
-        gl.glLoadMatrixf(self.projection_matrix.values)
+#         self.projection_matrix.values = [4.023689, 0.0, 0.0, 0.0,
+#                                          0.0, 2.4142134, 0.0, 0.0,
+#                                          0.0, 0.0, -1.0000019, -1.0,
+#                                          0.0, 0.0, -0.02000002, 0.0]
+        self.projection_matrix.values = [4.023689, 0.0, 0.0, 0.0,
+                                         0.0, 2.4142134, 0.0, 0.0,
+                                         0.0, 0.0, -1.0000019, -0.02000002,
+                                         0.0, 0.0, 1.0, 1.0]
+        matrix = np.array(self.projection_matrix.values, dtype=np.float32)
+        gl.glLoadMatrixf(matrix)
+        #gl.glLoadIdentity()
         
         # Switch back to the model view matrix.
         gl.glMatrixMode(gl.GL_MODELVIEW)

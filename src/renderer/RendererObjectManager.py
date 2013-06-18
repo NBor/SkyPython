@@ -14,9 +14,6 @@ class RendererObjectManager(object):
     render_state = None
     listener = None
     max_radius_of_view = 360   # in degrees
-    layer = None
-    index = None
-    texture_manager = None
     # Used to distinguish between different renderers, so we can have sets of them.
     s_index = 0
 

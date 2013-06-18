@@ -30,7 +30,7 @@ class SourceLayer(Layer):
     search_index = {}
     # prefix_store = prefixstore class
     
-    def init(self):
+    def initialize(self):
         self.astro_sources = []
         self.initialize_astro_sources(self.astro_sources)
         

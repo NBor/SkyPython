@@ -5,6 +5,7 @@ Created on 2013-05-22
 '''
 
 import SourceProto
+from source.AbstractAstronomicalSource import AbstractAstronomicalSource
 from source.PointSource import shape_enum
 from units.GeocentricCoordinates import get_instance
 from source.PointSource import PointSource
@@ -17,7 +18,7 @@ def construct_id_to_string_map(filename, index_to_string):
             key_value = line.strip().split(',')
             index_to_string[int(key_value[0])] = key_value[1]
 
-class ProtobufAstronomicalSource(object):
+class ProtobufAstronomicalSource(AbstractAstronomicalSource):
     '''
     classdocs
     '''
@@ -45,9 +46,7 @@ class ProtobufAstronomicalSource(object):
         gc = self.astro_source_proto.search_location
         return get_instance(gc.right_ascension, gc.declination)
     
-    def get_images(self):
-        return []
-    
+    #override(AbstractAstronomicalSource)
     def get_points(self):
         point_list = []
         for p in self.astro_source_proto.point:
@@ -56,7 +55,7 @@ class ProtobufAstronomicalSource(object):
             point_list.append(PointSource(p.color, p.size, gc, self.shape_map[p.shape]))
         return point_list
             
-    
+    #override(AbstractAstronomicalSource)
     def get_labels(self):
         '''
         Strings are loaded from strings.txt in the assets folder.
@@ -69,6 +68,7 @@ class ProtobufAstronomicalSource(object):
                                          gc, l.offset, l.font_size))
         return label_list
     
+    #override(AbstractAstronomicalSource)
     def get_lines(self):
         line_list = []
         for l in self.astro_source_proto.line:
@@ -87,10 +87,11 @@ class ProtobufAstronomicalSource(object):
         '''
         Constructor
         '''
+        AbstractAstronomicalSource.__init__(self)
+        
         if len(self.strings.keys()) == 0:
             construct_id_to_string_map("assets/Strings.txt", self.strings)
             
-        self.names = []
         self.astro_source_proto = astronomical_source_proto
         self.set_names(astronomical_source_proto)
         

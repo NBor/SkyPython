@@ -7,6 +7,7 @@ Created on 2013-05-24
 from NewStarsLayer import NewStarsLayer
 from NewConstellationsLayer import NewConstellationsLayer
 from NewMessierLayer import NewMessierLayer
+from GridLayer import GridLayer
 
 def instantiate_layer_manager():
     '''
@@ -16,6 +17,12 @@ def instantiate_layer_manager():
     layer_manager.add_layer(NewStarsLayer())
     layer_manager.add_layer(NewConstellationsLayer())
     layer_manager.add_layer(NewMessierLayer())
+    #planets layer
+    layer_manager.add_layer(GridLayer(24, 19))
+    #Ecliptic layer
+    #horizon layer
+    #meteorshower layer
+    #skygradient layer
     layer_manager.init_layers()
     return layer_manager
 

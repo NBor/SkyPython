@@ -18,7 +18,7 @@ class FileBasedLayer(SourceLayer):
     def initialize(self):
         # Need to execute this in a background thread
         self.read_source_file(self.file_name)
-        self.init()
+        SourceLayer.initialize(self)
         
     def initialize_astro_sources(self, sources):
         sources += self.file_sources

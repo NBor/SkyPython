@@ -9,6 +9,7 @@ import time
 import utils.Geometry as Geometry
 import skypython.ApplicationConstants as ApplicationConstants
 from Pointing import Pointing
+from RealClock import RealClock
 from units.LatLong import LatLong
 from units.Vector3 import Vector3
 from units.Matrix33 import get_colmatrix_from_vectors, get_identity_matrix
@@ -29,6 +30,7 @@ class AstronomerModel(object):
     auto_update_pointing = True
     field_of_view = 45  #Degrees
     location = LatLong(0, 0)
+    clock = RealClock()
     celestial_coords_last_updated = -1
 
     #The pointing comprises a vector into the phone's screen expressed in
@@ -58,7 +60,7 @@ class AstronomerModel(object):
     axes_magnetic_celestial_matrix = get_identity_matrix();
 
     def get_time(self):
-        return time.gmtime(time.time())
+        return time.gmtime(self.clock.get_time())
 
     def set_location(self, lat_long):
         self.location = lat_long
@@ -115,7 +117,7 @@ class AstronomerModel(object):
         self.pointing.update_perpendicular(screen_up_in_space_space)
         
     def calculate_local_north_and_up_in_celestial_coords(self, force_update):
-        current_time = int(time.time() * 1000)
+        current_time = int(self.clock.get_time() * 1000)
         diff = math.fabs(current_time - self.celestial_coords_last_updated)
         if (not force_update) and diff < self.MINIMUM_TIME_BETWEEN_CELESTIAL_COORD_UPDATES_MILLIS:
             return
@@ -164,13 +166,14 @@ class AstronomerModel(object):
         # The matrix is orthogonal, so transpose it to find its inverse.
         # Easiest way to do that is to construct it from row vectors instead
         # of column vectors.        
-        self.axes_phone_inverse_matrix = get_rowmatrix_from_vectors(magnetic_north_phone, \
-                                                                    up_phone, \
-                                                                    magnetic_east_phone)
+        self.axes_phone_inverse_matrix = \
+            get_rowmatrix_from_vectors(magnetic_north_phone, 
+                                       up_phone, 
+                                       magnetic_east_phone)
     
     def update_magnetic_correction(self):
-        self.magnetic_declination_calc.set_location_and_time(self.location, \
-                                                             int(time.time() * 1000))
+        self.magnetic_declination_calc.set_location_and_time(\
+            self.location, int(self.clock.get_time() * 1000))
     
     def get_pointing(self):
         self.calculate_local_north_and_up_in_phone_coords()

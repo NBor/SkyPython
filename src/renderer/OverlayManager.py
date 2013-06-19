@@ -7,6 +7,7 @@ Created on 2013-06-18
 import math
 from OpenGL.GLU import gluOrtho2D
 from RendererObjectManager import RendererObjectManager
+from rendererUtil.ColoredQuad import ColoredQuad
 from units.Vector3 import Vector3
 from utils.VectorUtil import cross_product, normalized
 from utils.Matrix4x4 import create_identity, create_rotation, multiply_MV
@@ -36,10 +37,10 @@ class OverlayManager(RendererObjectManager):
         #mSearchArrow.resize(gl, screenWidth, screenHeight, searchTargetRadius);
         #mCrosshair.resize(gl, screenWidth, screenHeight);
         
-        #mDarkQuad = new ColoredQuad(0, 0, 0, 0.6f,
-        #                            0, 0, 0,
-        #                            screenWidth, 0, 0,
-        #                            0, screenHeight, 0)
+        self.dark_quad = ColoredQuad(0, 0, 0, 0.6, 
+                                     0, 0, 0, 
+                                     screen_width, 0, 0, 
+                                     0, screen_height, 0)
         
     def set_view_orientation(self, look_dir, up_dir):
         self.look_dir = look_dir.copy()
@@ -52,14 +53,13 @@ class OverlayManager(RendererObjectManager):
         self.set_up_matrices(gl)
     
         if self.searching:
-            pass
             #mSearchHelper.setTransform(getRenderState().getTransformToDeviceMatrix());
             #mSearchHelper.checkState();
             
             #transitionFactor = mSearchHelper.getTransitionFactor();
             
             # Darken the background.
-            #mDarkQuad.draw(gl);
+            self.dark_quad.draw(gl)
             
             # Draw the crosshair.
             #mCrosshair.draw(gl, mSearchHelper, getRenderState().getNightVisionMode());

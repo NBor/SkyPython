@@ -10,6 +10,7 @@ from OpenGL import GL
 from PySide.QtOpenGL import QGLWidget
 from RenderState import RenderState
 from SkyBox import SkyBox
+from OverlayManager import OverlayManager
 from PointObjectManager import PointObjectManager
 from PolyLineObjectManager import PolyLineObjectManager
 from LabelObjectManager import LabelObjectManager
@@ -84,13 +85,6 @@ class SkyRenderer(QGLWidget):
         extensions = GL.glGetString(GL.GL_EXTENSIONS)
         
         # Determine if the phone supports VBOs or not, and set this on the GLBuffer.
-        # TODO(jpowell): There are two extension strings which seem applicable.
-        # There is GL_OES_vertex_buffer_object and GL_ARB_vertex_buffer_object.
-        # I can't find any documentation which explains the difference between
-        # these two.  Most phones which support one seem to support both,
-        # except for the Nexus One, which only supports ARB but doesn't seem
-        # to benefit from using VBOs anyway.  I should figure out what the
-        # difference is and use ARB too, if I can.
         can_use_vbo = False
         if "GL_OES_vertex_buffer_object" in extensions: # this will never pass at the moment
             can_use_vbo = True
@@ -112,7 +106,7 @@ class SkyRenderer(QGLWidget):
     def resizeGL(self, width, height):
         
         self.render_state.set_screen_size(width, height)
-        #self.overlayManager.resize(GL, width, height)
+        self.overlay_manager.resize(GL, width, height)
 
         # Need to set the matrices.
         self.must_update_view = True
@@ -133,8 +127,7 @@ class SkyRenderer(QGLWidget):
             self.update_closures.pop(i)
     
     def set_viewer_up_direction(self, gc_up):
-        #mOverlayManager.setViewerUpDirection(up);
-        print "Overlay manager not implemented yet"
+        self.overlay_manager.set_view_up_direction(gc_up)
     
     def add_object_manager(self, m):
         m.render_state = self.render_state
@@ -209,9 +202,9 @@ class SkyRenderer(QGLWidget):
         
         self.must_update_view = True
         
-        #mOverlayManager.setViewOrientation(new GeocentricCoordinates(dir_x, dir_y, dir_z),
-        #                                   new GeocentricCoordinates(up_x, up_y, up_z));
-    
+        self.overlay_manager.set_view_orientation(GeocentricCoordinates(dir_x, dir_y, dir_z), 
+                                                  GeocentricCoordinates(up_x, up_y, up_z))
+        
     def get_width(self):
         return self.render_state.screen_width
     
@@ -327,9 +320,8 @@ class SkyRenderer(QGLWidget):
         self.add_object_manager(self.sky_box)
     
         #The overlays go on top of everything.
-        #mOverlayManager = new OverlayManager(Integer.MAX_VALUE, mTextureManager);
-        #addObjectManager(mOverlayManager);
-        self.overlayManager = None
+        self.overlay_manager = OverlayManager(0xEFFFFFFF, self.texture_manager)
+        self.add_object_manager(self.overlay_manager)
         
         
         

@@ -5,8 +5,9 @@ Created on 2013-06-03
 '''
 
 import math
+from PySide import QtCore
 from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
-from PySide.QtGui import QGraphicsPixmapItem, QPixmap
+from PySide.QtGui import QGraphicsPixmapItem, QPixmap, QTouchEvent
 
 from layers.LayerManager import instantiate_layer_manager
 from control.AstronomerModel import AstronomerModel
@@ -34,7 +35,7 @@ class SkyPython(QMainWindow):
             up_z = pointing.gc_perpendicular.z
             
             self.renderer_controller.queue_set_view_orientation(direction_x, direction_y, direction_z, \
-                                                             up_x, up_y, up_z)
+                                                                up_x, up_y, up_z)
             
             acceleration = self.model.acceleration
             self.renderer_controller.queue_text_angle(math.atan2(-acceleration.x, -acceleration.y))
@@ -55,6 +56,40 @@ class SkyPython(QMainWindow):
     controller = None
     sky_renderer = None
     renderer_controller = None
+    
+    pos_x, pos_y = None, None
+    def eventFilter(self, source, event):
+        
+        if event.type() == QtCore.QEvent.MouseButtonPress:
+            self.pos_x, self.pos_y = event.x(), event.y()
+            return True
+        elif event.type() == QtCore.QEvent.MouseButtonRelease:
+            if (event.x() - self.pos_x) > 30:
+                self.controller.change_right_left(math.pi/8.0)
+            elif (event.x() - self.pos_x) < -30:
+                self.controller.change_right_left(-math.pi/8.0)
+                
+            if (event.y() - self.pos_y) > 30:
+                self.controller.change_up_down(math.pi/8.0)
+            elif (event.y() - self.pos_y) < -30:
+                self.controller.change_up_down(-math.pi/8.0)
+            
+            self.pos_x, self.pos_y = None, None
+            self.sky_renderer.updateGL()
+                
+            num = len(list(self.renderer_controller.queuer.queue))
+            while num > 0:
+                runnable = self.renderer_controller.queuer.get()
+                runnable.run()
+                self.renderer_controller.queuer.task_done()
+                num -= 1
+            
+            #print "Released"
+            self.sky_renderer.updateGL()
+            return True
+        
+        #print event.type()
+        return QMainWindow.eventFilter(self, source, event)
     
     def initialize_model_view_controller(self):
         self.view = QGraphicsView()
@@ -79,15 +114,21 @@ class SkyPython(QMainWindow):
         self.controller = create_controller_group()
         self.controller.set_model(self.model)
         
-        for runnable in list(self.renderer_controller.queuer.queue):
+        num = len(list(self.renderer_controller.queuer.queue))
+        while num > 0:
+            runnable = self.renderer_controller.queuer.get()
             runnable.run()
+            self.renderer_controller.queuer.task_done()
+            num -= 1
     
     def __init__(self):
         QMainWindow.__init__(self)
+        self.setAttribute(QtCore.Qt.WA_AcceptTouchEvents)
         
         self.model = AstronomerModel(ZMDC())
         self.layer_manager = instantiate_layer_manager(self.model)
         self.initialize_model_view_controller()
+        self.controller.set_auto_mode(False)
         
         # put the window at the screen position (100, 30)
         # with size 480 by 800

@@ -224,17 +224,13 @@ class SkyRenderer(QGLWidget):
         self.view_matrix = Matrix4x4.create_view(look_dir, up_dir, right)
         
         gl.glMatrixMode(gl.GL_MODELVIEW)
-#         self.view_matrix.values = [0.0, 0.0, -1.0, 0.0,
-#                                    0.0, 1.0, -0.0, 0.0,
-#                                    1.0, 0.0, -0.0, 0.0,
-#                                    0.0, 0.0, 0.0, 1.0]
-#         self.view_matrix.values = [0.0, 0.0, -1.0, 0.0,
-#                                    0.0, 1.0, -0.0, 0.0,
-#                                    1.0, 0.0, -0.0, 0.0,
-#                                    0.0, 0.0, 0.0, 1.0]
-        matrix = np.array(self.view_matrix.values, dtype=np.float32)
+        adjust_matrix = Matrix4x4.Matrix4x4([0.0, 0.0, 1.0, 0.0,
+                                             0.0, 1.0, -0.0, 0.0,
+                                             -1.0, 0.0, -0.0, 0.0,
+                                             0.0, 0.0, 0.0, 1.0])
+        matrix = Matrix4x4.multiply_MM(self.view_matrix, adjust_matrix)
+        matrix = np.array(matrix.values, dtype=np.float32)
         gl.glLoadMatrixf(matrix)
-        gl.glLoadIdentity()
     
     def update_perspective(self, gl):
         self.projection_matrix = Matrix4x4.create_perspective_projection(

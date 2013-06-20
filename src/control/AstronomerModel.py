@@ -33,32 +33,6 @@ class AstronomerModel(object):
     clock = RealClock()
     celestial_coords_last_updated = -1
 
-    #The pointing comprises a vector into the phone's screen expressed in
-    #celestial coordinates combined with a perpendicular vector along the
-    #phone's longer side.
-    pointing = Pointing()
-    
-    #The sensor acceleration in the phone's coordinate system.
-    acceleration = ApplicationConstants.INITIAL_DOWN
-    
-    #The sensor magnetic field in the phone's coordinate system.
-    magnetic_field = ApplicationConstants.INITIAL_SOUTH
-    
-    #North along the ground in celestial coordinates.
-    true_north_celestial = Vector3(1, 0, 0);
-    
-    #Up in celestial coordinates.
-    up_celestial = Vector3(0, 1, 0)
-    
-    #East in celestial coordinates.
-    true_east_celestial = AXIS_OF_EARTHS_ROTATION
-    
-    #[North, Up, East]^-1 in phone coordinates.
-    axes_phone_inverse_matrix = get_identity_matrix();
-    
-    #[North, Up, East] in celestial coordinates. */
-    axes_magnetic_celestial_matrix = get_identity_matrix();
-
     def get_time(self):
         return time.gmtime(self.clock.get_time())
 
@@ -187,7 +161,8 @@ class AstronomerModel(object):
         self.pointing.update_line_of_sight(line_of_sight)
         self.pointing.update_perpendicular(perpendicular)
 
-    def set_clock(self):
+    def set_clock(self, clock):
+        self.clock = clock
         self.calculate_local_north_and_up_in_celestial_coords(True)
 
     def __init__(self, mag_dec_calc):
@@ -195,6 +170,32 @@ class AstronomerModel(object):
         Constructor
         '''
         self.magnetic_declination_calc = mag_dec_calc
+        
+        #The pointing comprises a vector into the phone's screen expressed in
+        #celestial coordinates combined with a perpendicular vector along the
+        #phone's longer side.
+        self.pointing = Pointing()
+        
+        #The sensor acceleration in the phone's coordinate system.
+        self.acceleration = ApplicationConstants.INITIAL_DOWN
+        
+        #The sensor magnetic field in the phone's coordinate system.
+        self.magnetic_field = ApplicationConstants.INITIAL_SOUTH
+        
+        #North along the ground in celestial coordinates.
+        self.true_north_celestial = Vector3(1, 0, 0);
+        
+        #Up in celestial coordinates.
+        self.up_celestial = Vector3(0, 1, 0)
+        
+        #East in celestial coordinates.
+        self.true_east_celestial = self.AXIS_OF_EARTHS_ROTATION
+        
+        #[North, Up, East]^-1 in phone coordinates.
+        self.axes_phone_inverse_matrix = get_identity_matrix();
+        
+        #[North, Up, East] in celestial coordinates. */
+        self.axes_magnetic_celestial_matrix = get_identity_matrix();
         
 if __name__ == "__main__":
     '''

@@ -94,20 +94,17 @@ class ControllerGroup(Controller):
     # accurate in the limit as radians tends to 0.)
     def change_right_left(self, radians):
         self.manual_direction_controller.change_right_left(radians)
-        raise NotImplementedError("Not done yet")
     
     # Moves the pointing up and down.
     #
     # @param radians the angular change in the pointing in radians (only
     # accurate in the limit as radians tends to 0.)
     def change_up_down(self, radians):
-        self.manual_direction_controller.change_up_down(radians);
-        raise NotImplementedError("Not done yet")
+        self.manual_direction_controller.change_up_down(radians)
     
     # Rotates the view about the current center point.
     def rotate(self, degrees):
         self.manual_direction_controller.rotate(degrees)
-        raise NotImplementedError("Not done yet")
     
     # Zooms the user in.
     def zoom_in(self):

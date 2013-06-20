@@ -28,7 +28,7 @@ class Pointing(object):
     def update_line_of_sight(self, new_line_of_sight):
         self.gc_line_of_sight.assign(vector3=new_line_of_sight)
 
-    def __init__(self, line_of_sight=GC(1.0, 0.0, 1.0), perp=GC(0.0, 1.0, 0.0)):
+    def __init__(self, line_of_sight=GC(1.0, 0.0, 0.0), perp=GC(0.0, 1.0, 0.0)):
         '''
         Constructor
         '''

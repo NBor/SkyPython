@@ -60,23 +60,45 @@ class SkyPython(QMainWindow):
     pos_x, pos_y = 0, 0
     def eventFilter(self, source, event):
         
+        update = False
+        
         if event.type() == QtCore.QEvent.MouseButtonPress:
             self.pos_x, self.pos_y = event.x(), event.y()
             return True
         elif event.type() == QtCore.QEvent.MouseButtonRelease:
-            if (event.x() - self.pos_x) > 30:
+            if (event.x() - self.pos_x) > 30: 
+                # rotate left on drag left to right
                 self.controller.change_right_left(-math.pi/8.0)
-            elif (event.x() - self.pos_x) < -30:
+            elif (event.x() - self.pos_x) < -30: 
+                # rotate right on drag right to left
                 self.controller.change_right_left(math.pi/8.0)
                 
-            if (event.y() - self.pos_y) > 30:
+            if (event.y() - self.pos_y) > 30: 
+                # rotate up on drag up to down
                 self.controller.change_up_down(-math.pi/8.0)
-            elif (event.y() - self.pos_y) < -30:
+            elif (event.y() - self.pos_y) < -30: 
+                # rotate down on drag down to up
                 self.controller.change_up_down(math.pi/8.0)
                 
-            if (event.y() - self.pos_y) == 0 and (event.x() - self.pos_x) == 0:
+            update = True
+                
+        elif event.type() == QtCore.QEvent.KeyPress:
+            if event.key() == 16777235: # up key, zoom in
+                self.controller.zoom_in()
+            elif event.key() == 16777237: # down key, zoom out
                 self.controller.zoom_out()
+            elif event.key() == 65: # "a" key, rotate left
+                self.controller.change_right_left(-math.pi/64.0)
+            elif event.key() == 68: # "d" key, rotate right
+                self.controller.change_right_left(math.pi/64.0)
+            elif event.key() == 87: # "w" key, rotate up
+                self.controller.change_up_down(-math.pi/64.0)
+            elif event.key() == 83: # "s" key, rotate down
+                self.controller.change_up_down(math.pi/64.0)
             
+            update = True
+            
+        if update:
             self.sky_renderer.updateGL()
                 
             num = len(list(self.renderer_controller.queuer.queue))
@@ -86,11 +108,9 @@ class SkyPython(QMainWindow):
                 self.renderer_controller.queuer.task_done()
                 num -= 1
             
-            #print "Released"
             self.sky_renderer.updateGL()
             return True
         
-        #print event.type()
         return QMainWindow.eventFilter(self, source, event)
     
     def initialize_model_view_controller(self):

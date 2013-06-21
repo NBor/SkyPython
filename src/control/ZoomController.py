@@ -32,7 +32,7 @@ class ZoomController(Controller):
     def stop(self):
         pass
     
-    def zoomBy(self, ratio):
+    def zoom_by(self, ratio):
         zoom_degrees = self.model.field_of_view
         zoom_degrees = min(zoom_degrees * ratio, self.MAX_ZOOM_OUT)
         self.__set_field_of_view(zoom_degrees)

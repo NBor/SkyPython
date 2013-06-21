@@ -229,6 +229,15 @@ class SkyRenderer(QGLWidget):
                                              -1.0, 0.0, -0.0, 0.0,
                                              0.0, 0.0, 0.0, 1.0])
         matrix = Matrix4x4.multiply_MM(self.view_matrix, adjust_matrix)
+        
+        # Invert the left/right rotation of the matrix
+        matrix.values[2] *= -1
+        matrix.values[8] *= -1
+        
+        # Invert the up/down rotation of the matrix
+        matrix.values[6] *= -1
+        matrix.values[9] *= -1
+        
         matrix = np.array(matrix.values, dtype=np.float32)
         gl.glLoadMatrixf(matrix)
     
@@ -239,17 +248,13 @@ class SkyRenderer(QGLWidget):
                 self.render_state.radius_of_view * 3.141593 / 360.0)
         
         gl.glMatrixMode(gl.GL_PROJECTION)
-#         self.projection_matrix.values = [4.023689, 0.0, 0.0, 0.0,
-#                                          0.0, 2.4142134, 0.0, 0.0,
-#                                          0.0, 0.0, -1.0000019, -1.0,
-#                                          0.0, 0.0, -0.02000002, 0.0]
-        self.projection_matrix.values = [4.023689, 0.0, 0.0, 0.0,
-                                         0.0, 2.4142134, 0.0, 0.0,
-                                         0.0, 0.0, -1.0000019, -0.02000002,
-                                         0.0, 0.0, 1.0, 1.0]
+        
+        self.projection_matrix.values[15] = 1.0
+        self.projection_matrix.values[14], self.projection_matrix.values[11] = \
+            -self.projection_matrix.values[11], self.projection_matrix.values[14]
+            
         matrix = np.array(self.projection_matrix.values, dtype=np.float32)
         gl.glLoadMatrixf(matrix)
-        #gl.glLoadIdentity()
         
         # Switch back to the model view matrix.
         gl.glMatrixMode(gl.GL_MODELVIEW)

@@ -57,7 +57,7 @@ class SkyPython(QMainWindow):
     sky_renderer = None
     renderer_controller = None
     
-    pos_x, pos_y = None, None
+    pos_x, pos_y = 0, 0
     def eventFilter(self, source, event):
         
         if event.type() == QtCore.QEvent.MouseButtonPress:
@@ -65,16 +65,18 @@ class SkyPython(QMainWindow):
             return True
         elif event.type() == QtCore.QEvent.MouseButtonRelease:
             if (event.x() - self.pos_x) > 30:
-                self.controller.change_right_left(math.pi/8.0)
-            elif (event.x() - self.pos_x) < -30:
                 self.controller.change_right_left(-math.pi/8.0)
+            elif (event.x() - self.pos_x) < -30:
+                self.controller.change_right_left(math.pi/8.0)
                 
             if (event.y() - self.pos_y) > 30:
-                self.controller.change_up_down(math.pi/8.0)
-            elif (event.y() - self.pos_y) < -30:
                 self.controller.change_up_down(-math.pi/8.0)
+            elif (event.y() - self.pos_y) < -30:
+                self.controller.change_up_down(math.pi/8.0)
+                
+            if (event.y() - self.pos_y) == 0 and (event.x() - self.pos_x) == 0:
+                self.controller.zoom_out()
             
-            self.pos_x, self.pos_y = None, None
             self.sky_renderer.updateGL()
                 
             num = len(list(self.renderer_controller.queuer.queue))

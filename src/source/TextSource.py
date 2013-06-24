@@ -19,7 +19,6 @@ class TextSource(Source):
         Constructor
         '''
         Source.__init__(self, color, geo_coords)
-        print hex(color)
         self.label = new_label
         self.offset = new_offset
         self.font_size = new_fontsize

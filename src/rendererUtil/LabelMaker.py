@@ -6,7 +6,7 @@ Created on 2013-06-10
 
 import math
 import numpy as np
-from PySide.QtGui import QBitmap, QColor, QFont, QImage, QFontMetrics
+from PySide.QtGui import QBitmap, QColor, QFont, QImage, QFontMetrics, QPainter
 from PySide.QtOpenGL import QGLWidget
 
 class LabelMaker(object):
@@ -58,7 +58,7 @@ class LabelMaker(object):
             self.text_coords = None
             self.crop = None
             
-    def initialize(self, gl, render_state, text_paint, labels, texture_manager):
+    def initialize(self, gl, render_state, labels, texture_manager):
         '''
         Call to initialize the class. Call whenever the surface has been created.
         '''
@@ -77,7 +77,7 @@ class LabelMaker(object):
     
         gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_REPLACE)
         
-        min_height = self.add_labels_internal(gl, render_state, text_paint, False, labels)
+        min_height = self.add_labels_internal(gl, render_state, False, labels)
     
         # Round up to the nearest power of two, since textures have to be a power of two in size.
         rounded_height = 1
@@ -90,7 +90,7 @@ class LabelMaker(object):
         self.texel_height = (1.0 / float(self.strike_height))
         
         self.begin_adding(gl)
-        self.add_labels_internal(gl, render_state, text_paint, True, labels)
+        self.add_labels_internal(gl, render_state, True, labels)
         self.end_adding(gl)
         
         return self.texture
@@ -102,12 +102,15 @@ class LabelMaker(object):
         if self.texture == None:
             self.texture.delete(gl)
 
-    def add_labels_internal(self, gl, render_state, text_paint, draw_to_canvas, labels):
+    def add_labels_internal(self, gl, render_state, draw_to_canvas, labels):
         '''
         call to add a list of labels
         '''
+        text_paint = QPainter()
+        
         if draw_to_canvas:
             text_paint.begin(self.bitmap)
+            text_paint.setRenderHints(QPainter.Antialiasing)
         
         u = 0
         v = 0
@@ -131,7 +134,7 @@ class LabelMaker(object):
                     b = (label.color >> 16) & mask 
                     g = (label.color >> 8) & mask
                     r = label.color & mask
-                    text_paint.setPen(QColor(r, g, b))
+                    text_paint.setPen(QColor(168, 34, 3))
                     text_paint.setFont(QFont('Veranda', font_size))# * mRes.getDisplayMetrics().density))
                     
                     # Paint.ascent is negative, so negate it.
@@ -190,16 +193,17 @@ class LabelMaker(object):
     def end_adding(self, gl):
         self.texture.bind(gl)
         
-        img = QImage(self.bitmap.toImage())
+        '''
+        IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
+        The image has to be mirrored for some reason
+        '''
+        img = QImage(self.bitmap.toImage()).mirrored()
         img = QGLWidget.convertToGLFormat(img)
+        
         gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGB, img.width(), img.height(), 0, gl.GL_RGBA, 
                         gl.GL_UNSIGNED_BYTE, str(img.bits()))
-#         img_data = np.frombuffer(img.bits(), dtype=np.uint8).reshape(\
-#             [img.height(), img.width(), -1])
-#         gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGB, img.width(), 
-#                         img.height(), 0, gl.GL_RGB,  gl.GL_UNSIGNED_BYTE, img_data)
         
-        # Reclaim storage used by bitmap and canvas.
+        # This particular bitmap is no longer needed
         self.bitmap = None
 
 

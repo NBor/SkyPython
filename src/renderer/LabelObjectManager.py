@@ -6,7 +6,6 @@ Created on 2013-06-10
 
 import math
 import numpy as np
-from PySide.QtGui import QPainter
 from units.Vector3 import Vector3
 from utils.Matrix4x4 import transform_vector
 from RendererObjectManager import RendererObjectManager
@@ -96,7 +95,7 @@ class LabelObjectManager(RendererObjectManager):
             self.label_maker.shutdown(gl)
         
         self.label_maker = LabelMaker(True)
-        self.texture_ref = self.label_maker.initialize(gl, self.render_state, self.label_paint, 
+        self.texture_ref = self.label_maker.initialize(gl, self.render_state,
                                                        self.labels, self.texture_manager)
     
     def draw_internal(self, gl):
@@ -144,8 +143,8 @@ class LabelObjectManager(RendererObjectManager):
         # top of a label to be one pixel off, which results in a noticeable
         # distortion in the text.
         MAGIC_OFFSET = 0.25
-        screen_pos.x = int(screen_pos.x + MAGIC_OFFSET)
-        screen_pos.y = int(screen_pos.y + MAGIC_OFFSET)
+        screen_pos.x = int(screen_pos.x) + MAGIC_OFFSET
+        screen_pos.y = int(screen_pos.y) + MAGIC_OFFSET
         
         gl.glPushMatrix()
         
@@ -183,8 +182,10 @@ class LabelObjectManager(RendererObjectManager):
                     0, self.render_state.screen_height,
                     -1, 1)
         
+        # equivalent of a call to GLBuffer.unbind(gl)
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0)
         gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, 0)
+        
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
         gl.glEnableClientState(gl.GL_TEXTURE_COORD_ARRAY)
         gl.glDisableClientState(gl.GL_COLOR_ARRAY)
@@ -217,7 +218,7 @@ class LabelObjectManager(RendererObjectManager):
     def __init__(self, sky_renderer, new_layer, new_texture_manager):
         '''
         Constructor
-        '''     
+        '''
         RendererObjectManager.__init__(self, new_layer, new_texture_manager)
         
         self.label_maker = None
@@ -230,8 +231,6 @@ class LabelObjectManager(RendererObjectManager):
         self.dot_product_threshold = None
   
         self.texture_ref = None
-        
-        self.label_paint = QPainter()
         
         # A quad with size 1 on each size, so we just need to multiply
         # by the label's width and height to get it to the right size for each

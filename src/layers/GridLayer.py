@@ -81,7 +81,7 @@ class GridLayer(SourceLayer):
             
             for index in range(0, 12):
                 ra = index * 30.0
-                title = str(ra % 60) + "h" + str(int(ra) / 30)
+                title = str(index * 2) + "h"
                 self.text_sources.append(TextSource(title, self.LINE_COLOR, 
                                                     get_instance(ra, 0.0)))
     

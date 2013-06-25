@@ -4,6 +4,7 @@ Created on 2013-05-16
 @author: Neil
 '''
 
+from PySide.QtGui import QBitmap
 from Source import Source
 from units.Vector3 import Vector3
 from utils.Colors import colors
@@ -48,9 +49,11 @@ class ImageSource(Source):
         self.vy = v.y;
         self.vz = v.z;
     
-    def set_image_by_id(self, input_id):
-        self.bitmap_image = input_id
-        raise NotImplemented("this has not been done yet")
+    def set_image_id(self, input_id):
+        self.bitmap_image = QBitmap("assets/drawable/" + input_id + ".png")
+        
+        if self.bitmap_image == None:
+            raise RuntimeError("Could not load image resource")
 
     def __init__(self, geo_coord, new_id, up_v=Vector3(0.0, 1.0, 0.0), im_scale=1):
         '''
@@ -59,7 +62,7 @@ class ImageSource(Source):
         Source.__init__(self, colors.WHITE, geo_coord)
         self.image_scale = im_scale
         self.set_up_vector(up_v)
-        self.set_image_by_id(new_id)
+        self.set_image_id(new_id)
         self.requires_blending = False
         self.bitmap_image = None
     

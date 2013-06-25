@@ -10,6 +10,7 @@ from NewMessierLayer import NewMessierLayer
 from GridLayer import GridLayer
 from EclipticLayer import EclipticLayer
 from HorizonLayer import HorizonLayer
+from MeteorShowerLayer import MeteorShowerLayer
 from SkyGradientLayer import SkyGradientLayer
 
 def instantiate_layer_manager(model):
@@ -24,7 +25,7 @@ def instantiate_layer_manager(model):
     layer_manager.add_layer(GridLayer(24, 19))
     layer_manager.add_layer(EclipticLayer())
     layer_manager.add_layer(HorizonLayer(model))
-    #meteorshower layer
+    layer_manager.add_layer(MeteorShowerLayer(model))
     layer_manager.add_layer(SkyGradientLayer(model))
     layer_manager.init_layers()
     return layer_manager

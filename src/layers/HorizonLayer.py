@@ -4,6 +4,7 @@ Created on 2013-06-24
 @author: Neil
 '''
 
+from time import mktime
 from SourceLayer import SourceLayer
 from source.AbstractAstronomicalSource import AbstractAstronomicalSource
 from source.LineSource import LineSource
@@ -27,7 +28,7 @@ class HorizonLayer(SourceLayer):
         UPDATE_FREQ_MS = 1 * MILLISECONDS_PER_SECOND
         
         def update_coords(self):
-            self.last_update_time_Ms = self.model.get_time()
+            self.last_update_time_Ms = mktime(self.model.get_time())
             
             self.zenith.assign(vector3=self.model.get_zenith())
             self.nadir.assign(vector3=self.model.get_nadir())
@@ -43,7 +44,7 @@ class HorizonLayer(SourceLayer):
         def update(self):
             update_types = set()
             
-            if abs(self.model.get_time() - self.last_update_time_Ms > self.UPDATE_FREQ_MS):
+            if abs(mktime(self.model.get_time()) - self.last_update_time_Ms > self.UPDATE_FREQ_MS):
                 self.update_coords()
                 update = RendererObjectManager().update_type.UpdatePositions
                 update_types = set([update])
@@ -101,7 +102,6 @@ class HorizonLayer(SourceLayer):
     
     def get_layer_name(self):
         return "Horizon"
-
 
     def __init__(self, model):
         '''

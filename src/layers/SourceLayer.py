@@ -34,7 +34,9 @@ class SourceLayer(Layer):
         self.astro_sources = []
         self.initialize_astro_sources(self.astro_sources)
         
-        for source in self.astro_sources:
+        for astro_source in self.astro_sources:
+            source = astro_source.initialize()
+            
             self.image_sources += source.get_images()
             self.line_sources += source.get_lines()
             self.point_sources += source.get_points()

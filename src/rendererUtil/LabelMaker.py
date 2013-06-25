@@ -135,12 +135,16 @@ class LabelMaker(object):
                     g = (label.color >> 8) & mask
                     r = label.color & mask
                     text_paint.setPen(QColor(168, 34, 3))
-                    text_paint.setFont(QFont('Veranda', font_size))# * mRes.getDisplayMetrics().density))
+                    #text_paint.setPen(QColor(r, g, b))
+                    
+                    # The value 0.75 is hard coded representing phone pixel density
+                    text_paint.setFont(QFont('Veranda', font_size * 0.75))
                     
                     # Paint.ascent is negative, so negate it.
                     metrics = text_paint.fontMetrics()
                 else:
-                    metrics = QFontMetrics(QFont('Veranda', font_size))# * mRes.getDisplayMetrics().density))
+                    # The value 0.75 is hard coded representing phone pixel density
+                    metrics = QFontMetrics(QFont('Veranda', font_size * 0.75))
                 ascent = math.ceil(metrics.ascent())
                 descent = math.ceil(metrics.descent())
                 measured_text_width = math.ceil(metrics.boundingRect(label.string).width())

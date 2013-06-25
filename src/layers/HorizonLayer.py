@@ -80,24 +80,24 @@ class HorizonLayer(SourceLayer):
             vertices = [self.north, self.east, self.south, self.west, self.north]
             self.line_sources.append(LineSource(vertices, self.LINE_COLOR, 1.5))
             
-            self.text_sources.append(TextSource("Zenith", self.LABEL_COLOR, self.zenith))
-            self.text_sources.append(TextSource("Nadir", self.LABEL_COLOR, self.nadir))
-            self.text_sources.append(TextSource("North", self.LABEL_COLOR, self.north))
-            self.text_sources.append(TextSource("South", self.LABEL_COLOR, self.south))
-            self.text_sources.append(TextSource("East", self.LABEL_COLOR, self.east))
-            self.text_sources.append(TextSource("West", self.LABEL_COLOR, self.west))
+            self.text_sources.append(TextSource("ZENITH", self.LABEL_COLOR, self.zenith))
+            self.text_sources.append(TextSource("NADIR", self.LABEL_COLOR, self.nadir))
+            self.text_sources.append(TextSource("NORTH", self.LABEL_COLOR, self.north))
+            self.text_sources.append(TextSource("SOUTH", self.LABEL_COLOR, self.south))
+            self.text_sources.append(TextSource("EAST", self.LABEL_COLOR, self.east))
+            self.text_sources.append(TextSource("WEST", self.LABEL_COLOR, self.west))
     
     def initialize_astro_sources(self, sources):
         sources.append(self.HorizonSource(self.model))
     
     def get_layer_id(self):
-        return -105
+        return -106
     
     def get_layer_name_id(self):
         raise NotImplementedError("not implemented yet")
     
     def get_preference_id(self):
-        return "source_provider.5"
+        return "source_provider.6"
     
     def get_layer_name(self):
         return "Horizon"

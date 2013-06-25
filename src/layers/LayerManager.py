@@ -8,6 +8,7 @@ from NewStarsLayer import NewStarsLayer
 from NewConstellationsLayer import NewConstellationsLayer
 from NewMessierLayer import NewMessierLayer
 from GridLayer import GridLayer
+from EclipticLayer import EclipticLayer
 from HorizonLayer import HorizonLayer
 from SkyGradientLayer import SkyGradientLayer
 
@@ -21,7 +22,7 @@ def instantiate_layer_manager(model):
     layer_manager.add_layer(NewMessierLayer())
     #planets layer
     layer_manager.add_layer(GridLayer(24, 19))
-    #Ecliptic layer
+    layer_manager.add_layer(EclipticLayer())
     layer_manager.add_layer(HorizonLayer(model))
     #meteorshower layer
     layer_manager.add_layer(SkyGradientLayer(model))

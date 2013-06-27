@@ -80,6 +80,7 @@ class MeteorShowerLayer(SourceLayer):
             self.update_shower()
             return self
         
+        #override(AbstractAstronomicalSource)        
         def update(self):
             update_types = set()
             if abs(mktime(self.model.get_time()) - self.last_update_time_Ms) > self.UPDATE_FREQ_MS:
@@ -88,9 +89,11 @@ class MeteorShowerLayer(SourceLayer):
                 
             return update_types
         
+        #override(AbstractAstronomicalSource)
         def get_images(self):
             return self.image_sources
         
+        #override(AbstractAstronomicalSource)
         def get_labels(self):
             return self.label_sources
         

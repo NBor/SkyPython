@@ -41,6 +41,7 @@ class HorizonLayer(SourceLayer):
             self.update_coords()
             return self
         
+        #override(AbstractAstronomicalSource)
         def update(self):
             update_types = set()
             

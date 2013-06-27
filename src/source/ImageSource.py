@@ -60,11 +60,11 @@ class ImageSource(Source):
         Constructor
         '''
         Source.__init__(self, colors.WHITE, geo_coord)
+        self.requires_blending = False
+        self.pixmap_image = None
         self.image_scale = im_scale
         self.set_up_vector(up_v)
         self.set_image_id(new_id)
-        self.requires_blending = False
-        self.pixmap_image = None
         
         # horizontal corner
         self.ux = 0

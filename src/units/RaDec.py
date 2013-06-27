@@ -5,7 +5,13 @@ Created on 2013-05-17
 '''
 
 import math
+from units.HeliocentricCoordinates import HeliocentricCoordinates, get_instance as hc_get_instance
 from utils.Geometry import mod_2_pi, radians_to_degrees
+from utils.Enumeration import enum
+
+planet_enum = enum(MERCURY=0, VENUS=1, SUN=2, MARS=3, 
+              JUPITER=4, SATURN=5, URANUS=6, 
+              NEPTUNE=7, PLUTO=8, MOON=9)
 
 def get_instance(geo_coord=None, earth_coord=None, \
                  planet=None, time=None):
@@ -21,7 +27,31 @@ def get_instance(geo_coord=None, earth_coord=None, \
                                           
         return RaDec(radians_to_degrees(raRad), radians_to_degrees(decRad))
     else:
-        raise NotImplemented("no planet, time")
+        if planet.id == planet_enum.MOON:
+            return planet.calculate_lunar_geocentric_location(time)
+            
+        coords = None
+        if planet.id == planet_enum.SUN:
+            # Invert the view, since we want the Sun in earth coordinates, not the Earth in sun
+            # coordinates.
+            coords = HeliocentricCoordinates(earth_coord.radius, earth_coord.x * -1.0, 
+                                             earth_coord.y * -1.0, earth_coord.z * -1.0)
+        else:
+            coords = hc_get_instance(None, planet, time)
+            coords.subtract(earth_coord)
+            
+        equ = coords.calculate_equitorial_coords()
+        return calculate_ra_dec_dist(equ)
+    
+def calculate_ra_dec_dist(helio_coord):
+    ra = mod_2_pi(math.atan2(helio_coord.y, helio_coord.x)) * \
+    (180.0 / math.pi)
+    dec = math.atan(helio_coord.z / \
+                    math.sqrt(helio_coord.x * helio_coord.x + \
+                              helio_coord.y * helio_coord.y)) * \
+                              (180.0 / math.pi)
+                                
+    return RaDec(ra, dec)
 
 class RaDec(object):
     '''
@@ -32,16 +62,6 @@ class RaDec(object):
 
     def to_string(self):
         return "RA: " + self.ra + " degrees\nDec: " + self.dec + " degrees\n"
-    
-    def calculate_ra_dec_dist(self, helio_coord):
-        ra = mod_2_pi(math.atan2(helio_coord.y, helio_coord.x)) * \
-        (180.0 / math.pi)
-        dec = math.atan(helio_coord.z / \
-                        math.sqrt(helio_coord.x * helio_coord.x + \
-                                  helio_coord.y * helio_coord.y)) * \
-                                  (180.0 / math.pi)
-
-        return RaDec(ra, dec)
     
     def is_circumpolar_for(self, longlat):
         if longlat.latitude > 0.0:

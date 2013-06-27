@@ -7,6 +7,7 @@ Created on 2013-05-24
 from NewStarsLayer import NewStarsLayer
 from NewConstellationsLayer import NewConstellationsLayer
 from NewMessierLayer import NewMessierLayer
+from PlanetsLayer import PlanetsLayer
 from GridLayer import GridLayer
 from EclipticLayer import EclipticLayer
 from HorizonLayer import HorizonLayer
@@ -15,13 +16,13 @@ from SkyGradientLayer import SkyGradientLayer
 
 def instantiate_layer_manager(model):
     '''
-    Need to implement all the other layers
+    Add a new instance of each layer and initialize it
     '''
     layer_manager = LayerManager()
     layer_manager.add_layer(NewStarsLayer())
     layer_manager.add_layer(NewConstellationsLayer())
     layer_manager.add_layer(NewMessierLayer())
-    #planets layer
+    layer_manager.add_layer(PlanetsLayer(model))
     layer_manager.add_layer(GridLayer(24, 19))
     layer_manager.add_layer(EclipticLayer())
     layer_manager.add_layer(HorizonLayer(model))

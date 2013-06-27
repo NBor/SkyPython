@@ -37,7 +37,7 @@ class ImageObjectManager(RendererObjectManager):
         tcb.reset(num_vertices)
         
         images = []
-        reset = self.update_type.Reset in update_types or self.update_type.UpdateImages in update_types
+        reset = (self.update_type.Reset in update_types) or (self.update_type.UpdateImages in update_types)
         if reset:
             images = [None] * len(image_sources)
         else:

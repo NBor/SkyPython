@@ -7,11 +7,11 @@ Created on 2013-05-19
 import math
 from Vector3 import Vector3
 
-def get_instance(self, orbital_ele=None, planet=None, t_struct=None):
+def get_instance(orbital_ele=None, planet=None, t_struct=None):
     if orbital_ele == None and planet == None: raise Exception("both None")
     
     if orbital_ele == None:
-        orbital_ele = planet.get_orbital_element(t_struct)
+        orbital_ele = planet.get_orbital_elements(t_struct)
         
     anomaly = orbital_ele.get_anomaly()
     ecc = orbital_ele.eccentricity

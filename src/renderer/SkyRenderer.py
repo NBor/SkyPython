@@ -309,11 +309,15 @@ class SkyRenderer(QGLWidget):
         self.view_matrix = None
         
         self.update_closures = []
-        self.update_listener = None #Need to finish this
-        
+
         self.all_managers = []
         self.managers_to_reload = []
         self.layers_to_managers = {}
+        
+        def queue_for_reload(rom, full_reload):
+            self.managers_to_reload.append(self.ManagerReloadData(rom, full_reload))
+        
+        self.update_listener = queue_for_reload
     
         # The skybox should go behind everything.
         self.sky_box = SkyBox(0x10000000, self.texture_manager)
@@ -323,6 +327,5 @@ class SkyRenderer(QGLWidget):
         #The overlays go on top of everything.
         self.overlay_manager = OverlayManager(0xEFFFFFFF, self.texture_manager)
         self.add_object_manager(self.overlay_manager)
-        
         
         

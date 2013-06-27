@@ -26,8 +26,9 @@ class TextureManager(object):
             gl.glBindTexture(gl.GL_TEXTURE_2D, self.texture_id)
             
         def delete(self, gl):
-            self.check_valid
-            gl.glDeleteTextures(1, [self.texture_id], 0)
+            self.check_valid()
+            # based on examples this single arg should be correct
+            gl.glDeleteTextures(self.texture_id)
             self.invalidate()
             
         def invalidate(self):

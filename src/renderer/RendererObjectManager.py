@@ -4,15 +4,14 @@ Created on 2013-05-26
 @author: Neil
 '''
 
+import threading
 from utils.Enumeration import enum
 
 class RendererObjectManager(object):
     '''
     ABSTRACT CLASS DO NOT DIRECTLY INSTANTIATE
     '''
-    enabled = True
-    render_state = None
-    listener = None
+    lock = threading.RLock()
     max_radius_of_view = 360   # in degrees
     # Used to distinguish between different renderers, so we can have sets of them.
     s_index = 0
@@ -27,8 +26,7 @@ class RendererObjectManager(object):
             self.draw_internal(gl)
             
     def queue_for_reload(self, bool_full_reload):
-        print "queue for reload called at RendererObjectManager, need to implement listener"
-        #raise NotImplementedError("need to call self.listener.queue_for_reload")
+        self.listener(self, bool_full_reload)
 
     def __init__(self, new_layer, new_texture_manager):
         '''
@@ -36,5 +34,8 @@ class RendererObjectManager(object):
         '''
         self.layer = new_layer
         self.texture_manager = new_texture_manager
-        # synchronize somehow
-        self.index = self.s_index + 1
+        self.enabled = True
+        self.render_state = None
+        self.listener = None
+        with self.lock:
+            self.index = self.s_index + 1

@@ -15,6 +15,7 @@ from control.ControllerGroup import create_controller_group
 from renderer.SkyRenderer import SkyRenderer
 from renderer.RendererController import RendererController
 from control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
+from control.MagneticDeclinationCalculatorSwitcher import MagneticDeclinationCalculatorSwitcher as MDCS
 
 class SkyPython(QMainWindow):
     '''
@@ -136,6 +137,9 @@ class SkyPython(QMainWindow):
         self.controller = create_controller_group()
         self.controller.set_model(self.model)
         
+        # NOTE: THIS BOOLEAN WILL NEED TO BE REMOVED EVENTUALLY
+        self.magnetic_switcher = MDCS(self.model, self.USE_AUTO_MODE)
+        
         num = len(list(self.renderer_controller.queuer.queue))
         while num > 0:
             runnable = self.renderer_controller.queuer.get()
@@ -147,10 +151,13 @@ class SkyPython(QMainWindow):
         QMainWindow.__init__(self)
         self.setAttribute(QtCore.Qt.WA_AcceptTouchEvents)
         
+        self.USE_AUTO_MODE = False
+        
+        self.magnetic_switcher = None
         self.model = AstronomerModel(ZMDC())
         self.layer_manager = instantiate_layer_manager(self.model)
         self.initialize_model_view_controller()
-        self.controller.set_auto_mode(False)
+        self.controller.set_auto_mode(self.USE_AUTO_MODE)
         
         # put the window at the screen position (100, 30)
         # with size 480 by 800

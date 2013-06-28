@@ -50,9 +50,10 @@ class ImageSource(Source):
         self.vz = v.z;
     
     def set_image_id(self, input_id):
-        self.pixmap_image = QPixmap("assets/drawable/" + input_id + ".png")
+        url = "assets/drawable/" + input_id + ".png"
+        self.pixmap_image = QPixmap()
         
-        if self.pixmap_image == None:
+        if not self.pixmap_image.load(url):
             raise RuntimeError("Could not load image resource")
 
     def __init__(self, geo_coord, new_id, up_v=Vector3(0.0, 1.0, 0.0), im_scale=1):

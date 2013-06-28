@@ -60,7 +60,7 @@ class SkyRenderer(QGLWidget):
         for managers in self.layers_to_managers.values():
             for manager in managers:
                 manager.draw(GL)
-        #checkForErrors(GL);
+        self.check_for_errors(GL)
         
         # Queue updates for the next frame.
         for update in self.update_closures:
@@ -211,8 +211,10 @@ class SkyRenderer(QGLWidget):
     def get_height(self):
         return self.render_state.screen_height
 
-    def check_for_errors(self):
-        raise NotImplementedError("not implemented yet")
+    def check_for_errors(self, gl):
+        error = gl.glGetError()
+        if error != 0:
+            raise RuntimeError("GL error: " + str(error))
     
     def update_view(self, gl):
         # Get a vector perpendicular to both, pointing to the right, by taking

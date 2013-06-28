@@ -4,7 +4,9 @@ Created on 2013-06-03
 @author: Neil
 '''
 
+import sys
 import math
+from PySide.QtGui import QApplication
 from PySide import QtCore
 from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
 from PySide.QtGui import QGraphicsPixmapItem, QPixmap, QTouchEvent
@@ -16,6 +18,13 @@ from renderer.SkyRenderer import SkyRenderer
 from renderer.RendererController import RendererController
 from control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
 from control.MagneticDeclinationCalculatorSwitcher import MagneticDeclinationCalculatorSwitcher as MDCS
+
+def start_application():
+    app = QApplication(sys.argv)
+    w = SkyPython()
+    w.show()
+    app.installEventFilter(w)
+    app.exec_()
 
 class SkyPython(QMainWindow):
     '''
@@ -164,4 +173,7 @@ class SkyPython(QMainWindow):
         self.setGeometry(100, 30, 480, 800)
         self.show()
         
-        
+if __name__ == "__main__":
+    import os
+    os.chdir("../..")
+    start_application()

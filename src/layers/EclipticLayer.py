@@ -5,10 +5,10 @@ Created on 2013-06-25
 '''
 
 from SourceLayer import SourceLayer
-from source.AbstractAstronomicalSource import AbstractAstronomicalSource
-from source.LineSource import LineSource
-from source.TextSource import TextSource
-from units.GeocentricCoordinates import get_instance
+from ..source.AbstractAstronomicalSource import AbstractAstronomicalSource
+from ..source.LineSource import LineSource
+from ..source.TextSource import TextSource
+from ..units.GeocentricCoordinates import get_instance
 
 class EclipticLayer(SourceLayer):
     '''

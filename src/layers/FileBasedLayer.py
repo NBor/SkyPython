@@ -4,9 +4,9 @@ Created on 2013-05-22
 @author: Neil
 '''
 
-import sourceProto.SourceProto as SourceProto
 from SourceLayer import SourceLayer
-from sourceProto.ProtobufAstronomicalSource import ProtobufAstronomicalSource
+from ..sourceProto import SourceProto
+from ..sourceProto.ProtobufAstronomicalSource import ProtobufAstronomicalSource
 
 class FileBasedLayer(SourceLayer):
     '''

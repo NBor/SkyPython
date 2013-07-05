@@ -4,8 +4,8 @@ Created on 2013-05-16
 @author: Neil
 '''
 
-from units.GeocentricCoordinates import get_instance
-from utils.Enumeration import enum
+from ..units.GeocentricCoordinates import get_instance
+from ..utils.Enumeration import enum
 
 update_granularity = enum(Second=0, Minute=1, Hour=2, Day=3, Month=4, Year=5)
 

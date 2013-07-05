@@ -7,8 +7,8 @@ Created on 2013-05-28
 import threading
 from Queue import Queue
 from RendererControllerBase import RendererControllerBase
-from renderer.RendererControllerBase import command_type
-from utils.Runnable import Runnable
+from ..renderer.RendererControllerBase import command_type
+from ..utils.Runnable import Runnable
 
 class RendererController(RendererControllerBase):
     '''

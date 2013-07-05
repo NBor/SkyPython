@@ -4,9 +4,9 @@ Created on 2013-05-24
 @author: Neil
 '''
 import math
-from utils.VectorUtil import dot_product
-from utils.Geometry import degrees_to_radians
-from units.GeocentricCoordinates import GeocentricCoordinates
+from ..utils.VectorUtil import dot_product
+from ..utils.Geometry import degrees_to_radians
+from ..units.GeocentricCoordinates import GeocentricCoordinates
 
 class ActiveRegionData(object):
     '''

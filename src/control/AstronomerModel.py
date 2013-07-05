@@ -6,16 +6,16 @@ Created on 2013-05-23
 
 import math
 import time
-import utils.Geometry as Geometry
-import skypython.ApplicationConstants as ApplicationConstants
 from Pointing import Pointing
 from RealClock import RealClock
-from units.LatLong import LatLong
-from units.Vector3 import Vector3
-from units.Matrix33 import get_colmatrix_from_vectors, get_identity_matrix
-from units.Matrix33 import get_rowmatrix_from_vectors
-from units.GeocentricCoordinates import get_instance
-from units.GeocentricCoordinates import get_instance_from_vector3
+from ..skypython import ApplicationConstants
+from ..utils import Geometry
+from ..units.LatLong import LatLong
+from ..units.Vector3 import Vector3
+from ..units.Matrix33 import get_colmatrix_from_vectors, get_identity_matrix
+from ..units.Matrix33 import get_rowmatrix_from_vectors
+from ..units.GeocentricCoordinates import get_instance
+from ..units.GeocentricCoordinates import get_instance_from_vector3
 
 class AstronomerModel(object):
     '''

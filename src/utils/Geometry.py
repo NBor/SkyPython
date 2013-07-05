@@ -4,9 +4,9 @@ Created on 2013-05-17
 @author: Neil
 '''
 import math
-from units.GeocentricCoordinates import GeocentricCoordinates
-from units.Matrix33 import Matrix33
-from units.Vector3 import Vector3
+from ..units.GeocentricCoordinates import GeocentricCoordinates
+from ..units.Matrix33 import Matrix33
+from ..units.Vector3 import Vector3
 from TimeUtil import mean_sidereal_time
 
 def degrees_to_radians(val):

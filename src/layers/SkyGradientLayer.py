@@ -6,9 +6,9 @@ Created on 2013-06-17
 
 import threading
 from time import mktime
-from base.TimeConstants import MILLISECONDS_PER_MINUTE
-from provider.SolarPositionCalculator import get_solar_position
-from units.GeocentricCoordinates import get_instance
+from ..base.TimeConstants import MILLISECONDS_PER_MINUTE
+from ..provider.SolarPositionCalculator import get_solar_position
+from ..units.GeocentricCoordinates import get_instance
 
 class SkyGradientLayer(object):
     '''

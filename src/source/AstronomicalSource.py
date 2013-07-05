@@ -5,7 +5,7 @@ Created on 2013-05-16
 '''
 
 from Source import Source
-from utils.Colors import colors
+from ..utils.Colors import colors
 
 class AstronomicalSource(Source):
     '''

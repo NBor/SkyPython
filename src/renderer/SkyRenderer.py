@@ -15,12 +15,12 @@ from PointObjectManager import PointObjectManager
 from PolyLineObjectManager import PolyLineObjectManager
 from LabelObjectManager import LabelObjectManager
 from ImageObjectManager import ImageObjectManager
-from rendererUtil.TextureManager import TextureManager
-from rendererUtil.GLBuffer import GLBuffer
-from rendererUtil.SkyRegionMap import SkyRegionMap
-from units.GeocentricCoordinates import GeocentricCoordinates
-from utils import Matrix4x4
-from utils.VectorUtil import cross_product
+from ..rendererUtil.TextureManager import TextureManager
+from ..rendererUtil.GLBuffer import GLBuffer
+from ..rendererUtil.SkyRegionMap import SkyRegionMap
+from ..units.GeocentricCoordinates import GeocentricCoordinates
+from ..utils import Matrix4x4
+from ..utils.VectorUtil import cross_product
 
 class SkyRenderer(QGLWidget):
     '''

@@ -6,13 +6,13 @@ Created on 2013-06-10
 
 import math
 import numpy as np
-from units.Vector3 import Vector3
-from utils.Matrix4x4 import transform_vector
+from ..units.Vector3 import Vector3
+from ..utils.Matrix4x4 import transform_vector
 from RendererObjectManager import RendererObjectManager
-from rendererUtil.SkyRegionMap import SkyRegionMap
-from rendererUtil.LabelMaker import LabelMaker
-from units.GeocentricCoordinates import GeocentricCoordinates
-from utils.Matrix4x4 import create_rotation, multiply_MV
+from ..rendererUtil.SkyRegionMap import SkyRegionMap
+from ..rendererUtil.LabelMaker import LabelMaker
+from ..units.GeocentricCoordinates import GeocentricCoordinates
+from ..utils.Matrix4x4 import create_rotation, multiply_MV
 
 class LabelObjectManager(RendererObjectManager):
     '''

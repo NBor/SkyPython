@@ -7,14 +7,14 @@ Created on 2013-06-25
 import datetime as dt
 from time import mktime
 from datetime import datetime
-from base.TimeConstants import MILLISECONDS_PER_DAY
 from SourceLayer import SourceLayer
-from source.AbstractAstronomicalSource import AbstractAstronomicalSource
-from source.TextSource import TextSource
-from source.ImageSource import ImageSource
-from renderer.RendererObjectManager import RendererObjectManager
-from units.Vector3 import Vector3
-from units.GeocentricCoordinates import get_instance
+from ..base.TimeConstants import MILLISECONDS_PER_DAY
+from ..source.AbstractAstronomicalSource import AbstractAstronomicalSource
+from ..source.TextSource import TextSource
+from ..source.ImageSource import ImageSource
+from ..renderer.RendererObjectManager import RendererObjectManager
+from ..units.Vector3 import Vector3
+from ..units.GeocentricCoordinates import get_instance
 
 class MeteorShowerLayer(SourceLayer):
     '''

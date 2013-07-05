@@ -5,8 +5,8 @@ Created on 2013-05-26
 '''
 
 import math
-from units.GeocentricCoordinates import GeocentricCoordinates
-from utils.Matrix4x4 import create_identity
+from ..units.GeocentricCoordinates import GeocentricCoordinates
+from ..utils.Matrix4x4 import create_identity
 
 class RenderState(object):
     '''

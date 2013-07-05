@@ -5,8 +5,8 @@ Created on 2013-06-26
 '''
 
 from SourceLayer import SourceLayer
-from provider.PlanetSource import PlanetSource
-from provider.Planet import Planet, res
+from ..provider.PlanetSource import PlanetSource
+from ..provider.Planet import Planet, res
 
 class PlanetsLayer(SourceLayer):
     '''

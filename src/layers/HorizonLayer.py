@@ -6,12 +6,12 @@ Created on 2013-06-24
 
 from time import mktime
 from SourceLayer import SourceLayer
-from source.AbstractAstronomicalSource import AbstractAstronomicalSource
-from source.LineSource import LineSource
-from source.TextSource import TextSource
-from renderer.RendererObjectManager import RendererObjectManager
-from units.GeocentricCoordinates import GeocentricCoordinates
-from base.TimeConstants import MILLISECONDS_PER_SECOND
+from ..source.AbstractAstronomicalSource import AbstractAstronomicalSource
+from ..source.LineSource import LineSource
+from ..source.TextSource import TextSource
+from ..renderer.RendererObjectManager import RendererObjectManager
+from ..units.GeocentricCoordinates import GeocentricCoordinates
+from ..base.TimeConstants import MILLISECONDS_PER_SECOND
 
 class HorizonLayer(SourceLayer):
     '''

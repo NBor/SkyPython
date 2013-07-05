@@ -11,13 +11,13 @@ from PySide import QtCore
 from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
 from PySide.QtGui import QGraphicsPixmapItem, QPixmap, QTouchEvent
 
-from layers.LayerManager import instantiate_layer_manager
-from control.AstronomerModel import AstronomerModel
-from control.ControllerGroup import create_controller_group
-from renderer.SkyRenderer import SkyRenderer
-from renderer.RendererController import RendererController
-from control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
-from control.MagneticDeclinationCalculatorSwitcher import MagneticDeclinationCalculatorSwitcher as MDCS
+from ..layers.LayerManager import instantiate_layer_manager
+from ..control.AstronomerModel import AstronomerModel
+from ..control.ControllerGroup import create_controller_group
+from ..renderer.SkyRenderer import SkyRenderer
+from ..renderer.RendererController import RendererController
+from ..control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
+from ..control.MagneticDeclinationCalculatorSwitcher import MagneticDeclinationCalculatorSwitcher as MDCS
 
 def start_application():
     app = QApplication(sys.argv)

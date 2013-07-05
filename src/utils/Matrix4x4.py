@@ -5,7 +5,7 @@ Created on 2013-05-26
 '''
 
 import math
-from units.Vector3 import Vector3
+from ..units.Vector3 import Vector3
 
 def create_identity():
     return create_scaling(1, 1, 1)

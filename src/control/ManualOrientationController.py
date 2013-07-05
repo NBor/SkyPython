@@ -4,8 +4,8 @@ Created on 2013-05-23
 @author: Neil
 '''
 
-import utils.Geometry as Geometry
 from Controller import Controller
+from ..utils import Geometry
 
 class ManualOrientationController(Controller):
     '''

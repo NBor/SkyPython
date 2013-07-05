@@ -6,12 +6,12 @@ Created on 2013-06-06
 
 import math
 from RendererObjectManager import RendererObjectManager
-from rendererUtil.VertexBuffer import VertexBuffer
-from rendererUtil.TextCoordBuffer import TextCoordBuffer
-from rendererUtil.NightVisionColorBuffer import NightVisionBuffer
-from rendererUtil.IndexBuffer import IndexBuffer
-from rendererUtil.TextureManager import TextureManager
-from utils.VectorUtil import difference, sum_vectors, normalized, cross_product
+from ..rendererUtil.VertexBuffer import VertexBuffer
+from ..rendererUtil.TextCoordBuffer import TextCoordBuffer
+from ..rendererUtil.NightVisionColorBuffer import NightVisionBuffer
+from ..rendererUtil.IndexBuffer import IndexBuffer
+from ..rendererUtil.TextureManager import TextureManager
+from ..utils.VectorUtil import difference, sum_vectors, normalized, cross_product
 
 DRAWABLE_LINE = int("0x7f02003a", 0)
 

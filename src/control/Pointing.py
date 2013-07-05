@@ -4,7 +4,7 @@ Created on 2013-05-22
 @author: Neil
 '''
 
-from units.GeocentricCoordinates import GeocentricCoordinates as GC
+from ..units.GeocentricCoordinates import GeocentricCoordinates as GC
 
 class Pointing(object):
     '''

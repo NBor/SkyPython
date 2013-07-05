@@ -4,7 +4,7 @@ Created on 2013-05-20
 @author: Neil
 '''
 import math
-from utils.Geometry import mod_2_pi
+from ..utils.Geometry import mod_2_pi
 
 class OrbitalElements(object):
     '''

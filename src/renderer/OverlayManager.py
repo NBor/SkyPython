@@ -7,10 +7,10 @@ Created on 2013-06-18
 import math
 from OpenGL.GLU import gluOrtho2D
 from RendererObjectManager import RendererObjectManager
-from rendererUtil.ColoredQuad import ColoredQuad
-from units.Vector3 import Vector3
-from utils.VectorUtil import cross_product, normalized
-from utils.Matrix4x4 import create_identity, create_rotation, multiply_MV
+from ..rendererUtil.ColoredQuad import ColoredQuad
+from ..units.Vector3 import Vector3
+from ..utils.VectorUtil import cross_product, normalized
+from ..utils.Matrix4x4 import create_identity, create_rotation, multiply_MV
 
 class OverlayManager(RendererObjectManager):
     '''

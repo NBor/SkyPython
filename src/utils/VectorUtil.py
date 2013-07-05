@@ -5,7 +5,7 @@ Created on 2013-05-20
 '''
 
 import math
-from units.Vector3 import Vector3
+from ..units.Vector3 import Vector3
 
 def zero():
     return Vector3(0, 0, 0)

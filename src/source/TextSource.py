@@ -5,7 +5,7 @@ Created on 2013-05-16
 '''
 
 from Source import Source
-from units.GeocentricCoordinates import get_instance
+from ..units.GeocentricCoordinates import get_instance
 
 class TextSource(Source):
     '''

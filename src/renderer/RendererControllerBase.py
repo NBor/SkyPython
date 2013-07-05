@@ -4,8 +4,8 @@ Created on 2013-05-28
 @author: Neil
 '''
 
-from utils.Enumeration import enum
-from utils.Runnable import Runnable
+from ..utils.Enumeration import enum
+from ..utils.Runnable import Runnable
 
 class RenderManager(object):
     '''

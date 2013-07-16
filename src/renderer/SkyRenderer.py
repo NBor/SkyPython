@@ -241,6 +241,7 @@ class SkyRenderer(QGLWidget):
         matrix.values[9] *= -1
         
         matrix = np.array(matrix.values, dtype=np.float32)
+        #matrix = np.array(self.view_matrix.values, dtype=np.float32)
         gl.glLoadMatrixf(matrix)
     
     def update_perspective(self, gl):

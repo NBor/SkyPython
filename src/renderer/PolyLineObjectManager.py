@@ -12,6 +12,7 @@ from ..rendererUtil.NightVisionColorBuffer import NightVisionBuffer
 from ..rendererUtil.IndexBuffer import IndexBuffer
 from ..rendererUtil.TextureManager import TextureManager
 from ..utils.VectorUtil import difference, sum_vectors, normalized, cross_product
+from ..utils.DebugOptions import Debug
 
 DRAWABLE_LINE = int("0x7f02003a", 0)
 
@@ -124,6 +125,8 @@ class PolyLineObjectManager(RendererObjectManager):
         self.index_buffer.reload()
         
     def draw_internal(self, gl):
+        if Debug.DRAWING == "POINTS ONLY": return
+        
         if self.index_buffer.num_indices == 0:
             return
         

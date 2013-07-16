@@ -11,6 +11,7 @@ from ..rendererUtil.TextureManager import TextureManager
 from ..rendererUtil.VertexBuffer import VertexBuffer
 from ..rendererUtil.TextCoordBuffer import TextCoordBuffer
 from ..units.Vector3 import Vector3
+from ..utils.DebugOptions import Debug
 
 class ImageObjectManager(RendererObjectManager):
     '''
@@ -158,6 +159,8 @@ class ImageObjectManager(RendererObjectManager):
                                 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, str(red_pixels.bits()))
     
     def draw_internal(self, gl):
+        if Debug.DRAWING == "POINTS ONLY": return
+        
         if self.vertex_buffer.num_vertices == 0:
             return
             

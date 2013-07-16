@@ -15,6 +15,7 @@ from ..rendererUtil.NightVisionColorBuffer import NightVisionBuffer
 from ..rendererUtil.TextCoordBuffer import TextCoordBuffer
 from ..rendererUtil.TextureManager import TextureManager
 from ..utils.VectorUtil import normalized, cross_product
+from ..utils.DebugOptions import Debug
 
 DRAWABLE_STARS_TEXTURE = int("0x7f02005d", 0)
 
@@ -114,7 +115,9 @@ class PointObjectManager(RendererObjectManager):
             star_width_in_texels = 1.0 / self.NUM_STARS_IN_TEXTURE
             
             for p_source in data.sources:
-                color = 0xff000000 | int(p_source.color)  # Force alpha to 0xff
+                color = 0xFF000000 | int(p_source.color)  # Force alpha to 0xff
+                if Debug.COLOR == "WHITE ONLY":
+                    color = 0xFFFFFFFF
                 bottom_left = index
                 top_left = index + 1
                 bottom_right = index + 2

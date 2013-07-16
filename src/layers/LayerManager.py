@@ -13,6 +13,7 @@ from EclipticLayer import EclipticLayer
 from HorizonLayer import HorizonLayer
 from MeteorShowerLayer import MeteorShowerLayer
 from SkyGradientLayer import SkyGradientLayer
+from ..utils.DebugOptions import Debug
 
 def instantiate_layer_manager(model):
     '''
@@ -28,6 +29,11 @@ def instantiate_layer_manager(model):
     layer_manager.add_layer(HorizonLayer(model))
     layer_manager.add_layer(MeteorShowerLayer(model))
     layer_manager.add_layer(SkyGradientLayer(model))
+    
+    if Debug.LAYER == "STARS ONLY":
+        layer_manager = LayerManager()
+        layer_manager.add_layer(NewStarsLayer())
+    
     layer_manager.init_layers()
     return layer_manager
 

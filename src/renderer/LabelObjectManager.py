@@ -13,6 +13,7 @@ from ..rendererUtil.SkyRegionMap import SkyRegionMap
 from ..rendererUtil.LabelMaker import LabelMaker
 from ..units.GeocentricCoordinates import GeocentricCoordinates
 from ..utils.Matrix4x4 import create_rotation, multiply_MV
+from ..utils.DebugOptions import Debug
 
 class LabelObjectManager(RendererObjectManager):
     '''
@@ -99,6 +100,8 @@ class LabelObjectManager(RendererObjectManager):
                                                        self.labels, self.texture_manager)
     
     def draw_internal(self, gl):
+        if Debug.DRAWING == "POINTS ONLY": return
+        
         gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, 
                      gl.GL_MODULATE)
     

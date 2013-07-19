@@ -134,6 +134,7 @@ class LabelMaker(object):
                     b = (label.color >> 16) & mask 
                     g = (label.color >> 8) & mask
                     r = label.color & mask
+                    ######################################################################## LINE CHANGED
                     text_paint.setPen(QColor(168, 34, 3))
                     #text_paint.setPen(QColor(r, g, b))
                     

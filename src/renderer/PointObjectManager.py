@@ -61,6 +61,8 @@ class PointObjectManager(RendererObjectManager):
         
         self.sky_regions.clear()
         
+        if Debug.ALLREGIONS == "YES": self.COMPUTE_REGIONS = False
+        
         region = SkyRegionMap.CATCHALL_REGION_ID
         if self.COMPUTE_REGIONS: 
             # Find the region for each point, and put it in a separate list

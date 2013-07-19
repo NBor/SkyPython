@@ -33,6 +33,11 @@ def instantiate_layer_manager(model):
     if Debug.LAYER == "STARS ONLY":
         layer_manager = LayerManager()
         layer_manager.add_layer(NewStarsLayer())
+    elif Debug.LAYER == "FIRST 3":
+        layer_manager = LayerManager()
+        layer_manager.add_layer(NewStarsLayer())
+        layer_manager.add_layer(NewConstellationsLayer())
+        layer_manager.add_layer(NewMessierLayer())
     
     layer_manager.init_layers()
     return layer_manager

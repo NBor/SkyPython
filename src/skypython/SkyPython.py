@@ -18,6 +18,7 @@ from ..renderer.SkyRenderer import SkyRenderer
 from ..renderer.RendererController import RendererController
 from ..control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
 from ..control.MagneticDeclinationCalculatorSwitcher import MagneticDeclinationCalculatorSwitcher as MDCS
+from ..utils.DebugOptions import Debug, rotateUpRight
 
 def start_application():
     app = QApplication(sys.argv)
@@ -167,6 +168,11 @@ class SkyPython(QMainWindow):
         self.layer_manager = instantiate_layer_manager(self.model)
         self.initialize_model_view_controller()
         self.controller.set_auto_mode(self.USE_AUTO_MODE)
+        
+        if Debug.ROTATE == "YES":
+            up, right = rotateUpRight()
+            self.controller.change_up_down(up)
+            self.controller.change_right_left(right)
         
         # put the window at the screen position (100, 30)
         # with size 480 by 800

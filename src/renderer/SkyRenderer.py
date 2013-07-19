@@ -226,9 +226,9 @@ class SkyRenderer(QGLWidget):
         self.view_matrix = Matrix4x4.create_view(look_dir, up_dir, right)
         
         gl.glMatrixMode(gl.GL_MODELVIEW)
-        adjust_matrix = Matrix4x4.Matrix4x4([0.0, 0.0, 1.0, 0.0,
+        adjust_matrix = Matrix4x4.Matrix4x4([0.0, 0.0, -1.0, 0.0,
                                              0.0, 1.0, -0.0, 0.0,
-                                             -1.0, 0.0, -0.0, 0.0,
+                                             1.0, 0.0, -0.0, 0.0,
                                              0.0, 0.0, 0.0, 1.0])
         matrix = Matrix4x4.multiply_MM(self.view_matrix, adjust_matrix)
         
@@ -236,9 +236,9 @@ class SkyRenderer(QGLWidget):
         matrix.values[2] *= -1
         matrix.values[8] *= -1
         
-        # Invert the up/down rotation of the matrix
-        matrix.values[6] *= -1
-        matrix.values[9] *= -1
+        # Invert these so that we don't rotate in and out of the unit sphere
+        matrix.values[1] *= -1
+        matrix.values[4] *= -1
         
         matrix = np.array(matrix.values, dtype=np.float32)
         #matrix = np.array(self.view_matrix.values, dtype=np.float32)
@@ -251,13 +251,12 @@ class SkyRenderer(QGLWidget):
                 self.render_state.radius_of_view * 3.141593 / 360.0)
         
         gl.glMatrixMode(gl.GL_PROJECTION)
-        
-        self.projection_matrix.values[15] = 1.0
-        self.projection_matrix.values[14], self.projection_matrix.values[11] = \
-            -self.projection_matrix.values[11], self.projection_matrix.values[14]
             
         matrix = np.array(self.projection_matrix.values, dtype=np.float32)
         gl.glLoadMatrixf(matrix)
+        
+        # The image is mirrored so scale it to make the polygon fronts into backs 
+        gl.glScalef(-1.0, 1.0, 1.0)
         
         # Switch back to the model view matrix.
         gl.glMatrixMode(gl.GL_MODELVIEW)

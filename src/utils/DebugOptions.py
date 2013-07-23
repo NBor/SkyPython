@@ -20,25 +20,17 @@ class Debug(object):
     DRAWING = debug_opts["No debug settings"]
     ALLREGIONS = debug_opts["No debug settings"]
     COLOR = debug_opts["No debug settings"]
-    PHOTO = debug_opts["Capture screen"]
+    PHOTO = debug_opts["No debug settings"]
     ROTATE = debug_opts["No debug settings"]
+    ROTATIONLIST = [[0, 0], [0, 1.0*math.pi/2.0], [0, 2.0*math.pi/2.0], 
+                    [0, 3.0*math.pi/2.0], [-math.pi/2.0, 0], [math.pi/2.0, 0]]
     
 def rotateUpRight():
-    return [math.pi/2, 0]
-
-# def print_screen(context):
-#     '''
-#     '''
-#     import Image
-#     import OpenGL.GL as GL
-#     save_count = 0
-#     
-#     vp = GL.glGetIntegerv(GL.GL_VIEWPORT)
-#     print vp
-#     pixel_array = GL.glReadPixels(0,0,vp[2],vp[3],GL.GL_RGB,GL.GL_UNSIGNED_BYTE)
-#     
-#     pilImage = Image.fromstring(mode="RGBA",size=(vp[3],vp[2]),data=pixel_array)
-#     pilImage = pilImage.transpose(Image.FLIP_TOP_BOTTOM)
-#     pilImage.save(str(save_count) + '.png')
-    
-    
+    # rotate the sphere [up, down] by an angle in radians
+    # Pos 0 [0, 0]
+    # Pos 1 [0, 1.0*math.pi/2.0]
+    # Pos 2 [0, 2.0*math.pi/2.0]
+    # Pos 3 [0, 3.0*math.pi/2.0]
+    # Pos 4 [-math.pi/2.0, 0]
+    # Pos 5 [math.pi/2.0, 0]
+    return Debug.ROTATIONLIST[0]

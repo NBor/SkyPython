@@ -20,9 +20,22 @@ from ..control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationC
 from ..control.MagneticDeclinationCalculatorSwitcher import MagneticDeclinationCalculatorSwitcher as MDCS
 from ..utils.DebugOptions import Debug, rotateUpRight
 
-def start_application():
+def start_application(mode=None):
+    
+    if mode == None:
+        worker()
+    else:
+        import multiprocessing, time
+        
+        for thetas in Debug.ROTATIONLIST:
+            p = multiprocessing.Process(target=worker, args=(thetas,))
+            p.start()
+            
+            time.sleep(2)
+            
+def worker(thetas=None):
     app = QApplication(sys.argv)
-    w = SkyPython()
+    w = SkyPython(thetas)
     w.show()
     app.installEventFilter(w)
     app.exec_()
@@ -157,7 +170,7 @@ class SkyPython(QMainWindow):
             self.renderer_controller.queuer.task_done()
             num -= 1
     
-    def __init__(self):
+    def __init__(self, debug_thetas=None):
         QMainWindow.__init__(self)
         self.setAttribute(QtCore.Qt.WA_AcceptTouchEvents)
         
@@ -169,6 +182,10 @@ class SkyPython(QMainWindow):
         self.initialize_model_view_controller()
         self.controller.set_auto_mode(self.USE_AUTO_MODE)
         
+        if debug_thetas != None:
+            up, right = debug_thetas
+            self.controller.change_up_down(up)
+            self.controller.change_right_left(right)
         if Debug.ROTATE == "YES":
             up, right = rotateUpRight()
             self.controller.change_up_down(up)
@@ -178,6 +195,18 @@ class SkyPython(QMainWindow):
         # with size 480 by 800
         self.setGeometry(100, 30, 480, 800)
         self.show()
+        
+        if debug_thetas != None or Debug.ROTATE == "YES":
+            self.sky_renderer.updateGL()
+                
+            num = len(list(self.renderer_controller.queuer.queue))
+            while num > 0:
+                runnable = self.renderer_controller.queuer.get()
+                runnable.run()
+                self.renderer_controller.queuer.task_done()
+                num -= 1
+            
+            self.sky_renderer.updateGL()
         
 if __name__ == "__main__":
     import os

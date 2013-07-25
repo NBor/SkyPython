@@ -21,9 +21,9 @@ class Debug(object):
     ALLREGIONS = debug_opts["No debug settings"]
     COLOR = debug_opts["No debug settings"]
     PHOTO = debug_opts["No debug settings"]
-    ROTATE = debug_opts["No debug settings"]
-    ROTATIONLIST = [[0, 0], [0, 1.0*math.pi/2.0], [0, 2.0*math.pi/2.0], 
-                    [0, 3.0*math.pi/2.0], [-math.pi/2.0, 0], [math.pi/2.0, 0]]
+    ROTATE = debug_opts["Rotate screen"]
+    ROTATIONLIST = [[0, 0], [0, 1.0*math.pi/3.0], [0, 2.0*math.pi/3.0], 
+                    [0, 3.0*math.pi/3.0], [0, 4.0*math.pi/3.0], [0, 5.0*math.pi/3.0]]
     
 def rotateUpRight():
     # rotate the sphere [up, down] by an angle in radians

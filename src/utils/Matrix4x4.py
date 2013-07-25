@@ -146,7 +146,7 @@ class Matrix4x4(object):
     '''
     classdocs
     '''
-    values = [0.0] *16
+    values = [0.0] * 16
 
     def __init__(self, contents):
         '''

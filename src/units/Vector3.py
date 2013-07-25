@@ -27,9 +27,10 @@ class Vector3(object):
         return math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z)
 
     def normalize(self):
-        self.x = self.x / self.length()
-        self.y = self.y / self.length()
-        self.z = self.z / self.length()
+        norm = self.length()
+        self.x = self.x / norm
+        self.y = self.y / norm
+        self.z = self.z / norm
         
     def scale(self, value):
         self.x = self.x * float(value)

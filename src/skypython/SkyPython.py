@@ -18,7 +18,6 @@ from ..renderer.SkyRenderer import SkyRenderer
 from ..renderer.RendererController import RendererController
 from ..control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinationCalculator as ZMDC
 from ..control.MagneticDeclinationCalculatorSwitcher import MagneticDeclinationCalculatorSwitcher as MDCS
-from ..utils.DebugOptions import Debug, rotateUpRight
 
 def start_application(mode=None):
     
@@ -27,15 +26,15 @@ def start_application(mode=None):
     else:
         import multiprocessing, time
         
-        for thetas in Debug.ROTATIONLIST:
-            p = multiprocessing.Process(target=worker, args=(thetas,))
+        for i in range(0, 6):
+            p = multiprocessing.Process(target=worker, args=(i,))
             p.start()
             
             time.sleep(2)
             
-def worker(thetas=None):
+def worker(index=None):
     app = QApplication(sys.argv)
-    w = SkyPython(thetas)
+    w = SkyPython(index)
     w.show()
     app.installEventFilter(w)
     app.exec_()
@@ -140,7 +139,10 @@ class SkyPython(QMainWindow):
     def initialize_model_view_controller(self):
         self.view = QGraphicsView()
         self.scene = QGraphicsScene()
-        self.sky_renderer = SkyRenderer()
+        if self.DEBUG_MODE != None:
+            self.sky_renderer = SkyRenderer(self.DEBUG_MODE)
+        else:
+            self.sky_renderer = SkyRenderer()
         
         #self.view.setViewport(self.sky_renderer)
         #self.view.setScene(self.scene)
@@ -170,10 +172,11 @@ class SkyPython(QMainWindow):
             self.renderer_controller.queuer.task_done()
             num -= 1
     
-    def __init__(self, debug_thetas=None):
+    def __init__(self, debug_index=None):
         QMainWindow.__init__(self)
         self.setAttribute(QtCore.Qt.WA_AcceptTouchEvents)
         
+        self.DEBUG_MODE = debug_index
         self.USE_AUTO_MODE = False
         
         self.magnetic_switcher = None
@@ -182,21 +185,12 @@ class SkyPython(QMainWindow):
         self.initialize_model_view_controller()
         self.controller.set_auto_mode(self.USE_AUTO_MODE)
         
-        if debug_thetas != None:
-            up, right = debug_thetas
-            self.controller.change_up_down(up)
-            self.controller.change_right_left(right)
-        if Debug.ROTATE == "YES":
-            up, right = rotateUpRight()
-            self.controller.change_up_down(up)
-            self.controller.change_right_left(right)
-        
         # put the window at the screen position (100, 30)
         # with size 480 by 800
         self.setGeometry(100, 30, 480, 800)
         self.show()
         
-        if debug_thetas != None or Debug.ROTATE == "YES":
+        if self.DEBUG_MODE != None:
             self.sky_renderer.updateGL()
                 
             num = len(list(self.renderer_controller.queuer.queue))

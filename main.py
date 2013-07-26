@@ -6,7 +6,6 @@ Created on 2013-05-14
 
 import sys
 from src.skypython.SkyPython import start_application
-from src.utils.DebugOptions import Debug, debug_opts
 
 if __name__ == '__main__':
     

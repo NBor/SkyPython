@@ -12,18 +12,17 @@ debug_opts = {"No debug settings"  : None,
               "View only points"   : "POINTS ONLY",
               "Draw all regions"   : "YES",
               "View white objects" : "WHITE ONLY",
-              "Capture screen"     : "YES",
-              "Rotate screen"      : "YES"}
+              "Capture screen"     : "YES"}
 
 class Debug(object):
-    LAYER = debug_opts["No debug settings"]
-    DRAWING = debug_opts["No debug settings"]
-    ALLREGIONS = debug_opts["No debug settings"]
-    COLOR = debug_opts["No debug settings"]
-    PHOTO = debug_opts["No debug settings"]
-    ROTATE = debug_opts["Rotate screen"]
-    ROTATIONLIST = [[0, 0], [0, 1.0*math.pi/3.0], [0, 2.0*math.pi/3.0], 
-                    [0, 3.0*math.pi/3.0], [0, 4.0*math.pi/3.0], [0, 5.0*math.pi/3.0]]
+    LAYER = debug_opts["View only stars"]
+    DRAWING = debug_opts["View only points"]
+    ALLREGIONS = debug_opts["Draw all regions"]
+    COLOR = debug_opts["View white objects"]
+    RADIUSOFVIEW = 90.0
+    LOOKDIRVECTORS = [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0], [0.0, -1.0, 0.0]]
+    UPDIRVECTORS = [[0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0], [1.0, 0.0, 0.0]]
+    RIGHTVECTORS = [[0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]
     
 def rotateUpRight():
     # rotate the sphere [up, down] by an angle in radians

@@ -21,6 +21,7 @@ from ..rendererUtil.SkyRegionMap import SkyRegionMap
 from ..units.GeocentricCoordinates import GeocentricCoordinates
 from ..utils import Matrix4x4
 from ..utils.VectorUtil import cross_product
+from ..utils.DebugOptions import Debug
 
 class SkyRenderer(QGLWidget):
     '''
@@ -223,6 +224,18 @@ class SkyRenderer(QGLWidget):
         up_dir = self.render_state.up_dir.copy()
         right = cross_product(look_dir, up_dir)
         
+        if self.DEBUG_MODE != None:
+            from ..units.Vector3 import Vector3
+            look_dir = Vector3(Debug.LOOKDIRVECTORS[self.DEBUG_MODE][0], 
+                               Debug.LOOKDIRVECTORS[self.DEBUG_MODE][1], 
+                               Debug.LOOKDIRVECTORS[self.DEBUG_MODE][2])
+            up_dir = Vector3(Debug.UPDIRVECTORS[self.DEBUG_MODE][0], 
+                             Debug.UPDIRVECTORS[self.DEBUG_MODE][1], 
+                             Debug.UPDIRVECTORS[self.DEBUG_MODE][2])
+            right = Vector3(Debug.RIGHTVECTORS[self.DEBUG_MODE][0], 
+                            Debug.RIGHTVECTORS[self.DEBUG_MODE][1], 
+                            Debug.RIGHTVECTORS[self.DEBUG_MODE][2])
+        
         self.view_matrix = Matrix4x4.create_view(look_dir, up_dir, right)
         
         gl.glMatrixMode(gl.GL_MODELVIEW)
@@ -245,6 +258,10 @@ class SkyRenderer(QGLWidget):
         gl.glLoadMatrixf(matrix)
     
     def update_perspective(self, gl):
+        
+        if self.DEBUG_MODE != None:
+            self.render_state.radius_of_view = Debug.RADIUSOFVIEW
+        
         self.projection_matrix = Matrix4x4.create_perspective_projection(
                 self.get_width(),
                 self.get_height(),
@@ -299,11 +316,14 @@ class SkyRenderer(QGLWidget):
     def create_image_manager(self, new_layer):
         return ImageObjectManager(new_layer, self.texture_manager)
 
-    def __init__(self):
+    def __init__(self, debug_mode=None):
         '''
         Constructor
         '''
         QGLWidget.__init__(self)
+        
+        self.DEBUG_MODE = debug_mode
+        
         self.texture_manager = TextureManager()
         self.render_state = RenderState()
         

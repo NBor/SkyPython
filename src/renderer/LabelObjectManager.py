@@ -100,7 +100,7 @@ class LabelObjectManager(RendererObjectManager):
                                                        self.labels, self.texture_manager)
     
     def draw_internal(self, gl):
-        if Debug.DRAWING == "POINTS ONLY": return
+        if Debug.DRAWING == "POINTS ONLY" or Debug.DRAWING == "POINTS AND LINES": return
         
         gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, 
                      gl.GL_MODULATE)

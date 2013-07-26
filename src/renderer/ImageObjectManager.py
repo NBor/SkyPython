@@ -159,7 +159,7 @@ class ImageObjectManager(RendererObjectManager):
                                 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, str(red_pixels.bits()))
     
     def draw_internal(self, gl):
-        if Debug.DRAWING == "POINTS ONLY": return
+        if Debug.DRAWING == "POINTS ONLY" or Debug.DRAWING == "POINTS AND LINES": return
         
         if self.vertex_buffer.num_vertices == 0:
             return

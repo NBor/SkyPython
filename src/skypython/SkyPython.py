@@ -6,6 +6,7 @@ Created on 2013-06-03
 
 import sys
 import math
+import time
 from PySide.QtGui import QApplication
 from PySide import QtCore
 from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
@@ -24,7 +25,7 @@ def start_application(mode=None):
     if mode == None:
         worker()
     else:
-        import multiprocessing, time
+        import multiprocessing
         
         for i in range(0, 6):
             p = multiprocessing.Process(target=worker, args=(i,))
@@ -37,7 +38,8 @@ def worker(index=None):
     w = SkyPython(index)
     w.show()
     app.installEventFilter(w)
-    app.exec_()
+    r = app.exec_()
+    sys.exit(r)
 
 class SkyPython(QMainWindow):
     '''
@@ -122,16 +124,7 @@ class SkyPython(QMainWindow):
             update = True
             
         if update:
-            self.sky_renderer.updateGL()
-                
-            num = len(list(self.renderer_controller.queuer.queue))
-            while num > 0:
-                runnable = self.renderer_controller.queuer.get()
-                runnable.run()
-                self.renderer_controller.queuer.task_done()
-                num -= 1
-            
-            self.sky_renderer.updateGL()
+            self.update_rendering()
             return True
         
         return QMainWindow.eventFilter(self, source, event)
@@ -139,14 +132,18 @@ class SkyPython(QMainWindow):
     def initialize_model_view_controller(self):
         self.view = QGraphicsView()
         self.scene = QGraphicsScene()
+        
         if self.DEBUG_MODE != None:
             self.sky_renderer = SkyRenderer(self.DEBUG_MODE)
         else:
             self.sky_renderer = SkyRenderer()
         
-        #self.view.setViewport(self.sky_renderer)
-        #self.view.setScene(self.scene)
-        self.setCentralWidget(self.sky_renderer)
+        self.sky_renderer.setAutoFillBackground(False)
+        
+        # set up the view with the glwidget inside
+        self.view.setViewport(self.sky_renderer)
+        self.view.setScene(self.scene)
+        self.setCentralWidget(self.view)
         
 #         pixmap = QPixmap("assets/drawable/stardroid_big_image.png")
 #         pixItem = QGraphicsPixmapItem(pixmap)
@@ -165,6 +162,14 @@ class SkyPython(QMainWindow):
         # NOTE: THIS BOOLEAN WILL NEED TO BE REMOVED EVENTUALLY
         self.magnetic_switcher = MDCS(self.model, self.USE_AUTO_MODE)
         
+        self.run_queue()
+    
+    def update_rendering(self):
+        self.sky_renderer.updateGL()
+        self.run_queue()
+        self.sky_renderer.updateGL()
+    
+    def run_queue(self):
         num = len(list(self.renderer_controller.queuer.queue))
         while num > 0:
             runnable = self.renderer_controller.queuer.get()
@@ -190,17 +195,13 @@ class SkyPython(QMainWindow):
         self.setGeometry(100, 30, 480, 800)
         self.show()
         
-        if self.DEBUG_MODE != None:
-            self.sky_renderer.updateGL()
-                
-            num = len(list(self.renderer_controller.queuer.queue))
-            while num > 0:
-                runnable = self.renderer_controller.queuer.get()
-                runnable.run()
-                self.renderer_controller.queuer.task_done()
-                num -= 1
-            
-            self.sky_renderer.updateGL()
+        self.update_rendering()
+        self.timer = QtCore.QTimer(self)
+        self.timer.timeout.connect(self.update_rendering)
+        self.timer.setInterval(5000)
+        self.timer.start()
+        
+        
         
 if __name__ == "__main__":
     import os

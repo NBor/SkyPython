@@ -14,12 +14,12 @@ debug_opts = {"No debug settings"  : None,
               "Capture screen"     : "YES"}
 
 class Debug(object):
-    LAYER = debug_opts["Stars, Const, Mess"]
-    DRAWING = debug_opts["View points/lines"]
-    ALLREGIONS = debug_opts["Draw all regions"]
+    LAYER = debug_opts["No debug settings"]
+    DRAWING = debug_opts["No debug settings"]
+    ALLREGIONS = debug_opts["No debug settings"]
     COLOR = debug_opts["No debug settings"]
     RADIUSOFVIEW = 90.0
-    LOOKDIRVECTORS = [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0], [0.0, -1.0, 0.0]]
-    UPDIRVECTORS = [[0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0], [1.0, 0.0, 0.0]]
-    RIGHTVECTORS = [[0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]
+    LOOKDIRVECTORS = [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0],  [-1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0],  [0.0, -1.0, 0.0]]
+    UPDIRVECTORS =   [[0.0, 1.0, 0.0], [0.0, 1.0, 0.0],  [0.0, 1.0, 0.0],  [0.0, 1.0, 0.0],  [-1.0, 0.0, 0.0], [1.0, 0.0, 0.0]]
+    RIGHTVECTORS =   [[0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [1.0, 0.0, 0.0],  [0.0, 0.0, 1.0],  [0.0, 0.0, 1.0]]
     

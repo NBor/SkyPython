@@ -7,10 +7,11 @@ Created on 2013-06-03
 import sys
 import math
 import time
-from PySide.QtGui import QApplication
 from PySide import QtCore
+from PySide.QtGui import QApplication
+#from PySide.QtGui import QIcon, QDialogButtonBox, QPushButton
 from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
-from PySide.QtGui import QGraphicsPixmapItem, QPixmap, QTouchEvent
+#from PySide.QtGui import QGraphicsPixmapItem, QPixmap, QTouchEvent
 
 from ..layers.LayerManager import instantiate_layer_manager
 from ..control.AstronomerModel import AstronomerModel
@@ -104,10 +105,20 @@ class SkyPython(QMainWindow):
             elif (event.y() - self.pos_y) < -30: 
                 # rotate down on drag down to up
                 self.controller.change_up_down(math.pi/8.0)
+               
+#             total_motion = abs(event.x() - self.pos_x) + abs(event.y() - self.pos_y) 
+#             if total_motion <= 60:
+#                 self.button_box.show()
+#                 
+#                 self.menu_timer = QtCore.QTimer()
+#                 self.menu_timer.singleShot(2000, self.button_box.hide)
                 
             update = True
                 
         elif event.type() == QtCore.QEvent.KeyPress:
+            
+            #self.button_box.hide()
+            
             if event.key() == 16777235: # up key, zoom in
                 self.controller.zoom_in()
             elif event.key() == 16777237: # down key, zoom out
@@ -163,6 +174,24 @@ class SkyPython(QMainWindow):
         self.magnetic_switcher = MDCS(self.model, self.USE_AUTO_MODE)
         
         self.run_queue()
+        
+    def wire_up_screen_controls(self):
+        pass
+#         findButton = QPushButton()
+#         self.icon = QIcon("/assets/drawable/b_star_on.png")
+#         findButton.setIcon(self.icon)
+#         
+#         moreButton = QPushButton(self.tr("&More"))
+#         moreButton.setCheckable(True)
+#         
+#         moreButton.setAutoDefault(False)
+#         self.button_box = QDialogButtonBox(QtCore.Qt.Vertical)
+#         self.button_box.addButton(findButton, QDialogButtonBox.ActionRole)
+#         self.button_box.addButton(moreButton, QDialogButtonBox.ActionRole)
+#         
+#         self.scene.addWidget(self.button_box)
+#         self.button_box.hide()
+        #self.button_box.show()
     
     def update_rendering(self):
         self.sky_renderer.updateGL()
@@ -188,6 +217,7 @@ class SkyPython(QMainWindow):
         self.model = AstronomerModel(ZMDC())
         self.layer_manager = instantiate_layer_manager(self.model)
         self.initialize_model_view_controller()
+        self.wire_up_screen_controls()
         self.controller.set_auto_mode(self.USE_AUTO_MODE)
         
         # put the window at the screen position (100, 30)

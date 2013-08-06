@@ -91,7 +91,7 @@ class AstronomerModel(object):
         self.pointing.update_perpendicular(screen_up_in_space_space)
         
     def calculate_local_north_and_up_in_celestial_coords(self, force_update):
-        current_time = int(self.clock.get_time() * 1000)
+        current_time = self.get_time_in_millis()
         diff = math.fabs(current_time - self.celestial_coords_last_updated)
         if (not force_update) and diff < self.MINIMUM_TIME_BETWEEN_CELESTIAL_COORD_UPDATES_MILLIS:
             return
@@ -147,7 +147,7 @@ class AstronomerModel(object):
     
     def update_magnetic_correction(self):
         self.magnetic_declination_calc.set_location_and_time(\
-            self.location, int(self.clock.get_time() * 1000))
+            self.location, self.get_time_in_millis())
     
     def get_pointing(self):
         self.calculate_local_north_and_up_in_phone_coords()
@@ -164,6 +164,9 @@ class AstronomerModel(object):
     def set_clock(self, clock):
         self.clock = clock
         self.calculate_local_north_and_up_in_celestial_coords(True)
+        
+    def get_time_in_millis(self):
+        return int(self.clock.get_time() * 1000)
 
     def __init__(self, mag_dec_calc):
         '''

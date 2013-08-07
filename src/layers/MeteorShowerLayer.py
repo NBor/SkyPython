@@ -33,7 +33,8 @@ class MeteorShowerLayer(SourceLayer):
         '''
         classdocs
         '''
-        LABEL_COLOR = 0xf67e81
+#         LABEL_COLOR = 0xf67e81
+        LABEL_COLOR = 0x817ef6
         UP = Vector3(0.0, 1.0, 0.0)
         UPDATE_FREQ_MS = 1 * MILLISECONDS_PER_DAY
         SCALE_FACTOR = 0.03

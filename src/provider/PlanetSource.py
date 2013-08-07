@@ -24,7 +24,8 @@ class PlanetSource(AbstractAstronomicalSource):
     '''
     PLANET_SIZE = 3
     PLANET_COLOR = 0x14817EF6
-    PLANET_LABEL_COLOR = 0xf67e81
+#     PLANET_LABEL_COLOR = 0xf67e81
+    PLANET_LABEL_COLOR = 0x817ef6
     SHOW_PLANETARY_IMAGES = "show_planetary_images"
     UP = Vector3(0.0, 1.0, 0.0)
     

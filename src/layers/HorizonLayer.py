@@ -23,7 +23,8 @@ class HorizonLayer(SourceLayer):
         '''
         # Due to a bug in the G1 rendering code text and lines render in different
         # colors.
-        LINE_COLOR = 0x78F5B056
+#         LINE_COLOR = 0x78F5B056
+        LINE_COLOR = 0x7856B0F5
         LABEL_COLOR = 0x7856B0F5
         UPDATE_FREQ_MS = 1 * MILLISECONDS_PER_SECOND
         

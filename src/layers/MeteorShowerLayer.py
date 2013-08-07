@@ -8,13 +8,13 @@ import datetime as dt
 from time import mktime
 from datetime import datetime
 from SourceLayer import SourceLayer
-from ..base.TimeConstants import MILLISECONDS_PER_DAY
-from ..source.AbstractAstronomicalSource import AbstractAstronomicalSource
-from ..source.TextSource import TextSource
-from ..source.ImageSource import ImageSource
-from ..renderer.RendererObjectManager import RendererObjectManager
-from ..units.Vector3 import Vector3
-from ..units.GeocentricCoordinates import get_instance
+from src.base.TimeConstants import MILLISECONDS_PER_DAY
+from src.source.AbstractAstronomicalSource import AbstractAstronomicalSource
+from src.source.TextSource import TextSource
+from src.source.ImageSource import ImageSource
+from src.renderer.RendererObjectManager import RendererObjectManager
+from src.units.Vector3 import Vector3
+from src.units.GeocentricCoordinates import get_instance
 
 class MeteorShowerLayer(SourceLayer):
     '''

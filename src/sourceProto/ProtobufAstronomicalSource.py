@@ -5,12 +5,12 @@ Created on 2013-05-22
 '''
 
 import SourceProto
-from ..source.AbstractAstronomicalSource import AbstractAstronomicalSource
-from ..source.PointSource import shape_enum
-from ..units.GeocentricCoordinates import get_instance
-from ..source.PointSource import PointSource
-from ..source.TextSource import TextSource
-from ..source.LineSource import LineSource
+from src.source.AbstractAstronomicalSource import AbstractAstronomicalSource
+from src.source.PointSource import shape_enum
+from src.units.GeocentricCoordinates import get_instance
+from src.source.PointSource import PointSource
+from src.source.TextSource import TextSource
+from src.source.LineSource import LineSource
 
 def construct_id_to_string_map(filename, index_to_string):
     with open(filename, 'r') as f_handle:

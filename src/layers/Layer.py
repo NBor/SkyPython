@@ -6,10 +6,10 @@ Created on 2013-05-28
 
 import threading
 
-from ..source.PointSource import PointSource
-from ..source.LineSource import LineSource
-from ..source.TextSource import TextSource
-from ..source.ImageSource import ImageSource
+from src.source.PointSource import PointSource
+from src.source.LineSource import LineSource
+from src.source.TextSource import TextSource
+from src.source.ImageSource import ImageSource
 
 class Layer(object):
     '''

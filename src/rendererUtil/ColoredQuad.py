@@ -5,7 +5,7 @@ Created on 2013-06-19
 '''
 
 from VertexBuffer import VertexBuffer
-from ..units.Vector3 import Vector3
+from src.units.Vector3 import Vector3
 
 class ColoredQuad(object):
     '''

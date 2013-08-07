@@ -15,13 +15,13 @@ from PointObjectManager import PointObjectManager
 from PolyLineObjectManager import PolyLineObjectManager
 from LabelObjectManager import LabelObjectManager
 from ImageObjectManager import ImageObjectManager
-from ..rendererUtil.TextureManager import TextureManager
-from ..rendererUtil.GLBuffer import GLBuffer
-from ..rendererUtil.SkyRegionMap import SkyRegionMap
-from ..units.GeocentricCoordinates import GeocentricCoordinates
-from ..utils import Matrix4x4
-from ..utils.VectorUtil import cross_product
-from ..utils.DebugOptions import Debug
+from src.rendererUtil.TextureManager import TextureManager
+from src.rendererUtil.GLBuffer import GLBuffer
+from src.rendererUtil.SkyRegionMap import SkyRegionMap
+from src.units.GeocentricCoordinates import GeocentricCoordinates
+from src.utils import Matrix4x4
+from src.utils.VectorUtil import cross_product
+from src.utils.DebugOptions import Debug
 
 class SkyRenderer(QGLWidget):
     '''
@@ -225,7 +225,7 @@ class SkyRenderer(QGLWidget):
         right = cross_product(look_dir, up_dir)
         
         if self.DEBUG_MODE != None:
-            from ..units.Vector3 import Vector3
+            from src.units.Vector3 import Vector3
             look_dir = Vector3(Debug.LOOKDIRVECTORS[self.DEBUG_MODE][0], 
                                Debug.LOOKDIRVECTORS[self.DEBUG_MODE][1], 
                                Debug.LOOKDIRVECTORS[self.DEBUG_MODE][2])

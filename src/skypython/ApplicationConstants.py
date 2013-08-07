@@ -4,7 +4,7 @@ Created on 2013-05-22
 @author: Neil
 '''
 
-from ..units.Vector3 import Vector3
+from src.units.Vector3 import Vector3
 
 APP_NAME = "Stardroid"
 #Default value for 'south' in phone coords when the app starts

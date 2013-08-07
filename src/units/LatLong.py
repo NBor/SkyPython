@@ -6,7 +6,7 @@ Created on 2013-05-17
 
 import math
 import GeocentricCoordinates as GC
-from ..utils.Geometry import cosine_similarity, radians_to_degrees
+from src.utils.Geometry import cosine_similarity, radians_to_degrees
 
 class LatLong(object):
     '''

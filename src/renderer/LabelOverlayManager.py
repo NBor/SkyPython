@@ -4,9 +4,9 @@ Created on 2013-07-26
 @author: Neil
 '''
 
-from ..rendererUtil.LabelMaker import LabelMaker
-from ..rendererUtil.IndexBuffer import IndexBuffer
-from ..rendererUtil.VertexBuffer import VertexBuffer
+from src.rendererUtil.LabelMaker import LabelMaker
+from src.rendererUtil.IndexBuffer import IndexBuffer
+from src.rendererUtil.VertexBuffer import VertexBuffer
 
 class LabelOverlayManager(object):
     '''

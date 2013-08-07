@@ -7,13 +7,13 @@ Created on 2013-06-26
 import time
 import math
 from OrbitalElements import OrbitalElements
-from ..base.TimeConstants import MILLISECONDS_PER_DAY, MILLISECONDS_PER_WEEK, MILLISECONDS_PER_HOUR
-from ..units.RaDec import RaDec, calculate_ra_dec_dist
-from ..units.GeocentricCoordinates import get_instance as gc_get_instance
-from ..units.HeliocentricCoordinates import get_instance as hc_get_instance
-from ..utils import Geometry as Geometry
-from ..utils.Enumeration import enum
-from ..utils.TimeUtil import julian_centuries, calculate_julian_day
+from src.base.TimeConstants import MILLISECONDS_PER_DAY, MILLISECONDS_PER_WEEK, MILLISECONDS_PER_HOUR
+from src.units.RaDec import RaDec, calculate_ra_dec_dist
+from src.units.GeocentricCoordinates import get_instance as gc_get_instance
+from src.units.HeliocentricCoordinates import get_instance as hc_get_instance
+from src.utils import Geometry as Geometry
+from src.utils.Enumeration import enum
+from src.utils.TimeUtil import julian_centuries, calculate_julian_day
 
 #Enum that identifies whether we are interested in rise or set time.
 rise_set_indicator = enum(RISE=0, SET=1)

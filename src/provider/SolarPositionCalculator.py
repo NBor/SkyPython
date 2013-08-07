@@ -4,9 +4,9 @@ Created on 2013-06-17
 @author: Neil
 '''
 
-from ..provider.Planet import Planet, planet_enum, res
-from ..units.RaDec import get_instance as radec_get_instance
-from ..units.HeliocentricCoordinates import get_instance as hc_get_instance
+from src.provider.Planet import Planet, planet_enum, res
+from src.units.RaDec import get_instance as radec_get_instance
+from src.units.HeliocentricCoordinates import get_instance as hc_get_instance
 
 # Calculate the position of the Sun in RA and Dec
 def get_solar_position(time):

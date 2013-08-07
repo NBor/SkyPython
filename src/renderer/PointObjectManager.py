@@ -6,16 +6,16 @@ Created on 2013-05-25
 
 import math
 
-from ..units.Vector3 import Vector3
+from src.units.Vector3 import Vector3
 from RendererObjectManager import RendererObjectManager
-from ..rendererUtil.SkyRegionMap import SkyRegionMap
-from ..rendererUtil.IndexBuffer import IndexBuffer
-from ..rendererUtil.VertexBuffer import VertexBuffer
-from ..rendererUtil.NightVisionColorBuffer import NightVisionBuffer
-from ..rendererUtil.TextCoordBuffer import TextCoordBuffer
-from ..rendererUtil.TextureManager import TextureManager
-from ..utils.VectorUtil import normalized, cross_product
-from ..utils.DebugOptions import Debug
+from src.rendererUtil.SkyRegionMap import SkyRegionMap
+from src.rendererUtil.IndexBuffer import IndexBuffer
+from src.rendererUtil.VertexBuffer import VertexBuffer
+from src.rendererUtil.NightVisionColorBuffer import NightVisionBuffer
+from src.rendererUtil.TextCoordBuffer import TextCoordBuffer
+from src.rendererUtil.TextureManager import TextureManager
+from src.utils.VectorUtil import normalized, cross_product
+from src.utils.DebugOptions import Debug
 
 DRAWABLE_STARS_TEXTURE = int("0x7f02005d", 0)
 

@@ -6,9 +6,9 @@ Created on 2013-05-16
 
 from PySide.QtGui import QPixmap
 from Source import Source
-from ..units.Vector3 import Vector3
-from ..utils.Colors import colors
-from ..utils.VectorUtil import negate, normalized, cross_product
+from src.units.Vector3 import Vector3
+from src.utils.Colors import colors
+from src.utils.VectorUtil import negate, normalized, cross_product
 
 class ImageSource(Source):
     '''

@@ -5,8 +5,8 @@ Created on 2013-05-22
 '''
 
 from Layer import Layer
-from ..renderer.RendererObjectManager import RendererObjectManager
-from ..search.SearchResult import SearchResult
+from src.renderer.RendererObjectManager import RendererObjectManager
+from src.search.SearchResult import SearchResult
 
 class SourceLayer(Layer):
     '''

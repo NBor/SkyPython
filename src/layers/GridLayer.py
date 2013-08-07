@@ -5,11 +5,11 @@ Created on 2013-06-16
 '''
 
 from SourceLayer import SourceLayer
-from ..source.AbstractAstronomicalSource import AbstractAstronomicalSource
-from ..source.LineSource import LineSource
-from ..source.TextSource import TextSource
-from ..units.RaDec import RaDec
-from ..units.GeocentricCoordinates import get_instance
+from src.source.AbstractAstronomicalSource import AbstractAstronomicalSource
+from src.source.LineSource import LineSource
+from src.source.TextSource import TextSource
+from src.units.RaDec import RaDec
+from src.units.GeocentricCoordinates import get_instance
 
 class GridLayer(SourceLayer):
     '''

@@ -7,11 +7,11 @@ Created on 2013-06-10
 from PySide.QtGui import QImage
 from PySide.QtOpenGL import QGLWidget
 from RendererObjectManager import RendererObjectManager
-from ..rendererUtil.TextureManager import TextureManager
-from ..rendererUtil.VertexBuffer import VertexBuffer
-from ..rendererUtil.TextCoordBuffer import TextCoordBuffer
-from ..units.Vector3 import Vector3
-from ..utils.DebugOptions import Debug
+from src.rendererUtil.TextureManager import TextureManager
+from src.rendererUtil.VertexBuffer import VertexBuffer
+from src.rendererUtil.TextCoordBuffer import TextCoordBuffer
+from src.units.Vector3 import Vector3
+from src.utils.DebugOptions import Debug
 
 class ImageObjectManager(RendererObjectManager):
     '''

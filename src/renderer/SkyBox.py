@@ -6,12 +6,12 @@ Created on 2013-06-17
 
 import math
 from RendererObjectManager import RendererObjectManager
-from ..rendererUtil.VertexBuffer import VertexBuffer
-from ..rendererUtil.ColorBuffer import ColorBuffer
-from ..rendererUtil.IndexBuffer import IndexBuffer
-from ..units.Vector3 import Vector3
-from ..units.GeocentricCoordinates import GeocentricCoordinates
-from ..utils.VectorUtil import cross_product, normalized
+from src.rendererUtil.VertexBuffer import VertexBuffer
+from src.rendererUtil.ColorBuffer import ColorBuffer
+from src.rendererUtil.IndexBuffer import IndexBuffer
+from src.units.Vector3 import Vector3
+from src.units.GeocentricCoordinates import GeocentricCoordinates
+from src.utils.VectorUtil import cross_product, normalized
 
 class SkyBox(RendererObjectManager):
     '''

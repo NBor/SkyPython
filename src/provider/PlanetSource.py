@@ -5,16 +5,16 @@ Created on 2013-06-26
 '''
 
 import time
-from ..renderer.RendererObjectManager import RendererObjectManager
+from src.renderer.RendererObjectManager import RendererObjectManager
 from Planet import Planet, planet_enum, res
-from ..source.AbstractAstronomicalSource import AbstractAstronomicalSource
-from ..source.PointSource import PointSource
-from ..source.TextSource import TextSource
-from ..source.ImageSource import ImageSource
-from ..units.Vector3 import Vector3
-from ..units.GeocentricCoordinates import GeocentricCoordinates
-from ..units.HeliocentricCoordinates import get_instance
-from ..units.RaDec import get_instance as radec_get_instance
+from src.source.AbstractAstronomicalSource import AbstractAstronomicalSource
+from src.source.PointSource import PointSource
+from src.source.TextSource import TextSource
+from src.source.ImageSource import ImageSource
+from src.units.Vector3 import Vector3
+from src.units.GeocentricCoordinates import GeocentricCoordinates
+from src.units.HeliocentricCoordinates import get_instance
+from src.units.RaDec import get_instance as radec_get_instance
 
 USE_PLANETARY_IMAGES = True
 

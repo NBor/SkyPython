@@ -5,9 +5,9 @@ Created on 2013-05-17
 '''
 
 import math
-from ..units.HeliocentricCoordinates import HeliocentricCoordinates, get_instance as hc_get_instance
-from ..utils.Geometry import mod_2_pi, radians_to_degrees
-from ..utils.Enumeration import enum
+from src.units.HeliocentricCoordinates import HeliocentricCoordinates, get_instance as hc_get_instance
+from src.utils.Geometry import mod_2_pi, radians_to_degrees
+from src.utils.Enumeration import enum
 
 planet_enum = enum(MERCURY=0, VENUS=1, SUN=2, MARS=3, 
               JUPITER=4, SATURN=5, URANUS=6, 

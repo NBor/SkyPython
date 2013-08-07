@@ -5,7 +5,7 @@ Created on 2013-05-26
 '''
 
 import threading
-from ..utils.Enumeration import enum
+from src.utils.Enumeration import enum
 
 class RendererObjectManager(object):
     '''

@@ -13,7 +13,7 @@ from EclipticLayer import EclipticLayer
 from HorizonLayer import HorizonLayer
 from MeteorShowerLayer import MeteorShowerLayer
 from SkyGradientLayer import SkyGradientLayer
-from ..utils.DebugOptions import Debug
+from src.utils.DebugOptions import Debug
 
 def instantiate_layer_manager(model):
     '''

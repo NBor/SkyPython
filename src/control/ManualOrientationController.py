@@ -5,7 +5,7 @@ Created on 2013-05-23
 '''
 
 from Controller import Controller
-from ..utils import Geometry
+from src.utils import Geometry
 
 class ManualOrientationController(Controller):
     '''

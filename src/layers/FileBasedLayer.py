@@ -5,8 +5,8 @@ Created on 2013-05-22
 '''
 
 from SourceLayer import SourceLayer
-from ..sourceProto import SourceProto
-from ..sourceProto.ProtobufAstronomicalSource import ProtobufAstronomicalSource
+from src.sourceProto import SourceProto
+from src.sourceProto.ProtobufAstronomicalSource import ProtobufAstronomicalSource
 
 class FileBasedLayer(SourceLayer):
     '''

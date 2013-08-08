@@ -51,6 +51,8 @@ def testLunarGeocentricLocation():
     pass
 
 def disableTestIllumination():
+    # This test is disabled in the original Stardroid code base.
+    return
     '''
     >>> import datetime as dt
     >>> import src.units.RaDec

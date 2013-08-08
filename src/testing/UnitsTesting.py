@@ -90,7 +90,11 @@ def RaDecTests():
     True
     >>> abs(-20.75  - pos.dec) < EPSILON
     True
-
+    
+    #----------------------------------------------------------------------------#
+    #NOTE: The following test fails in the original Stardroid junit tests as well.
+    #----------------------------------------------------------------------------#
+    
     >>> pos = RaDec.get_instance(planet=Saturn, time=now, earth_coord=earthCoords)
     >>> abs(11.550 * HOURS_TO_DEGREES - pos.ra) < EPSILON
     True

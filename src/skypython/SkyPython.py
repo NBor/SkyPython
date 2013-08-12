@@ -1,7 +1,7 @@
 '''
 Created on 2013-06-03
 
-@author: Neil
+@author: Neil Borle and Morgan Redshaw
 '''
 
 import sys
@@ -9,10 +9,9 @@ import math
 import time
 from PySide import QtCore
 from PySide.QtGui import QApplication
-#from PySide.QtGui import QIcon, QDialogButtonBox, QPushButton
 from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
-#from PySide.QtGui import QGraphicsPixmapItem, QPixmap, QTouchEvent
 
+from src.uiWidgets.MainWidget import MainWidget
 from src.layers.LayerManager import instantiate_layer_manager
 from src.control.AstronomerModel import AstronomerModel
 from src.control.ControllerGroup import create_controller_group
@@ -41,6 +40,7 @@ def worker(index=None):
     app.installEventFilter(w)
     r = app.exec_()
     sys.exit(r)
+
 
 class SkyPython(QMainWindow):
     '''
@@ -86,7 +86,19 @@ class SkyPython(QMainWindow):
     pos_x, pos_y = 0, 0
     def eventFilter(self, source, event):
         
-        update = False
+        if self.layer_select_widget.CheckForButtonPress(source, event):
+            self.pos_x, self.pos_y = event.x(), event.y()
+            return True
+        else:
+            update = self.event_switch(event)
+            
+        if update:
+            self.update_rendering()
+            return True
+        
+        return QMainWindow.eventFilter(self, source, event)
+
+    def event_switch(self, event):
         
         if event.type() == QtCore.QEvent.MouseButtonPress:
             self.pos_x, self.pos_y = event.x(), event.y()
@@ -106,18 +118,15 @@ class SkyPython(QMainWindow):
                 # rotate down on drag down to up
                 self.controller.change_up_down(math.pi/8.0)
                
-#             total_motion = abs(event.x() - self.pos_x) + abs(event.y() - self.pos_y) 
-#             if total_motion <= 60:
-#                 self.button_box.show()
-#                 
-#                 self.menu_timer = QtCore.QTimer()
-#                 self.menu_timer.singleShot(2000, self.button_box.hide)
+            total_motion = abs(event.x() - self.pos_x) + abs(event.y() - self.pos_y) 
+            if total_motion <= 60:
                 
-            update = True
+                self.layer_select_widget.show()
+                self.menu_timer.start(2500)
+                
+            return True
                 
         elif event.type() == QtCore.QEvent.KeyPress:
-            
-            #self.button_box.hide()
             
             if event.key() == 16777235: # up key, zoom in
                 self.controller.zoom_in()
@@ -132,13 +141,10 @@ class SkyPython(QMainWindow):
             elif event.key() == 83: # "s" key, rotate down
                 self.controller.change_up_down(math.pi/64.0)
             
-            update = True
-            
-        if update:
-            self.update_rendering()
             return True
         
-        return QMainWindow.eventFilter(self, source, event)
+        else:
+            return False
     
     def initialize_model_view_controller(self):
         self.view = QGraphicsView()
@@ -156,11 +162,6 @@ class SkyPython(QMainWindow):
         self.view.setScene(self.scene)
         self.setCentralWidget(self.view)
         
-#         pixmap = QPixmap("assets/drawable/stardroid_big_image.png")
-#         pixItem = QGraphicsPixmapItem(pixmap)
-#         self.scene.addItem(pixItem)
-#         self.view.fitInView(pixItem)
-        
         self.renderer_controller = RendererController(self.sky_renderer, None)
         self.renderer_controller.add_update_closure(\
             self.RendererModelUpdateClosure(self.model, self.renderer_controller))
@@ -176,22 +177,16 @@ class SkyPython(QMainWindow):
         self.run_queue()
         
     def wire_up_screen_controls(self):
-        pass
-#         findButton = QPushButton()
-#         self.icon = QIcon("/assets/drawable/b_star_on.png")
-#         findButton.setIcon(self.icon)
-#         
-#         moreButton = QPushButton(self.tr("&More"))
-#         moreButton.setCheckable(True)
-#         
-#         moreButton.setAutoDefault(False)
-#         self.button_box = QDialogButtonBox(QtCore.Qt.Vertical)
-#         self.button_box.addButton(findButton, QDialogButtonBox.ActionRole)
-#         self.button_box.addButton(moreButton, QDialogButtonBox.ActionRole)
-#         
-#         self.scene.addWidget(self.button_box)
-#         self.button_box.hide()
-        #self.button_box.show()
+        '''
+        Will also need to add the files mainWidget, buttons and probably the image information file
+        '''
+        self.layer_select_widget = MainWidget(self.view)
+        
+        position = (800 - 336) / 2 + 1
+        
+        self.layer_select_widget.setGeometry(QtCore.QRect(1, position, 55, 336))
+        
+        self.layer_select_widget.hide()
     
     def update_rendering(self):
         self.sky_renderer.updateGL()
@@ -225,12 +220,15 @@ class SkyPython(QMainWindow):
         self.setGeometry(100, 30, 480, 800)
         self.show()
         
+        self.menu_timer = QtCore.QTimer()
+        self.menu_timer.timeout.connect(self.layer_select_widget.hide)
+        self.menu_timer.setSingleShot(True)
+        
         self.update_rendering()
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_rendering)
         self.timer.setInterval(5000)
         self.timer.start()
-        
         
         
 if __name__ == "__main__":

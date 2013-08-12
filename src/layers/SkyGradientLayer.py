@@ -29,11 +29,8 @@ class SkyGradientLayer(object):
         if visible:
             self.redraw()
         else:
-            self.renderer_lock.acquire()
-            try:
+            with self.renderer_lock:
                 self.controller.queue_disable_sky_gradient()
-            finally:
-                self.renderer_lock.release()
     
     def redraw(self):
         model_time = self.model.get_time()

@@ -14,7 +14,7 @@ class RenderManager(object):
     
     def queue_enabled(self, enable_bool, controller):
         def run_method():
-            self.manager.enable(enable_bool)
+            self.manager.enabled = enable_bool
         
         msg = "Enabling" if enable_bool else "Disabling" + " manager " + str(self.manager)
         controller.queue_runnable(msg, command_type.DATA, Runnable(run_method))

@@ -60,6 +60,7 @@ class LayerManager(object):
             #prefId = layer.getPreferenceId()
             #visible_bool = sharedPreferences.getBoolean(prefId, true)
             #layer.set_visible(visible_bool)
+            layer.set_visible(True)
     
     def on_shared_preference_change(self):
         raise NotImplementedError("not implemented")
@@ -74,7 +75,8 @@ class LayerManager(object):
         raise NotImplementedError("not implemented")
     
     def is_layer_visible(self):
-        raise NotImplementedError("not implemented")
+        #return sharedPreferences.getBoolean(layer.getPreferenceId(), true)
+        return True
 
     def __init__(self):
         '''

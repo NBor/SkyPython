@@ -135,7 +135,7 @@ class LabelMaker(object):
                     g = (label.color >> 8) & mask
                     r = label.color & mask
                     ######################################################################## LINE CHANGED
-                    text_paint.setPen(QColor(168, 34, 3))
+                    text_paint.setPen(QColor(0, 0, 0))
                     #text_paint.setPen(QColor(r, g, b))
                     
                     # The value 0.75 is hard coded representing phone pixel density

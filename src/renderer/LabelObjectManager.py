@@ -160,7 +160,7 @@ class LabelObjectManager(RendererObjectManager):
         if self.render_state.night_vision_mode:
             gl.glColor4ub(0xFF, 0, 0, label.a)
         else:
-            gl.glColor4ub(label.r, label.g, label.b, label.a)
+            gl.glColor4ub(label.r, label.g, label.b, 128)
             
         gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 4)
         
@@ -169,6 +169,11 @@ class LabelObjectManager(RendererObjectManager):
     def begin_drawing(self, gl):
         self.texture_ref.bind(gl)
         gl.glShadeModel(gl.GL_FLAT)
+        
+        ########################################################################## added Blending
+        gl.glEnable(gl.GL_BLEND)
+        gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
+        
         gl.glEnable(gl.GL_ALPHA_TEST)
         gl.glAlphaFunc(gl.GL_GREATER, 0.5)
         gl.glEnable(gl.GL_TEXTURE_2D)
@@ -209,6 +214,9 @@ class LabelObjectManager(RendererObjectManager):
 
     
     def end_drawing(self, gl):
+        ##########################################################################added blending
+        gl.glDisable(gl.GL_BLEND)
+        
         gl.glDisable(gl.GL_ALPHA_TEST)
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glPopMatrix()

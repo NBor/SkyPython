@@ -23,7 +23,11 @@ class Layer(object):
         self.update_layer_for_controller_change()
         
     def set_visible(self, visible_bool):
-        raise NotImplementedError("not done")
+        with self.reentrant_lock:
+            atomic = self.render_controller.create_atomic()
+            for render_manager in self.render_map.values():
+                render_manager.queue_enabled(visible_bool, atomic)
+            self.render_controller.queue_atomic(atomic)
 
     def add_update_closure(self, closure):
         if self.render_controller != None:
@@ -37,16 +41,13 @@ class Layer(object):
         if self.render_controller == None:
             return
         
-        self.reentrant_lock.acquire()
-        try:
+        with self.reentrant_lock:
             atomic = self.render_controller.create_atomic()
             self.set_sources(points, update_type, PointSource, atomic)
             self.set_sources(lines, update_type, LineSource, atomic)
             self.set_sources(texts, update_type, TextSource, atomic)
             self.set_sources(images, update_type, ImageSource, atomic)
             self.render_controller.queue_atomic(atomic)
-        finally:
-            self.reentrant_lock.release()
     
     def set_sources(self, sources, update_type, clazz, atomic):       
         if sources == None: 

@@ -11,7 +11,8 @@ from PySide import QtCore
 from PySide.QtGui import QApplication
 from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
 
-from src.uiWidgets.MainWidget import MainWidget
+from src.views.MainWidget import MainWidget
+from src.views.WidgetFader import WidgetFader
 from src.layers.LayerManager import instantiate_layer_manager
 from src.control.AstronomerModel import AstronomerModel
 from src.control.ControllerGroup import create_controller_group
@@ -121,8 +122,7 @@ class SkyPython(QMainWindow):
             total_motion = abs(event.x() - self.pos_x) + abs(event.y() - self.pos_y) 
             if total_motion <= 60:
                 
-                self.layer_select_widget.show()
-                self.menu_timer.start(2500)
+                self.layer_widget_fader.make_active()
                 
             return True
                 
@@ -183,10 +183,9 @@ class SkyPython(QMainWindow):
         self.layer_select_widget = MainWidget(self.view)
         
         position = (800 - 336) / 2 + 1
-        
         self.layer_select_widget.setGeometry(QtCore.QRect(1, position, 55, 336))
         
-        self.layer_select_widget.hide()
+        self.layer_widget_fader = WidgetFader(self.layer_select_widget, 2500)
     
     def update_rendering(self):
         self.sky_renderer.updateGL()
@@ -219,10 +218,6 @@ class SkyPython(QMainWindow):
         # with size 480 by 800
         self.setGeometry(100, 30, 480, 800)
         self.show()
-        
-        self.menu_timer = QtCore.QTimer()
-        self.menu_timer.timeout.connect(self.layer_select_widget.hide)
-        self.menu_timer.setSingleShot(True)
         
         self.update_rendering()
         self.timer = QtCore.QTimer(self)

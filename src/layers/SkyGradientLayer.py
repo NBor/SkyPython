@@ -5,7 +5,7 @@ Created on 2013-06-17
 '''
 
 import threading
-from time import mktime
+import calendar
 from src.base.TimeConstants import MILLISECONDS_PER_MINUTE
 from src.provider.SolarPositionCalculator import get_solar_position
 from src.units.GeocentricCoordinates import get_instance
@@ -34,19 +34,16 @@ class SkyGradientLayer(object):
     
     def redraw(self):
         model_time = self.model.get_time()
-        Ms_since_epoch = mktime(model_time) * 100
+        Ms_since_epoch = calendar.timegm(model_time) * 100
         
         if abs(Ms_since_epoch - self.last_update_time_Ms) > self.UPDATE_FREQUENCY_MS:
             self.last_update_time_Ms = Ms_since_epoch
             
             sun_pos = get_solar_position(model_time)
             
-            self.renderer_lock.acquire()
-            try:
+            with self.renderer_lock:
                 gc = get_instance(sun_pos.ra, sun_pos.dec)
                 self.controller.queue_enable_sky_gradient(gc)
-            finally:
-                self.renderer_lock.release()
     
     def get_layer_id(self):
         return 0

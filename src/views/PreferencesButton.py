@@ -1,21 +1,21 @@
 '''
 Created on Aug 7, 2013
 
-@author: Morgan Redshaw
+@author: Morgan Redshaw and Neil Borle
 '''
 
 import PySide.QtCore as QtCore
 import createdMenu
 from PySide.QtGui import QWidget, QIcon, QPixmap
 
-class MainWidget(QWidget, createdMenu.Ui_menuBackground):
+class PreferencesButton(QWidget, createdMenu.Ui_menuBackground):
     '''
     classdocs
     '''
 
     def __init__(self, parent=None):
-        super(MainWidget, self).__init__(parent)
-        self.setupUi(MainWidget)
+        super(PreferencesButton, self).__init__(parent)
+        self.setupUi(PreferencesButton)
         
         
         '''
@@ -44,29 +44,34 @@ class MainWidget(QWidget, createdMenu.Ui_menuBackground):
         
         if source == self.starButton:
             self.StarButtonClicked()
+            return ["source_provider.0"]
         
         elif source == self.constellationButton:
             self.ConstellationButtonClicked()
+            return ["source_provider.1"]
             
         elif source == self.messierButton:
             self.MessierButtonClicked()
+            return ["source_provider.2"]
             
         elif source == self.planetsButton:
             self.PlanetButtonClicked()
+            return ["source_provider.3"]
         
         elif source == self.meteorButton:
             self.MeteorButtonClicked()
+            return ["source_provider.7"]
         
         elif source == self.gridButton:
             self.GridButtonClicked()
+            return ["source_provider.4", "source_provider.5"]
         
         elif source == self.horizonButton:
             self.HorizonButtonClicked()
+            return ["source_provider.6"]
             
         else:
             return False
-        
-        return True
 
     def StarButtonClicked(self):   
         if self.starButtonActive:

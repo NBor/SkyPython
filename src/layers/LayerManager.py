@@ -15,11 +15,11 @@ from MeteorShowerLayer import MeteorShowerLayer
 from SkyGradientLayer import SkyGradientLayer
 from src.utils.DebugOptions import Debug
 
-def instantiate_layer_manager(model):
+def instantiate_layer_manager(model, shared_prefs):
     '''
     Add a new instance of each layer and initialize it
     '''
-    layer_manager = LayerManager()
+    layer_manager = LayerManager(shared_prefs)
     layer_manager.add_layer(NewStarsLayer())
     layer_manager.add_layer(NewConstellationsLayer())
     layer_manager.add_layer(NewMessierLayer())
@@ -57,13 +57,15 @@ class LayerManager(object):
     def register_with_renderer(self, renderer_controller):
         for layer in self.layers:
             layer.register_with_renderer(renderer_controller)
-            #prefId = layer.getPreferenceId()
-            #visible_bool = sharedPreferences.getBoolean(prefId, true)
-            #layer.set_visible(visible_bool)
-            layer.set_visible(True)
+            pref_id = layer.get_preference_id()
+            visible_bool = self.shared_prefs.PREFERENCES[pref_id]
+            layer.set_visible(visible_bool)
     
-    def on_shared_preference_change(self):
-        raise NotImplementedError("not implemented")
+    def on_shared_preference_change(self, prefs, pref_id):
+        for layer in self.layers:
+            if layer.get_preference_id() == pref_id:
+                visible_bool = prefs.PREFERENCES[pref_id]
+                layer.set_visible(visible_bool)
     
     def get_string(self):
         return "Layer Manager"
@@ -74,12 +76,12 @@ class LayerManager(object):
     def get_object_names_matching_prefix(self):
         raise NotImplementedError("not implemented")
     
-    def is_layer_visible(self):
-        #return sharedPreferences.getBoolean(layer.getPreferenceId(), true)
-        return True
+    def is_layer_visible(self, layer):
+        return self.shared_prefs.PREFERENCES[layer]
 
-    def __init__(self):
+    def __init__(self, shared_prefs):
         '''
         Constructor
         '''
+        self.shared_prefs = shared_prefs
         self.layers = []

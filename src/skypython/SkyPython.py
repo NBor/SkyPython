@@ -11,7 +11,8 @@ from PySide import QtCore
 from PySide.QtGui import QApplication
 from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
 
-from src.views.MainWidget import MainWidget
+from SharedPreferences import SharedPreferences
+from src.views.PreferencesButton import PreferencesButton
 from src.views.WidgetFader import WidgetFader
 from src.layers.LayerManager import instantiate_layer_manager
 from src.control.AstronomerModel import AstronomerModel
@@ -87,9 +88,12 @@ class SkyPython(QMainWindow):
     pos_x, pos_y = 0, 0
     def eventFilter(self, source, event):
         
-        if self.layer_select_widget.CheckForButtonPress(source, event):
-            self.pos_x, self.pos_y = event.x(), event.y()
-            return True
+        pref_buttons_pressed = self.layer_select_widget.CheckForButtonPress(source, event)
+        if pref_buttons_pressed:
+            
+            return self.pref_change(self.shared_prefs, self.layer_manager, 
+                                    pref_buttons_pressed, event)
+            
         else:
             update = self.event_switch(event)
             
@@ -98,6 +102,15 @@ class SkyPython(QMainWindow):
             return True
         
         return QMainWindow.eventFilter(self, source, event)
+
+    def pref_change(self, prefs, manager, layers, event):
+        self.pos_x, self.pos_y = event.x(), event.y()
+        
+        for layer in layers:
+            prefs.PREFERENCES[layer] = not prefs.PREFERENCES[layer]
+            manager.on_shared_preference_change(prefs, layer)
+        
+        return True
 
     def event_switch(self, event):
         
@@ -180,7 +193,7 @@ class SkyPython(QMainWindow):
         '''
         Will also need to add the files mainWidget, buttons and probably the image information file
         '''
-        self.layer_select_widget = MainWidget(self.view)
+        self.layer_select_widget = PreferencesButton(self.view)
         
         position = (800 - 336) / 2 + 1
         self.layer_select_widget.setGeometry(QtCore.QRect(1, position, 55, 336))
@@ -206,10 +219,11 @@ class SkyPython(QMainWindow):
         
         self.DEBUG_MODE = debug_index
         self.USE_AUTO_MODE = False
+        self.shared_prefs = SharedPreferences()
         
         self.magnetic_switcher = None
         self.model = AstronomerModel(ZMDC())
-        self.layer_manager = instantiate_layer_manager(self.model)
+        self.layer_manager = instantiate_layer_manager(self.model, self.shared_prefs)
         self.initialize_model_view_controller()
         self.wire_up_screen_controls()
         self.controller.set_auto_mode(self.USE_AUTO_MODE)

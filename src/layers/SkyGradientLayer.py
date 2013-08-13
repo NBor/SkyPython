@@ -52,7 +52,7 @@ class SkyGradientLayer(object):
         return "Sky Gradient"
     
     def get_preference_id(self):
-        return "source_provider." + self.get_layer_name()
+        return "source_provider.8"
     
     def get_layer_name_id(self):
         raise NotImplementedError("not implemented yet")

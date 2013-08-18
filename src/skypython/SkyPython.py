@@ -13,6 +13,7 @@ from PySide.QtGui import QMainWindow, QGraphicsView, QGraphicsScene
 
 from SharedPreferences import SharedPreferences
 from src.views.PreferencesButton import PreferencesButton
+from src.views.ZoomButton import ZoomButton
 from src.views.WidgetFader import WidgetFader
 from src.layers.LayerManager import instantiate_layer_manager
 from src.control.AstronomerModel import AstronomerModel
@@ -88,15 +89,16 @@ class SkyPython(QMainWindow):
     pos_x, pos_y = 0, 0
     def eventFilter(self, source, event):
         
-        pref_buttons_pressed = self.layer_select_widget.CheckForButtonPress(source, event)
+        pref_buttons_pressed = self.layer_select_widget.checkForButtonPress(source, event)
         if pref_buttons_pressed:
             
             return self.pref_change(self.shared_prefs, self.layer_manager, 
                                     pref_buttons_pressed, event)
             
         else:
-            update = self.event_switch(event)
-            
+            update = self.zoom_button.checkForButtonPress(source, event, self.controller)
+            update = self.event_switch(event) or update
+        
         if update:
             self.update_rendering()
             return True
@@ -136,6 +138,7 @@ class SkyPython(QMainWindow):
             if total_motion <= 60:
                 
                 self.layer_widget_fader.make_active()
+                self.zoom_button_fader.make_active()
                 
             return True
                 
@@ -194,11 +197,17 @@ class SkyPython(QMainWindow):
         Will also need to add the files mainWidget, buttons and probably the image information file
         '''
         self.layer_select_widget = PreferencesButton(self.view)
+        self.zoom_button = ZoomButton(self.view)
         
-        position = (800 - 336) / 2 + 1
-        self.layer_select_widget.setGeometry(QtCore.QRect(1, position, 55, 336))
+        position_y = ((self.sky_renderer.render_state.screen_height - 336) / 2) + 1
+        self.layer_select_widget.setGeometry(QtCore.QRect(1, position_y, 55, 336))
+        
+        position_x = ((self.sky_renderer.render_state.screen_width - 221) / 2) + 1
+        position_y = ((self.sky_renderer.render_state.screen_height - 31) * 9/10) + 1
+        self.zoom_button.setGeometry(QtCore.QRect(position_x, position_y, 221, 31))
         
         self.layer_widget_fader = WidgetFader(self.layer_select_widget, 2500)
+        self.zoom_button_fader = WidgetFader(self.zoom_button, 2500)
     
     def update_rendering(self):
         self.sky_renderer.updateGL()

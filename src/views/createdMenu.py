@@ -95,7 +95,7 @@ class Ui_menuBackground(object):
         self.meteorButton.setObjectName("meteorButton")
         self.gridlayout.addWidget(self.meteorButton, 4, 0, 1, 1)
 
-        self.retranslateUi(self)
+        self.retranslateUi()
 
-    def retranslateUi(self, menuBackground):
+    def retranslateUi(self):
         self.setWindowTitle(QtGui.QApplication.translate("menuBackground", "Widget", None, QtGui.QApplication.UnicodeUTF8))

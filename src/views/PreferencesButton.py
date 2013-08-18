@@ -14,10 +14,6 @@ class PreferencesButton(QWidget, createdMenu.Ui_menuBackground):
     '''
 
     def __init__(self, parent=None):
-        super(PreferencesButton, self).__init__(parent)
-        self.setupUi(PreferencesButton)
-        
-        
         '''
         This determines what should happen when the buttons are clicked
         buttons are:
@@ -29,6 +25,9 @@ class PreferencesButton(QWidget, createdMenu.Ui_menuBackground):
         gridButton
         horizonButton
         '''
+        super(PreferencesButton, self).__init__(parent)
+        self.setupUi(PreferencesButton)
+
         self.starButtonActive = True
         self.constellationButtonActive = True
         self.messierButtonActive = True
@@ -37,7 +36,7 @@ class PreferencesButton(QWidget, createdMenu.Ui_menuBackground):
         self.gridButtonActive = True
         self.horizonButtonActive = True
     
-    def CheckForButtonPress(self, source, event):
+    def checkForButtonPress(self, source, event):
         
         if event.type() != QtCore.QEvent.MouseButtonPress:
             return False

@@ -17,6 +17,7 @@ class SharedPreferences(object):
                    "source_provider.6" : True,
                    "source_provider.7" : True,
                    "source_provider.8" : True }
+    ALLOW_ROTATION = False
 
     def __init__(self):
         '''

@@ -15,6 +15,8 @@ from SharedPreferences import SharedPreferences
 from src.views.PreferencesButton import PreferencesButton
 from src.views.ZoomButton import ZoomButton
 from src.views.WidgetFader import WidgetFader
+from src.touch.MapMover import MapMover
+from src.touch.DragRotateZoomGestureDetector import DragRotateZoomGestureDetector as DRZDetector
 from src.layers.LayerManager import instantiate_layer_manager
 from src.control.AstronomerModel import AstronomerModel
 from src.control.ControllerGroup import create_controller_group
@@ -86,81 +88,32 @@ class SkyPython(QMainWindow):
     sky_renderer = None
     renderer_controller = None
     
-    pos_x, pos_y = 0, 0
-    def eventFilter(self, source, event):
-        
-        pref_buttons_pressed = self.layer_select_widget.checkForButtonPress(source, event)
-        if pref_buttons_pressed:
-            
-            return self.pref_change(self.shared_prefs, self.layer_manager, 
-                                    pref_buttons_pressed, event)
-            
-        else:
-            update = self.zoom_button.checkForButtonPress(source, event, self.controller)
-            update = self.event_switch(event) or update
-        
-        if update:
-            self.update_rendering()
-            return True
-        
-        return QMainWindow.eventFilter(self, source, event)
-
     def pref_change(self, prefs, manager, layers, event):
-        self.pos_x, self.pos_y = event.x(), event.y()
         
         for layer in layers:
             prefs.PREFERENCES[layer] = not prefs.PREFERENCES[layer]
             manager.on_shared_preference_change(prefs, layer)
         
         return True
-
-    def event_switch(self, event):
+    
+    def eventFilter(self, source, event):
+        pref_pressed = self.pref_buttons.checkForButtonPress(source, event)
+        zoom_pressed = self.zoom_button.checkForButtonPress(source, event, self.controller)
         
-        if event.type() == QtCore.QEvent.MouseButtonPress:
-            self.pos_x, self.pos_y = event.x(), event.y()
-            return True
-        elif event.type() == QtCore.QEvent.MouseButtonRelease:
-            if (event.x() - self.pos_x) > 30: 
-                # rotate left on drag left to right
-                self.controller.change_right_left(-math.pi/8.0)
-            elif (event.x() - self.pos_x) < -30: 
-                # rotate right on drag right to left
-                self.controller.change_right_left(math.pi/8.0)
-                
-            if (event.y() - self.pos_y) > 30: 
-                # rotate up on drag up to down
-                self.controller.change_up_down(-math.pi/8.0)
-            elif (event.y() - self.pos_y) < -30: 
-                # rotate down on drag down to up
-                self.controller.change_up_down(math.pi/8.0)
-               
-            total_motion = abs(event.x() - self.pos_x) + abs(event.y() - self.pos_y) 
-            if total_motion <= 60:
-                
-                self.layer_widget_fader.make_active()
-                self.zoom_button_fader.make_active()
-                
-            return True
-                
-        elif event.type() == QtCore.QEvent.KeyPress:
+        if pref_pressed or zoom_pressed:
+            self.show_menus_func()
             
-            if event.key() == 16777235: # up key, zoom in
-                self.controller.zoom_in()
-            elif event.key() == 16777237: # down key, zoom out
-                self.controller.zoom_out()
-            elif event.key() == 65: # "a" key, rotate left
-                self.controller.change_right_left(-math.pi/64.0)
-            elif event.key() == 68: # "d" key, rotate right
-                self.controller.change_right_left(math.pi/64.0)
-            elif event.key() == 87: # "w" key, rotate up
-                self.controller.change_up_down(-math.pi/64.0)
-            elif event.key() == 83: # "s" key, rotate down
-                self.controller.change_up_down(math.pi/64.0)
-            
-            return True
-        
+            if pref_pressed:
+                self.pref_change(self.shared_prefs, self.layer_manager, 
+                                 pref_pressed, event)
         else:
-            return False
+            update = self.DRZ_detector.on_motion_event(event)
+        
+        if pref_pressed or zoom_pressed or update:
+            self.update_rendering()
+            return True
+        
+        return QMainWindow.eventFilter(self, source, event)
     
     def initialize_model_view_controller(self):
         self.view = QGraphicsView()
@@ -196,18 +149,29 @@ class SkyPython(QMainWindow):
         '''
         Will also need to add the files mainWidget, buttons and probably the image information file
         '''
-        self.layer_select_widget = PreferencesButton(self.view)
+        screen_width = self.sky_renderer.render_state.screen_width
+        screen_height = self.sky_renderer.render_state.screen_height
+        
+        self.pref_buttons = PreferencesButton(self.view)
         self.zoom_button = ZoomButton(self.view)
         
-        position_y = ((self.sky_renderer.render_state.screen_height - 336) / 2) + 1
-        self.layer_select_widget.setGeometry(QtCore.QRect(1, position_y, 55, 336))
+        position_y = ((screen_height - 336) / 2) + 1
+        self.pref_buttons.setGeometry(QtCore.QRect(1, position_y, 55, 336))
         
-        position_x = ((self.sky_renderer.render_state.screen_width - 221) / 2) + 1
-        position_y = ((self.sky_renderer.render_state.screen_height - 31) * 9/10) + 1
+        position_x = ((screen_width - 221) / 2) + 1
+        position_y = ((screen_height - 31) * 9/10) + 1
         self.zoom_button.setGeometry(QtCore.QRect(position_x, position_y, 221, 31))
         
-        self.layer_widget_fader = WidgetFader(self.layer_select_widget, 2500)
+        self.pref_buttons_fader = WidgetFader(self.pref_buttons, 2500)
         self.zoom_button_fader = WidgetFader(self.zoom_button, 2500)
+        
+        self.map_mover = MapMover(self.model, self.controller, self.shared_prefs, 
+                                  screen_height)
+        self.DRZ_detector = DRZDetector(self.map_mover, self.show_menus_func)
+        
+    def show_menus_func(self):
+        self.pref_buttons_fader.make_active()
+        self.zoom_button_fader.make_active()
     
     def update_rendering(self):
         self.sky_renderer.updateGL()

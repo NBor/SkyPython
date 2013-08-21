@@ -8,17 +8,22 @@ from Controller import Controller
 
 class ZoomController(Controller):
     '''
-    classdocs
+    This controller is responsible for setting the
+    zoom factor for the night sky.
     '''
     ZOOM_FACTOR = pow(1.5, 0.0625)
     MAX_ZOOM_OUT = 90.0
     
-    # Decreases the field of view by ZOOM_FACTOR
     def zoom_in(self):
+        '''
+        Decreases the field of view by ZOOM_FACTOR
+        '''
         self.zoom_by(1.0 / float(self.ZOOM_FACTOR))
 
-    # Increases the field of view by ZOOM_FACTOR
     def zoom_out(self):
+        '''
+        Increases the field of view by ZOOM_FACTOR
+        '''
         self.zoom_by(self.ZOOM_FACTOR)
 
     def __set_field_of_view(self, zoom_degrees):

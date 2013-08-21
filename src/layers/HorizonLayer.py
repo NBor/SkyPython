@@ -15,15 +15,15 @@ from src.base.TimeConstants import MILLISECONDS_PER_SECOND
 
 class HorizonLayer(SourceLayer):
     '''
-    classdocs
+    Identifies Nadir, the Zenith and the cardinal directions
     '''
     class HorizonSource(AbstractAstronomicalSource):
         '''
-        classdocs
+        Horizon elements extend Astronomical Sources so that they
+        can be rendered just as stars, constellations, ect...
         '''
-        # Due to a bug in the G1 rendering code text and lines render in different
-        # colors.
-#         LINE_COLOR = 0x78F5B056
+        # The bug in the G1 rendering code in the original java is
+        # not present in the python code. Lines and labels are the same color.
         LINE_COLOR = 0x7856B0F5
         LABEL_COLOR = 0x7856B0F5
         UPDATE_FREQ_MS = 1 * MILLISECONDS_PER_SECOND

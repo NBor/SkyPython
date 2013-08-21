@@ -8,7 +8,7 @@ from FileBasedLayer import FileBasedLayer
 
 class NewMessierLayer(FileBasedLayer):
     '''
-    classdocs
+    Displays messier objects in the renderer
     '''
     
     def get_layer_id(self):
@@ -28,6 +28,6 @@ class NewMessierLayer(FileBasedLayer):
 
 if __name__ == "__main__":
     '''
-    For debugging purposes
+    Do nothing
     '''
     

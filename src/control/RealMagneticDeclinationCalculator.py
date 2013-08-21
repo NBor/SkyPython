@@ -6,7 +6,10 @@ Created on 2013-05-23
 
 class RealMagneticDeclinationCalculator(object):
     '''
-    !!! NEED ANDROID HARDWARE SUPPORT FOR THIS CLASS !!!
+    This class provides an interface to access data from
+    phone hardware to obtain magnetic declination.
+    
+    This class in not functional
     '''
     geo_magnetic_field = None
     

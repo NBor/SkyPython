@@ -8,7 +8,8 @@ import time
 
 class RealClock(object):
     '''
-    classdocs
+    A real clock that provides the current
+    time since the epoch
     '''
     def get_time(self):
         return time.time()

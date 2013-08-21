@@ -6,7 +6,8 @@ Created on 2013-05-23
 
 class ZeroMagneticDeclinationCalculator(object):
     '''
-    classdocs
+    This is a dummy class that provides a magnetic
+    declination of 0.
     '''
     def get_declination(self):
         return 0

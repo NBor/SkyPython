@@ -13,7 +13,8 @@ from src.source.ImageSource import ImageSource
 
 class Layer(object):
     '''
-    classdocs
+    Base class for any layer (is a combination of layer.java
+    and AbstractLayer.java in the original code).
     '''
     reentrant_lock = threading.RLock()
     
@@ -23,6 +24,10 @@ class Layer(object):
         self.update_layer_for_controller_change()
         
     def set_visible(self, visible_bool):
+        '''
+        Makes this layer visible or invisible based on user
+        selection with the preference buttons.
+        '''
         with self.reentrant_lock:
             atomic = self.render_controller.create_atomic()
             for render_manager in self.render_map.values():
@@ -38,6 +43,13 @@ class Layer(object):
             self.render_controller.remove_update_callback(closure)
             
     def redraw(self, points, lines, texts, images, update_type):
+        '''
+        Forces a redraw of the layer by removing all object managers.
+        Updates the renderer (using the given UpdateType), with then given set 
+        of UI elements.  Depending on the value of UpdateType, current sources 
+        will either have their state updated, or will be overwritten by the 
+        given set of UI elements.
+        '''
         if self.render_controller == None:
             return
         
@@ -49,7 +61,11 @@ class Layer(object):
             self.set_sources(images, update_type, ImageSource, atomic)
             self.render_controller.queue_atomic(atomic)
     
-    def set_sources(self, sources, update_type, clazz, atomic):       
+    def set_sources(self, sources, update_type, clazz, atomic):
+        '''
+        Given an input source (point/line/text/image) a corresponding
+        object manager is created and stored in the render_map dictionary.
+        ''' 
         if sources == None: 
             return
         

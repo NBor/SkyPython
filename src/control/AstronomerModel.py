@@ -19,8 +19,38 @@ from src.units.GeocentricCoordinates import get_instance_from_vector3
 
 class AstronomerModel(object):
     '''
-    classdocs
+    Class responsible to modelling the astronomer
+    
+    This class has state on the location and orientation of the astronomer
+    in space and performs calculations for obtaining directions and time.
+    
+    As stated in the android version: 
+    
+    There are 3 frames of reference:
+    Celestial - a frame fixed against the background stars with
+    x, y, z axes pointing to (RA = 90, DEC = 0), (RA = 0, DEC = 0), DEC = 90
+    Phone - a frame fixed in the phone with x across the short side, y across
+    the long side, and z coming out of the phone screen.
+    Local - a frame fixed in the astronomer's local position. x is due east
+    along the ground y is due north along the ground, and z points towards the
+    zenith.
+    
+    We calculate the local frame in phone coords, and in celestial coords and
+    calculate a transform between the two.
+    In the following, N, E, U correspond to the local
+    North, East and Up vectors (ie N, E along the ground, Up to the Zenith)
+    
+    In Phone Space: axesPhone = [N, E, U]
+    
+    In Celestial Space: axesSpace = [N, E, U]
+    
+    We find T such that axesCelestial = T * axesPhone
+    
+    Then, [viewDir, viewUp]_celestial = T * [viewDir, viewUp]_phone
+    
+    where the latter vector is trivial to calculate.
     '''
+    
     POINTING_DIR_IN_PHONE_COORDS = Vector3(0, 0, -1)
     SCREEN_UP_IN_PHONE_COORDS = Vector3(0, 1, 0)
     AXIS_OF_EARTHS_ROTATION = Vector3(0, 0, 1)
@@ -34,6 +64,9 @@ class AstronomerModel(object):
     celestial_coords_last_updated = -1
 
     def get_time(self):
+        '''
+        return a time struct of the current GM time
+        '''
         return time.gmtime(self.clock.get_time())
 
     def set_location(self, lat_long):
@@ -45,28 +78,46 @@ class AstronomerModel(object):
         self.magnetic_field.assign(vector3=mag_field)
         
     def get_north(self):
+        '''
+        In celestial coordinates
+        '''
         self.calculate_local_north_and_up_in_celestial_coords(False)
         return get_instance_from_vector3(self.true_north_celestial)
         
     def get_south(self):
+        '''
+        In celestial coordinates
+        '''
         self.calculate_local_north_and_up_in_celestial_coords(False)
         v = Geometry.scale_vector(self.true_north_celestial, -1)
         return get_instance_from_vector3(v)
     
     def get_zenith(self):
+        '''
+        In celestial coordinates
+        '''
         self.calculate_local_north_and_up_in_celestial_coords(False)
         return get_instance_from_vector3(self.up_celestial)
     
     def get_nadir(self):
+        '''
+        In celestial coordinates
+        '''
         self.calculate_local_north_and_up_in_celestial_coords(False)
         v = Geometry.scale_vector(self.up_celestial, -1)
         return get_instance_from_vector3(v)
     
     def get_east(self):
+        '''
+        In celestial coordinates
+        '''
         self.calculate_local_north_and_up_in_celestial_coords(False)
         return get_instance_from_vector3(self.true_east_celestial)
     
     def get_west(self):
+        '''
+        In celestial coordinates
+        '''
         self.calculate_local_north_and_up_in_celestial_coords(False)
         v = Geometry.scale_vector(self.true_east_celestial, -1)
         return get_instance_from_vector3(v)
@@ -76,6 +127,10 @@ class AstronomerModel(object):
         self.calculate_local_north_and_up_in_celestial_coords(True)
         
     def calculate_pointing(self):
+        '''
+        update the direction that the phone is pointing and the up vector
+        perpendicular to the phone (in celestial coords).
+        '''
         if not (self.auto_update_pointing): 
             return
         
@@ -162,6 +217,9 @@ class AstronomerModel(object):
         self.pointing.update_perpendicular(perpendicular)
 
     def set_clock(self, clock):
+        '''
+        clock must have a get_time() method
+        '''
         self.clock = clock
         self.calculate_local_north_and_up_in_celestial_coords(True)
         
@@ -172,6 +230,7 @@ class AstronomerModel(object):
         '''
         Constructor
         '''
+        # provides correction from true North to magnetic North 
         self.magnetic_declination_calc = mag_dec_calc
         
         #The pointing comprises a vector into the phone's screen expressed in
@@ -202,7 +261,6 @@ class AstronomerModel(object):
         
 if __name__ == "__main__":
     '''
-    For debugging purposes
-    Ready for testing
+    Do nothing
     '''
     

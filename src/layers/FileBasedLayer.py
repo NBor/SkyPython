@@ -10,7 +10,8 @@ from src.sourceProto.ProtobufAstronomicalSource import ProtobufAstronomicalSourc
 
 class FileBasedLayer(SourceLayer):
     '''
-    NEED TO FINISH IMPLEMENTING
+    For stars, constellations and messier objects. This is an abstraction
+    for all layers that obtain their data from files.
     '''
     executor_for_multiple_threads = None
     file_name = ""
@@ -29,7 +30,7 @@ class FileBasedLayer(SourceLayer):
             f = open(file_name, "rb")
             astro_sources_proto.ParseFromString(f.read())
         except:
-            raise IOError("Could not open file")
+            raise IOError("Could not open file: " + file_name)
         finally:
             f.close()
         

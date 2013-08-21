@@ -37,7 +37,6 @@ class Pointing(object):
         
 if __name__ == "__main__":
     '''
-    For debugging purposes
-    Ready for debugging
+    Do nothing
     '''
     

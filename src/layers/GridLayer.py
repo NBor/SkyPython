@@ -13,13 +13,20 @@ from src.units.GeocentricCoordinates import get_instance
 
 class GridLayer(SourceLayer):
     '''
-    classdocs
+    creates a Layer which returns Sources which correspond to grid lines parallel
+    to the celestial equator and the hour angle. That is, returns a set of lines
+    with constant right ascension, and another set with constant declination.
     '''
     class GridSource(AbstractAstronomicalSource):
         '''
-        classdocs
+        Grid elements as astronomical sources so that they
+        can be rendered just like any other astronomical object.
         '''
         def create_ra_line(self, index, num_ra_sources):
+            '''
+            Constructs a single longitude line. These lines run from the north pole to
+            the south pole at fixed Right Ascensions.
+            '''
             line = LineSource([], self.LINE_COLOR)
             ra = index * 360.0 / num_ra_sources
             for i in range(0, self.NUM_DEC_VERTICES - 1):
@@ -33,6 +40,9 @@ class GridLayer(SourceLayer):
             return line
         
         def create_dec_line(self, index, num_dec_sources):
+            '''
+            Creates a single latitudinal line.
+            '''
             line = LineSource([], self.LINE_COLOR)
             dec = 90.0 - (index + 1.0) * 180.0 / (num_dec_sources + 1.0)
             for i in range(0, self.NUM_RA_VERTICES):

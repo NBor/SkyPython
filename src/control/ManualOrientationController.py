@@ -9,7 +9,8 @@ from src.utils import Geometry
 
 class ManualOrientationController(Controller):
     '''
-    classdocs
+    This class is responsible for the manual rotation
+    of the sky relative to the astronomer.
     '''
     def start(self):
         pass
@@ -62,7 +63,7 @@ class ManualOrientationController(Controller):
         
     def rotate(self, degrees):
         '''
-        rotate astronomers view
+        rotate astronomers view (clockwise/anti-clockwise)
         '''
         if not self.enabled: return 
         
@@ -79,14 +80,13 @@ class ManualOrientationController(Controller):
 
     def __init__(self):
         '''
-        Constructor
+        Constructor, initialize superclass
         '''
         Controller.__init__(self)
         
 if __name__ == "__main__":
     '''
-    For debugging purposes
-    Ready for testing
+    Do nothing
     '''
     
     

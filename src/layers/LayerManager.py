@@ -44,7 +44,8 @@ def instantiate_layer_manager(model, shared_prefs):
 
 class LayerManager(object):
     '''
-    classdocs
+    Class responsible for grouping together all layers
+    so that they can be controlled together.
     '''
 
     def add_layer(self, layer):

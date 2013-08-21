@@ -10,11 +10,12 @@ from src.search.SearchResult import SearchResult
 
 class SourceLayer(Layer):
     '''
-    classdocs
+    An extention of Layer which has additional methods.
     '''
     class SourceUpdateClosure(object):
         '''
-        classdocs
+        Update closure that allows sources to be
+        updated for a given layer.
         '''
         source_layer = None
         

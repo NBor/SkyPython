@@ -6,7 +6,8 @@ Created on 2013-05-23
 
 class Controller(object):
     '''
-    classdocs
+    Super class that forces all controller sub classes
+    to have models and an enabled boolean.
     '''
 
     def __init__(self):
@@ -18,6 +19,5 @@ class Controller(object):
         
 if __name__ == "__main__":
     '''
-    For debugging purposes
-    Ready for testing
+    Do nothing
     '''

@@ -9,6 +9,12 @@ from ManualOrientationController import ManualOrientationController
 from ZoomController import ZoomController
 
 def create_controller_group():
+    '''
+    Creates an instance of a controller group and provides it
+    with the necessary controllers to allow for manipulation
+    of the appearance of the sky. This class is both a factory
+    and a facade for the underlying controllers
+    '''
     group = ControllerGroup()
     
 #     group.addController(new LocationController(context));
@@ -26,13 +32,22 @@ def create_controller_group():
 
 class ControllerGroup(Controller):
     '''
-    classdocs
+    Class which holds all the controllers and provides
+    methods for using the controllers. This way there
+    is one collection of controllers that can be used
+    centrally.
     '''
     def set_enabled(self, enabled_bool):
+        '''
+        enables or disables all controllers
+        '''
         for controller in self.controllers:
             controller.enabled = enabled_bool
             
     def set_model(self, m_model):
+        '''
+        Provides all controllers with access to the model.
+        '''
         for controller in self.controllers:
             controller.model = m_model
             
@@ -40,40 +55,54 @@ class ControllerGroup(Controller):
         self.model.auto_update_pointing = self.using_auto_mode 
         #self.model.set_clock(transitioning_clock)
         
-    # Switches to time-travel model and start with the supplied time.
     def go_time_travel(self, date):
+        '''
+        Switches to time-travel model and start with the supplied time.
+        '''
         raise NotImplementedError("not finished time stuff")
         #transitioningClock.goTimeTravel(d);
         
-    # Gets the id of the string used to display the current speed of time travel.
     def get_current_speed_tag(self):
+        '''
+        Gets the id of the string used to display the current speed of time travel.
+        '''
         #return timeTravelClock.getCurrentSpeedTag();
         raise NotImplementedError("not finished time stuff")
     
-    # Sets the model back to using real time.
     def use_real_time(self):
+        '''
+        Sets the model back to using real time.
+        '''
         #transitioningClock.returnToRealTime();
         raise NotImplementedError("not finished time stuff")
     
-    # Increases the rate of time travel into the future (or decreases the rate of
-    # time travel into the past) if in time travel mode.
     def accelerate_time_travel(self):
+        '''
+        Increases the rate of time travel into the future (or decreases the rate of
+        time travel into the past) if in time travel mode.
+        '''
         #timeTravelClock.accelerateTimeTravel();
         raise NotImplementedError("not finished time stuff")
     
-    # Decreases the rate of time travel into the future (or increases the rate of
-    # time travel into the past) if in time travel mode.
     def decelerate_time_travel(self):
+        '''
+        Decreases the rate of time travel into the future (or increases the rate of
+        time travel into the past) if in time travel mode.
+        '''
         #timeTravelClock.decelerateTimeTravel();
         raise NotImplementedError("not finished time stuff")
     
-    # Pauses time, if in time travel mode.
     def pause_time(self):
+        '''
+        Pauses time, if in time travel mode.
+        '''
         #timeTravelClock.pauseTime();
         raise NotImplementedError("not finished time stuff")
     
-    # Sets auto mode (true) or manual mode (false).
     def set_auto_mode(self, enabled_bool):
+        '''
+        Sets auto mode (true) or manual mode (false).
+        '''
         self.manual_direction_controller.enabled = (not enabled_bool)
         #sensorOrientationController.setEnabled(enabled_bool)
         if self.model != None:
@@ -88,43 +117,60 @@ class ControllerGroup(Controller):
         for controller in self.controllers:
             controller.stop()
             
-    # Moves the pointing right and left.
-    #
-    # @param radians the angular change in the pointing in radians (only
-    # accurate in the limit as radians tends to 0.)
     def change_right_left(self, radians):
+        '''
+        Moves the pointing right and left.
+        
+        radians is the angular change in the pointing in radians (only
+        accurate in the limit as radians tends to 0.)
+        '''
         self.manual_direction_controller.change_right_left(radians)
     
-    # Moves the pointing up and down.
-    #
-    # @param radians the angular change in the pointing in radians (only
-    # accurate in the limit as radians tends to 0.)
     def change_up_down(self, radians):
+        '''
+        Moves the pointing up and down.
+        
+        radians is the angular change in the pointing in radians (only
+        accurate in the limit as radians tends to 0.)
+        '''
         self.manual_direction_controller.change_up_down(radians)
     
-    # Rotates the view about the current center point.
     def rotate(self, degrees):
+        '''
+        Rotates the view about the current center point.
+        '''
         self.manual_direction_controller.rotate(degrees)
     
-    # Zooms the user in.
     def zoom_in(self):
+        '''
+        Zooms the user in.
+        '''
         self.zoom_controller.zoom_in()
         
-    # Zooms the user out.
     def zoom_out(self):
+        '''
+        Zooms the user out.
+        '''
         self.zoom_controller.zoom_out()
     
-    # Sends the astronomer's pointing to the new target.
-    # takes the target the destination
     def teleport(self, target):
+        '''
+        Sends the astronomer's pointing to the new target.
+        takes the target the destination
+        '''
         #teleportingController.teleport(target)
         raise NotImplementedError("Not done yet")
     
-    # Adds a new controller to this group.
     def add_controller(self, controller):
+        '''
+        Adds a new controller to this group.
+        '''
         self.controllers.append(controller)
 
     def zoom_by(self, ratio):
+        '''
+        Zoomz by a given ratio
+        '''
         self.zoom_controller.zoom_by(ratio)
 
     def __init__(self):

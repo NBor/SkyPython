@@ -8,7 +8,7 @@ from FileBasedLayer import FileBasedLayer
 
 class NewConstellationsLayer(FileBasedLayer):
     '''
-    classdocs
+    Display constellations in the renderer
     '''
     def get_layer_id(self):
         return -101
@@ -27,6 +27,6 @@ class NewConstellationsLayer(FileBasedLayer):
 
 if __name__ == "__main__":
     '''
-    For debugging purposes
+    Do nothing
     '''
     

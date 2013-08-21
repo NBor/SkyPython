@@ -8,7 +8,7 @@ from FileBasedLayer import FileBasedLayer
 
 class NewStarsLayer(FileBasedLayer):
     '''
-    classdocs
+    Displays stars in the renderer
     '''
 
     def get_layer_id(self):

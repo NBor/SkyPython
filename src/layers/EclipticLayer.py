@@ -12,7 +12,9 @@ from src.units.GeocentricCoordinates import get_instance
 
 class EclipticLayer(SourceLayer):
     '''
-    classdocs
+    This class is the ecliptic, the apparent path of the sun
+    relative to the earth. This appears with the background
+    grid and is not parallel to the grid lines.
     '''
     class EclipticSource(AbstractAstronomicalSource):
         '''

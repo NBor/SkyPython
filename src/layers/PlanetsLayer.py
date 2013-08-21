@@ -10,7 +10,7 @@ from src.provider.Planet import Planet, res
 
 class PlanetsLayer(SourceLayer):
     '''
-    classdocs
+    Manages displaying the other planets, the sun and the moon.
     '''
     def initialize_astro_sources(self, sources):
         for key in res.keys():

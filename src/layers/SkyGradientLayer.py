@@ -12,7 +12,7 @@ from src.units.GeocentricCoordinates import get_instance
 
 class SkyGradientLayer(object):
     '''
-    classdocs
+    updates the position of the sky gradient.
     '''
     renderer_lock = threading.RLock()
     UPDATE_FREQUENCY_MS = 5 * MILLISECONDS_PER_MINUTE
@@ -33,6 +33,9 @@ class SkyGradientLayer(object):
                 self.controller.queue_disable_sky_gradient()
     
     def redraw(self):
+        '''
+        Redraws the sky shading gradient using the model's current time.
+        '''
         model_time = self.model.get_time()
         Ms_since_epoch = calendar.timegm(model_time) * 100
         

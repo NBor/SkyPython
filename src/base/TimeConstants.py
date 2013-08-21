@@ -2,6 +2,8 @@
 Created on 2013-05-20
 
 @author: Neil
+
+These constants are used in calculations, ex. movement of planets.
 '''
 
 MILLISECONDS_PER_SECOND =    1000

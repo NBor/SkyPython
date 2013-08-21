@@ -18,9 +18,12 @@ from src.units.GeocentricCoordinates import get_instance
 
 class MeteorShowerLayer(SourceLayer):
     '''
-    classdocs
+    Shows well known meteor showers in the sky.
     '''
     class Shower(object):
+        '''
+        state for a meteor shower
+        '''
         def __init__(self, name_id, radiant, start, peak, end, peak_meteors_per_hour):
             self.name_id = name_id
             self.radiant = radiant
@@ -31,9 +34,10 @@ class MeteorShowerLayer(SourceLayer):
             
     class MeteorRadiantSource(AbstractAstronomicalSource):
         '''
-        classdocs
+        Meteor Showers extend AstronomicalSource so that they can
+        be rendered in the same way as other Astronomical sources.
         '''
-#         LABEL_COLOR = 0xf67e81
+        # G1 bug not present in PyOpenGL
         LABEL_COLOR = 0x817ef6
         UP = Vector3(0.0, 1.0, 0.0)
         UPDATE_FREQ_MS = 1 * MILLISECONDS_PER_DAY
@@ -132,10 +136,13 @@ class MeteorShowerLayer(SourceLayer):
     METEOR_THRESHOLD_PER_HR = 10
     
     def initialize_showers(self):
-        # A list of all the meteor showers with > 10 per hour
-        # Source: http://www.imo.net/calendar/2011#table5
-        # Note the zero-based month. 10=November
-        # Actual start for Quadrantids is December 28 - but we can't cross a year boundary.
+        '''
+        A list of all the meteor showers with > 10 per hour
+        Source: http://www.imo.net/calendar/2011#table5
+        Note the zero-based month. 10=November
+        Actual start for Quadrantids is December 28 - but we can't cross a year boundary.
+        '''
+        
         self.showers.append(self.Shower("Quadrantids", get_instance(230, 49),
                                         dt.datetime(self.ANY_OLD_YEAR,1,1,0,0,0).timetuple(),
                                         dt.datetime(self.ANY_OLD_YEAR,1,4,0,0,0).timetuple(),

@@ -2,15 +2,9 @@
 Created on 2013-05-20
 
 @author: Neil
-'''
 
-'''
-Static methods for asserting that parameters or other variables equal
-specific values. This class is similar to the assert keyword in Java, except
-that it is always on (it does not require an -ea flag). Moreover, this class
-provides additional method for convenience.
-
-Originally in java by Brent Bryan
+Functions for asserting that parameters or other variables equal
+specific values.
 '''
 
 def check(boolean_value):
@@ -23,14 +17,14 @@ def check(boolean_value):
     
 def check_not_none(input_val):
     '''
-    Ensures that the given reference is non-null.
+    Ensures that the given reference is not None.
     '''
     if input_val == None:
         raise Exception("Expected non-None, but got None.")
 
 def check_not_empty(in_string):
     '''
-    Ensures that the specified String is not None, or equal ot the empty string
+    Ensures that the specified String is not None, or equal to the empty string
     ("") after all whitespace characters have been removed.
     '''
     if (in_string == None) or "".join(in_string.split()) == "":
@@ -63,7 +57,6 @@ def check_between(value, minimum, maximum):
     
 if __name__ == "__main__":
     '''
-    For debugging purposes
-    Ready for testing
+    Run Checks
     '''
-    
+    check(False)

@@ -1,7 +1,30 @@
 '''
+// Copyright 2008 Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// Original Author: Kevin Serafini, Brent Bryan
+// 
+// Notification of Change: The original java source code has been heavily
+// modified in that it has been rewritten in the python programming
+// language and additionaly may component and ideas not found in the 
+// original source code.
+'''
+
+'''
 Created on 2013-05-20
 
-@author: Neil
+@author: Neil Borle
 '''
 import math
 from src.utils.Geometry import mod_2_pi
@@ -18,17 +41,15 @@ class OrbitalElements(object):
     Van Flandern T. C., Pulkkinen, K. F. (1979): "Low-Precision Formulae for
     Planetary Positions", 1979, Astrophysical Journal Supplement Series, Vol. 41,
     pp. 391-411.
-    
-    Originally java by Kevin Serafini and Brent Bryan
     '''
     EPSILON = 1.0e-6
     
-    distance = None      #Mean distance (AU)
-    eccentricity = None  #Eccentricity of orbit
-    inclination = None   #Inclination of orbit (AngleUtils.RADIANS)
-    ascending_node = None #Longitude of ascending node (AngleUtils.RADIANS)
-    perihelion = None    #Longitude of perihelion (AngleUtils.RADIANS)
-    mean_longitude= None  #Mean longitude (AngleUtils.RADIANS)
+    distance = None         #Mean distance (AU)
+    eccentricity = None     #Eccentricity of orbit
+    inclination = None      #Inclination of orbit (AngleUtils.RADIANS)
+    ascending_node = None   #Longitude of ascending node (AngleUtils.RADIANS)
+    perihelion = None       #Longitude of perihelion (AngleUtils.RADIANS)
+    mean_longitude= None    #Mean longitude (AngleUtils.RADIANS)
 
     def get_anomaly(self):
         '''
@@ -76,7 +97,6 @@ class OrbitalElements(object):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     OE = OrbitalElements(54, 0.5, 1, 87, 93, 30)
     print OE.get_anomaly()

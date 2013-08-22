@@ -1,7 +1,7 @@
 '''
 Created on 2013-08-12
 
-@author: Neil
+@author: Neil Borle
 '''
 
 from PySide.QtCore import QTimer

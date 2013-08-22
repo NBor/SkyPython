@@ -1,7 +1,7 @@
 '''
 Created on 2013-05-14
 
-@author: Neil
+@author: Neil Borle
 '''
 
 import sys

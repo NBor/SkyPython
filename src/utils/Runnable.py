@@ -1,7 +1,7 @@
 '''
 Created on 2013-06-07
 
-@author: Neil
+@author: Neil Borle
 '''
 
 class Runnable(object):

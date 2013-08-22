@@ -1,7 +1,30 @@
 '''
+// Copyright 2010 Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// Original Author: Brent Bryan
+// 
+// Notification of Change: The original java source code has been heavily
+// modified in that it has been rewritten in the python programming
+// language and additionaly may component and ideas not found in the 
+// original source code.
+'''
+
+'''
 Created on 2013-06-26
 
-@author: Neil
+@author: Neil Borle
 '''
 
 import time
@@ -20,12 +43,14 @@ USE_PLANETARY_IMAGES = True
 
 class PlanetSource(AbstractAstronomicalSource):
     '''
-    classdocs
+    An extension of AstronomicalSource for planets so that
+    the elements of each planet can be rendered in a standard
+    way.
     '''
     PLANET_SIZE = 3
     PLANET_COLOR = 0x14817EF6
-#     PLANET_LABEL_COLOR = 0xf67e81
-    PLANET_LABEL_COLOR = 0x817ef6
+    # The G1 rendering bug does not appear in this python code.
+    PLANET_LABEL_COLOR = 0x817EF6
     SHOW_PLANETARY_IMAGES = "show_planetary_images"
     UP = Vector3(0.0, 1.0, 0.0)
     

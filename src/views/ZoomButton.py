@@ -1,7 +1,7 @@
 '''
 Created on 2013-08-18
 
-@author: Neil
+@author: Neil Borle
 '''
 
 import PySide.QtCore as QtCore

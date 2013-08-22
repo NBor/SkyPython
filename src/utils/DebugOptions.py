@@ -1,7 +1,7 @@
 '''
 Created on 2013-07-16
 
-@author: Neil
+@author: Neil Borle
 '''
 
 debug_opts = {"No debug settings"  : None,

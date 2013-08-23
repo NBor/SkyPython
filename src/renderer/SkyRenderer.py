@@ -82,7 +82,8 @@ class SkyRenderer(QGLWidget):
         GL.glClear(GL.GL_COLOR_BUFFER_BIT)
         
         for managers in self.layers_to_managers.values():
-            for manager in managers:
+            # reverse to render images, text, lines then points
+            for manager in managers[::-1]:
                 manager.draw(GL)
         self.check_for_errors(GL)
         

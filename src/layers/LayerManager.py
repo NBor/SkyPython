@@ -44,13 +44,13 @@ def instantiate_layer_manager(model, shared_prefs):
     '''
     layer_manager = LayerManager(shared_prefs)
     layer_manager.add_layer(NewStarsLayer())
-    layer_manager.add_layer(NewConstellationsLayer())
     layer_manager.add_layer(NewMessierLayer())
+    layer_manager.add_layer(NewConstellationsLayer())
     layer_manager.add_layer(PlanetsLayer(model))
-    layer_manager.add_layer(GridLayer(24, 19))
-    layer_manager.add_layer(EclipticLayer())
-    layer_manager.add_layer(HorizonLayer(model))
     layer_manager.add_layer(MeteorShowerLayer(model))
+    layer_manager.add_layer(GridLayer(24, 19))
+    layer_manager.add_layer(HorizonLayer(model))
+    layer_manager.add_layer(EclipticLayer())
     layer_manager.add_layer(SkyGradientLayer(model))
     
     if Debug.LAYER == "STARS ONLY":

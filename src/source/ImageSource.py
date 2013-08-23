@@ -90,15 +90,6 @@ class ImageSource(Source):
         self.set_up_vector(up_v)
         self.set_image_id(new_id)
         
-        # horizontal corner
-        self.ux = 0
-        self.uy = 0
-        self.uz = 0
-        # vertical corner
-        self.vx = 0
-        self.vy = 0
-        self.vz = 0
-        
 if __name__ == "__main__":
     '''
     For debugging purposes

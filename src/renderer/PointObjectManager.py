@@ -44,7 +44,8 @@ DRAWABLE_STARS_TEXTURE = int("0x7f02005d", 0)
 
 class PointObjectManager(RendererObjectManager):
     '''
-    classdocs
+    Handles the management of points in the sky, points
+    are loaded into buffers to be rendered.
     '''
 
     class RegionData(object):
@@ -62,6 +63,7 @@ class PointObjectManager(RendererObjectManager):
             self.text_coord_buffer = TextCoordBuffer(0, True)
             self.color_buffer = NightVisionBuffer(0, True)
             
+    # Following values chosen by the java authors
     NUM_STARS_IN_TEXTURE = 2
     MINIMUM_NUM_POINTS_FOR_REGIONS = 200
     COMPUTE_REGIONS = True
@@ -244,7 +246,8 @@ class PointObjectManager(RendererObjectManager):
             
     def __init__(self, new_layer, new_texture_manager):
         '''
-        change inputs to not be default
+        constructor
+        TODO: change inputs to not be default
         '''
         def construct_method():
             return PointObjectManager.RegionData()

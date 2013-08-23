@@ -38,7 +38,7 @@ from src.utils.VectorUtil import cross_product, normalized
 
 class SkyBox(RendererObjectManager):
     '''
-    classdocs
+    Provides the background that goes behind everything
     '''
     NUM_VERTEX_BANDS = 8
     # This number MUST be even

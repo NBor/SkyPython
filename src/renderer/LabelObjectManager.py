@@ -40,7 +40,9 @@ from src.utils.DebugOptions import Debug
 
 class LabelObjectManager(RendererObjectManager):
     '''
-    classdocs
+    Manages the rendering of text labels by loading
+    text sources into buffers for rendering and maintaining 
+    these buffers.
     '''
     class label(LabelMaker.LabelData):
         '''
@@ -190,6 +192,9 @@ class LabelObjectManager(RendererObjectManager):
         gl.glPopMatrix()
         
     def begin_drawing(self, gl):
+        '''
+        Sets OpenGL state for rapid drawing
+        '''
         self.texture_ref.bind(gl)
         gl.glShadeModel(gl.GL_FLAT)
         

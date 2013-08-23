@@ -37,7 +37,7 @@ from src.utils.Matrix4x4 import create_identity, create_rotation, multiply_MV
 
 class OverlayManager(RendererObjectManager):
     '''
-    classdocs
+    Manages the various overlay classes.
     '''
     must_update_transformed_orientation = True
     searching = False

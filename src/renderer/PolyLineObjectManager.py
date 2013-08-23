@@ -41,7 +41,8 @@ DRAWABLE_LINE = int("0x7f02003a", 0)
 
 class PolyLineObjectManager(RendererObjectManager):
     '''
-    classdocs
+    Manages the rendering of lines by loading points and lines
+    into glbuffers
     '''
     def update_objects(self, lines, update_type):
         # We only care about updates to positions, ignore any other updates.

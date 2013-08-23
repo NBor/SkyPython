@@ -59,11 +59,11 @@ class PlanetSource(AbstractAstronomicalSource):
     
     def update_coords(self, t_struct):
         self.last_update_time_Ms = time.mktime(t_struct)
-        self.sun_coords = get_instance(t_struct=t_struct,
-                                         planet=Planet(planet_enum.SUN, 
-                                                       res[planet_enum.SUN][0], 
-                                                       res[planet_enum.SUN][1], 
-                                                       res[planet_enum.SUN][2]))
+        
+        p = Planet(planet_enum.SUN, res[planet_enum.SUN][0], 
+                        res[planet_enum.SUN][1], res[planet_enum.SUN][2])
+        self.sun_coords = get_instance(t_struct=t_struct, planet=p)
+        
         ra_dec = radec_get_instance(earth_coord=self.sun_coords, planet=self.planet, time=t_struct)
         self.current_coords.update_from_ra_dec(ra_dec.ra, ra_dec.dec)
         for imgsrc in self.image_sources:

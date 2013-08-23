@@ -33,11 +33,12 @@ from src.rendererUtil.VertexBuffer import VertexBuffer
 
 class LabelOverlayManager(object):
     '''
-    classdocs
+    Manages rendering of which appears at fixed points on the screen, rather
+    than text which appears at fixed points in the world.
     '''
     class Label(LabelMaker.LabelData):
         '''
-        classdocs
+        Holds state on a single label
         '''
         
         def __init__(self, text, color, size):
@@ -47,10 +48,10 @@ class LabelOverlayManager(object):
             LabelMaker.LabelData.__init__(self, text, color, size)
             self.enabled = True
             self.x, self.y = 0, 0
-            self.alpha = 1
+            self.alpha = 1.0
 
     def initialize(self, gl, render_state, labels, texture_manager):
-        self.labels = labels[:]
+        self.labels = labels[:] # deep copy
         self.texture = self.label_maker.initialize(gl, render_state, self.labels, texture_manager)
         
     def release_textures(self, gl):

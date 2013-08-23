@@ -35,7 +35,9 @@ from src.utils.Runnable import Runnable
 
 class RendererController(RendererControllerBase):
     '''
-    classdocs
+    The class for controlling atomic rendering
+    events. Runnable atomic sections are created and then
+    placed on the queue of runnable objects.
     '''
     class AtomicSection(RendererControllerBase):
         '''

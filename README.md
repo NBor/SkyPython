@@ -9,19 +9,24 @@ comments are often ported verbatim. In the absence of the Android framework,
 PySide is used to complete SkyPython. The majority of the code that pertains
 to PySide is encapsulated in the src/skypython/SkyPython.py file
 
+
 FEATURES NOT IMPLEMENTED:
 Searching, Night Vision Mode, Image Gallery and Time Travel.
 
+
 KNOW ISSUSES:
 1) Sky Gradient is not alligned with the sun
+
 2) Text does not render exactly as in the original
+
 3) Images for planets do not render
+
 
 REQUIREMENTS:
 
 1) Python 2.7 with standard library, Python 3 support is not available.
 
-2) PySide 1.1.2, Python library with Qt bindings
+2) PySide 1.1.2, Python library with Qt bindings (run the post install script)
 
 3) PyOpenGL 3.0.2, OpenGL bindings for Python
 
@@ -29,10 +34,12 @@ REQUIREMENTS:
 
 5) ProtoBuf, Google's data interchange format which is available for Python
 
+
 USAGE ECLIPSE:
 
 This project was developed in eclipse with the PyDev plugin and therfore
 can be imported and run inside the eclipse IDE with this plugin.
+
 
 USAGE COMMANDLINE:
 

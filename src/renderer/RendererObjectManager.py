@@ -33,6 +33,8 @@ from src.utils.Enumeration import enum
 class RendererObjectManager(object):
     '''
     ABSTRACT CLASS DO NOT DIRECTLY INSTANTIATE
+    Abstracts the commonality between all the 
+    object managers. Chiefly important attributes.
     '''
     lock = threading.RLock()
     max_radius_of_view = 360   # in degrees

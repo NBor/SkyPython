@@ -32,7 +32,9 @@ from src.utils.Runnable import Runnable
 
 class RenderManager(object):
     '''
-    classdocs
+    Manages render object managers by providing
+    methods that queue runnable events that change
+    the behaviour of the managers.
     '''
     
     def queue_enabled(self, enable_bool, controller):
@@ -67,7 +69,8 @@ command_type = enum(VIEW=0, DATA=1, SYNCHRONIZATION=3)
 
 class RendererControllerBase(object):
     '''
-    classdocs
+    Base class in that it provides the basic functions
+    for dealing with object managers.
     '''
     
     def create_point_manager(self, layer_id):

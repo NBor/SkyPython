@@ -33,7 +33,8 @@ from src.utils.Matrix4x4 import create_identity
 
 class RenderState(object):
     '''
-    classdocs
+    Contains all the state necessary for the SkyRenderer
+    to render properly.
     '''
     camera_pos = GeocentricCoordinates(0, 0, 0)
     look_dir = GeocentricCoordinates(1, 0, 0)

@@ -48,11 +48,11 @@ from src.utils.DebugOptions import Debug
 
 class SkyRenderer(QGLWidget):
     '''
-    classdocs
+    Main class that handles all of the rendering
     '''
     class ManagerReloadData(object):
         '''
-        classdocs
+        encapsulates what is needed to reload a manager
         '''
         def __init__(self, mgr, reload_bool):
             self.manager = mgr

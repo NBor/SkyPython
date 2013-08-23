@@ -38,7 +38,9 @@ from src.utils.DebugOptions import Debug
 
 class ImageObjectManager(RendererObjectManager):
     '''
-    classdocs
+    Manages the rendering of image objects, specifically
+    it takes in a list of image sources and fills several
+    buffers so that these images can be rendered.
     '''
     class Image():
         def __init__(self):
@@ -48,6 +50,10 @@ class ImageObjectManager(RendererObjectManager):
             self.use_blending = False
     
     def update_objects(self, image_sources, update_types):
+        '''
+        takes a list of image sources and creates new buffers
+        for these sources.
+        '''
         if self.update_type.Reset not in update_types and \
                 len(image_sources) != len(self.images):
             return

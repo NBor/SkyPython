@@ -54,6 +54,10 @@ class ImageObjectManager(RendererObjectManager):
         takes a list of image sources and creates new buffers
         for these sources.
         '''
+        
+        # hack to get rid of blank meteor showers.
+        image_sources = [img for img in image_sources if not img.is_blank]
+        
         if self.update_type.Reset not in update_types and \
                 len(image_sources) != len(self.images):
             return

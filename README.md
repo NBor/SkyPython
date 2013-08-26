@@ -11,16 +11,15 @@ to PySide is encapsulated in the src/skypython/SkyPython.py file
 
 
 FEATURES NOT IMPLEMENTED:
+
 Searching, Night Vision Mode, Image Gallery and Time Travel.
 
 
 KNOW ISSUSES:
+
 1) Sky Gradient is not alligned with the sun
 
-2) Text does not render exactly as in the original
-
-3) Images for planets do not render
-
+2) Text renders as a box, which is not as nice
 
 REQUIREMENTS:
 

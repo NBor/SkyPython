@@ -59,31 +59,35 @@ class ImageSource(Source):
     
     def set_up_vector(self, up_v):
         p = self.geocentric_coords
-        u = negate(normalized(cross_product(p, up_v)));
-        v = cross_product(u, p);
-        v.scale(self.image_scale);
-        u.scale(self.image_scale);
+        u = negate(normalized(cross_product(p, up_v)))
+        v = cross_product(u, p)
+        v.scale(self.image_scale)
+        u.scale(self.image_scale)
         
-        self.ux = u.x;
-        self.uy = u.y;
-        self.uz = u.z;
+        self.ux = u.x
+        self.uy = u.y
+        self.uz = u.z
         
-        self.vx = v.x;
-        self.vy = v.y;
-        self.vz = v.z;
+        self.vx = v.x
+        self.vy = v.y
+        self.vz = v.z
     
     def set_image_id(self, input_id):
+        # hack bool to prevent blank meteors from rendering
+        self.is_blank = True if input_id == 'blank' else False
+        
         url = "assets/drawable/" + input_id + ".png"
         self.pixmap_image = QPixmap()
         
         if not self.pixmap_image.load(url):
             raise RuntimeError("Could not load image resource")
-
+    
     def __init__(self, geo_coord, new_id, up_v=Vector3(0.0, 1.0, 0.0), im_scale=1):
         '''
         Constructor
         '''
         Source.__init__(self, colors.WHITE, geo_coord)
+        self.is_blank = False
         self.requires_blending = False
         self.pixmap_image = None
         self.image_scale = im_scale

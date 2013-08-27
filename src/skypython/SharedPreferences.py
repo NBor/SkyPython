@@ -6,8 +6,13 @@ Created on 2013-08-12
 
 class SharedPreferences(object):
     '''
-    classdocs
+    The users preferences which are instantiated in 
+    the SkyPython class. Since Android Shared Preferences
+    are not available in Python, this class simply acts as
+    a container for the state that would have been in 
+    Shared Preferences. 
     '''
+
     PREFERENCES = {"source_provider.0" : True,
                    "source_provider.1" : True,
                    "source_provider.2" : True,

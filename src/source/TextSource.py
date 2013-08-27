@@ -32,7 +32,7 @@ from src.units.GeocentricCoordinates import get_instance
 
 class TextSource(Source):
     '''
-    classdocs
+    A Source which consists of only a text label (no point will be drawn).
     '''
 
 
@@ -49,7 +49,6 @@ class TextSource(Source):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     T = TextSource("Sun", 0xFA783B90)
     print T.geocentric_coords.z

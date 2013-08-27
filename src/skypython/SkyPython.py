@@ -49,7 +49,12 @@ from src.control.ZeroMagneticDeclinationCalculator import ZeroMagneticDeclinatio
 from src.control.MagneticDeclinationCalculatorSwitcher import MagneticDeclinationCalculatorSwitcher as MDCS
 
 def start_application(mode=None):
-    
+    '''
+    Either start the application normally or
+    start it in debug with images. The later causes
+    6 processes to be spawned with different camera
+    positions in the night sky.
+    '''
     if mode == None:
         worker()
     else:
@@ -62,6 +67,9 @@ def start_application(mode=None):
             time.sleep(2)
             
 def worker(index=None):
+    '''
+    Creates a single instance of the application.
+    '''
     app = QApplication(sys.argv)
     w = SkyPython(index)
     w.show()
@@ -72,11 +80,15 @@ def worker(index=None):
 
 class SkyPython(QMainWindow):
     '''
-    classdocs
+    The central widget and heart of the application.
+    Performs all of the initialization of components 
+    and contains updates and event handling. 
     '''
     class RendererModelUpdateClosure():
         '''
-        classdocs
+        A runnable class that updates the state of the
+        model after a change has occurred. Is placed
+        on the event queue.
         '''
         def run(self):
             pointing = self.model.get_pointing()
@@ -112,7 +124,10 @@ class SkyPython(QMainWindow):
     renderer_controller = None
     
     def pref_change(self, prefs, manager, layers, event):
-        
+        '''
+        If a preference button has been pressed, change
+        the preferences according to the selection..
+        '''
         for layer in layers:
             prefs.PREFERENCES[layer] = not prefs.PREFERENCES[layer]
             manager.on_shared_preference_change(prefs, layer)
@@ -120,6 +135,10 @@ class SkyPython(QMainWindow):
         return True
     
     def eventFilter(self, source, event):
+        '''
+        Check if the event is a button press in the UI, if not
+        then check if it was a mouse or key press in DRZ_detector.
+        '''
         pref_pressed = self.pref_buttons.checkForButtonPress(source, event)
         zoom_pressed = self.zoom_button.checkForButtonPress(source, event, self.controller)
         
@@ -139,6 +158,10 @@ class SkyPython(QMainWindow):
         return QMainWindow.eventFilter(self, source, event)
     
     def initialize_model_view_controller(self):
+        '''
+        Set up the graphics view/scene and set the GLWidget.
+        Also sets up the controller for the model.
+        '''
         self.view = QGraphicsView()
         self.scene = QGraphicsScene()
         
@@ -170,7 +193,8 @@ class SkyPython(QMainWindow):
         
     def wire_up_screen_controls(self):
         '''
-        Will also need to add the files mainWidget, buttons and probably the image information file
+        Set up all of the screen controls, so that the user can zoom in/out
+        and select which layers they wish to view.
         '''
         screen_width = self.sky_renderer.render_state.screen_width
         screen_height = self.sky_renderer.render_state.screen_height
@@ -197,11 +221,18 @@ class SkyPython(QMainWindow):
         self.zoom_button_fader.make_active()
     
     def update_rendering(self):
+        '''
+        re-render the sky and run updates
+        '''
         self.sky_renderer.updateGL()
         self.run_queue()
         self.sky_renderer.updateGL()
     
     def run_queue(self):
+        '''
+        In the absence of another thread doing updates,
+        force the updates by running all the runnables on the queue
+        '''
         num = len(list(self.renderer_controller.queuer.queue))
         while num > 0:
             runnable = self.renderer_controller.queuer.get()
@@ -210,6 +241,9 @@ class SkyPython(QMainWindow):
             num -= 1
     
     def __init__(self, debug_index=None):
+        '''
+        Set up all state and control that the application requires.
+        '''
         QMainWindow.__init__(self)
         self.setAttribute(QtCore.Qt.WA_AcceptTouchEvents)
         
@@ -229,6 +263,7 @@ class SkyPython(QMainWindow):
         self.setGeometry(100, 30, 480, 800)
         self.show()
         
+        # every 5 seconds re-render the sky and run updates
         self.update_rendering()
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_rendering)

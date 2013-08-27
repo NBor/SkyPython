@@ -38,7 +38,8 @@ shape_enum = enum(CIRCLE=0, STAR=1, ELLIPTICAL_GALAXY=2, \
 
 class PointSource(Source):
     '''
-    classdocs
+    This class represents a astronomical point source, 
+    such as a star, or a distant galaxy.
     '''
 
     def __init__(self, new_color, new_size, geo_coords=get_instance(0.0, 0.0), \
@@ -53,7 +54,6 @@ class PointSource(Source):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     P = PointSource(0xF0F73615, 1)
     print P.point_shape

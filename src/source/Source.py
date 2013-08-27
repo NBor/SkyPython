@@ -34,7 +34,8 @@ update_granularity = enum(Second=0, Minute=1, Hour=2, Day=3, Month=4, Year=5)
 
 class Source(object):
     '''
-    classdocs
+    Base class for all sources since every source has features such
+    as position, color and granularity
     '''
 
     def __init__(self, new_color, geo_coords=get_instance(0.0, 0.0)):
@@ -46,9 +47,4 @@ class Source(object):
         self.granulatriy = None
         self.name_list = []
         
-if __name__ == "__main__":
-    '''
-    For debugging purposes
-    Ready for testing
-    '''
     

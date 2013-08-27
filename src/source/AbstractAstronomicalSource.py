@@ -29,7 +29,9 @@ Created on 2013-06-16
 
 class AbstractAstronomicalSource(object):
     '''
-    classdocs
+    This class represents a single source shown in SkyMap.
+    Meant to be inherited so that all astronomical sources 
+    (associated with each layer) have these basic methods
     '''
     def initialize(self):
         return self
@@ -54,3 +56,4 @@ class AbstractAstronomicalSource(object):
         Constructor
         '''
         self.names = []
+        

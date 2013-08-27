@@ -32,7 +32,8 @@ from src.utils.Colors import colors
 
 class LineSource(Source):
     '''
-    classdocs
+    Represents a single line with vertices, 
+    Such as a constellation
     '''
 
     def __init__(self, gcvs, new_color=colors.WHITE, lw=1.5):
@@ -44,8 +45,4 @@ class LineSource(Source):
         self.line_width = lw
         self.gc_vertices = gcvs
         
-if __name__ == "__main__":
-    '''
-    For debugging purposes
-    Ready for testing
-    '''
+    

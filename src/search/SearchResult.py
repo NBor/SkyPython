@@ -29,7 +29,7 @@ Created on 2013-05-28
 
 class SearchResult(object):
     '''
-    classdocs
+    A single search result
     '''
     gc_coord = None
     capitalized_name = None

@@ -35,6 +35,8 @@ from src.utils.VectorUtil import negate, normalized, cross_product
 
 class ImageSource(Source):
     '''
+    A celestial object represented by an image, such as a planet or a galaxy.
+    
     // These two vectors, along with Source.xyz, determine the position of the
     // image object.  The corners are as follows
     //
@@ -94,8 +96,4 @@ class ImageSource(Source):
         self.set_up_vector(up_v)
         self.set_image_id(new_id)
         
-if __name__ == "__main__":
-    '''
-    For debugging purposes
-    Ready for testing
-    '''
+    

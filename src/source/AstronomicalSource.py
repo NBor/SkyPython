@@ -32,7 +32,8 @@ from src.utils.Colors import colors
 
 class AstronomicalSource(Source):
     '''
-    classdocs
+    A state storage class for attributes of an
+    astronomical source
     '''
             
     def add_image(self, image):
@@ -62,7 +63,6 @@ class AstronomicalSource(Source):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     new = AstronomicalSource()
     print new.point_sources

@@ -33,7 +33,8 @@ from GLBuffer import GLBuffer
 
 class IndexBuffer(object):
     '''
-    classdocs
+    A buffer for indicies that correspond to verticies,
+    numpy arrays act as buffers and are loaded into OpenGL 
     '''
     def reset(self, num_inds):
         self.num_indices = num_inds

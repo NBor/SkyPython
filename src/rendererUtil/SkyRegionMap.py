@@ -33,10 +33,16 @@ from src.units.GeocentricCoordinates import GeocentricCoordinates
 
 class ActiveRegionData(object):
     '''
-    classdocs
+    This stores data that we only want to compute once per frame about
+    which regions are on the screen.  We don't want to compute these
+    regions for every manager separately, since we can share them
+    between managers.
     '''
     
     def region_is_active(self, region_num, coverage_angle):
+        '''
+        Tests to see if a particular region is active.
+        '''
         return self.region_center_dot_products[region_num] > \
             math.cos(coverage_angle + self.screen_angle)
     
@@ -50,12 +56,45 @@ class ActiveRegionData(object):
 
 class SkyRegionMap(object):
     '''
-    classdocs
+    This is a utility class which divides the sky into a fixed set of regions
+    and maps each of the regions into a generic data object which contains the
+    data for rendering that region of the sky.  For a given frame, this class
+    will determine which regions are on-screen and which are totally
+    off-screen, and will return only the on-screen ones (so we can avoid paying
+    the cost of rendering the ones that aren't on-screen).  There should
+    typically be one of these objects per type of object being rendered: for
+    example, points and labels will each have their own SkyRegionMap.
+    
+    Each region consists of a center (a point on the unit sphere) and an angle,
+    and should contain every object on the unit sphere within the specified
+    angle from the region's center.
+    
+    This also allows for a special "catchall" region which is always rendered
+    and may contain objects from anywhere on the unit sphere.  This is useful
+    because, for small layers, it is cheaper to just render the
+    whole layer than to break it up into smaller pieces.
+    
+    The center of all regions is fixed for computational reasons.  This allows
+    us to find the distance between each region and the current look direction
+    once per frame and share that between all SkyRegionMaps.  For most types
+    of objects, they can also use regions with the same radius, which means
+    that they are the same exact part of the unit sphere.  For these we can
+    compute the regions which are on screen ("active regions") once per frame,
+    and share that between all SkyRegionMaps.  These are called "standard
+    regions", as opposed to "non-standard regions", where the region's angle
+    may be greater than that of the standard region.  Non-standard regions
+    are necessary for some types of objects, such as lines, which may not be
+    fully contained within any standard region.  For lines, we can find the
+    region center which is closest to fully containing the line, and simply
+    increase the angle until it does fully contain it.
     '''
     
     class ObjectRegionData(object):
         '''
-        classdata
+        Data representing an individual object's position in a region.
+        We care about the region itself for obvious reasons, but we care about
+        the dot product with the center because it is a measure of how
+        close it is to the center of a region.
         '''
         
         def __init__(self):
@@ -67,7 +106,8 @@ class SkyRegionMap(object):
                
     class RegionDataFactory(object):
         '''
-        classdocs
+        Factory class where the construct method is set during
+        instantiation to produce RegionData objects
         '''
         def construct(self):
             raise Exception("This method must be overwritten")
@@ -116,6 +156,18 @@ class SkyRegionMap(object):
     
     
     def get_active_regions(self, look_dir, fovy_in_degrees, aspect):
+        '''
+        Computes the data necessary to determine which regions on the screen
+        are active.  This should be produced once per frame and passed to
+        the getDataForActiveRegions method of all SkyRegionMap objects to
+        get the active regions for each map.
+        
+        lookDir The direction the user is currently facing.
+        fovyInDegrees The field of view (in degrees).
+        aspect The aspect ratio of the screen.
+        Returns a data object containing data for quickly determining the
+        active regions.
+        '''
         half_fovy = degrees_to_radians(fovy_in_degrees) / 2.0
         screen_angle = math.asin(math.sin(half_fovy) * math.sqrt(1 + aspect * aspect))
         angle_threshold = screen_angle + self.REGION_COVERAGE_ANGLE_IN_RADIANS
@@ -135,9 +187,17 @@ class SkyRegionMap(object):
                                 screen_angle, active_standard_regions)
         
     def get_object_region(self, gc_coords):
+        '''
+        returns to region that contains the coordinate
+        '''
         return self.get_object_region_data(gc_coords).region
     
     def get_object_region_data(self, gc_coords):
+        '''
+        returns the region a point belongs in, as well as the dot product of the
+        region center and the position.  The latter is a measure of how close it
+        is to the center of the region (1 being a perfect match).
+        '''
         data = self.ObjectRegionData()
         
         i = 0
@@ -168,6 +228,9 @@ class SkyRegionMap(object):
             return self.region_coverage_angles[r_id]
         
     def set_region_coverage_angle(self, r_id, angle_in_radians):
+        '''
+        Sets the coverage angle for a sky region.  Needed for non-point objects.
+        '''
         if self.region_coverage_angles == None:
             self.region_coverage_angles = [self.REGION_COVERAGE_ANGLE_IN_RADIANS] * \
                 len(self.REGION_CENTERS32)
@@ -175,8 +238,11 @@ class SkyRegionMap(object):
         
     def get_region_data(self, r_id):
         '''
-        gets generic RenderingRegionData as specified by ObjectManager
-        which instantiated this class
+        Lookup the region data corresponding to a region ID.  If none exists,
+        and a region data constructor has been set (see setRegionDataConstructor),
+        that will be used to create a new region - otherwise, this will return
+        None.  This can be useful while building or updating a region, but to get
+        the region data when rendering a frame, use getDataForActiveRegions().
         '''
         data = None
         
@@ -189,6 +255,11 @@ class SkyRegionMap(object):
         return data
     
     def get_data_for_active_regions(self, active_region_data):
+        '''
+        returns the rendering data for the active regions.  When using a
+        SkyRegionMap for rendering, this is the function will return the
+        data for the regions you need to render.
+        '''
         data = []
         
         if self.CATCHALL_REGION_ID in self.region_data.keys():

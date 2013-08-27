@@ -34,11 +34,13 @@ from PySide.QtOpenGL import QGLWidget
 
 class LabelMaker(object):
     '''
-    classdocs
+    Creates a texture and paints text on top of it. This is then rendered
+    within an appropriately coloured rectangle.
     '''
     class LabelData(object):
         '''
-        A class which contains data that describes a label and its position in the texture.
+        A class which contains data that describes a label and 
+        its position in the texture.
         '''
         def set_texture_data(self, width_pixels, height_pixels, 
                                     crop_u, crop_v, crop_w, crop_h,

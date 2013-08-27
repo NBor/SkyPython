@@ -33,7 +33,9 @@ from GLBuffer import GLBuffer
 
 class TextCoordBuffer(object):
     '''
-    classdocs
+    Buffers text coordinates, the rectangles that hold the
+    text, so that they can be loaded into OpenGL. Fixed point
+    buffering is not available in PyOpenGL.
     '''
     def reset(self, num_verts):
         if num_verts < 0:

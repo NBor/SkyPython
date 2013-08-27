@@ -31,7 +31,9 @@ from ColorBuffer import ColorBuffer
 
 class NightVisionBuffer(object):
     '''
-    classdocs
+    Creates and maintains two instances of color
+    buffers, one for night and a regular one. These
+    can be switched depending on what is selected.
     '''
     def reset(self, num_verts):
         self.normal_buffer.reset(num_verts)

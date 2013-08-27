@@ -31,7 +31,8 @@ from numpy import array_equal, empty_like
 
 class GLBuffer(object):
     '''
-    classdocs
+    Buffer for OpenGL which encapsulates the buffer
+    binding and unbinding.
     '''
     can_use_VBO = False
     
@@ -60,12 +61,8 @@ class GLBuffer(object):
             self.buffer = m_buffer[:]
             self.buffer_size = m_buff_size
             
-            #print self.buffer_id
             if self.buffer_id == -1:
                 self.buffer_id = gl.glGenBuffers(1)
-            #print self.buffer_id
-            #print self.buffer_size, len(self.buffer)
-            #print self.buffer_type
             
             gl.glBindBuffer(self.buffer_type, self.buffer_id)
             gl.glBufferData(self.buffer_type, m_buff_size, m_buffer, gl.GL_STATIC_DRAW)

@@ -33,7 +33,8 @@ from GLBuffer import GLBuffer
 
 class ColorBuffer(object):
     '''
-    classdocs
+    Buffers colors of objects using numpy arrays so that
+    when set, the buffer is loaded into OpenGL.
     '''
     def reset(self, num_verts):
         self.num_vertices = num_verts

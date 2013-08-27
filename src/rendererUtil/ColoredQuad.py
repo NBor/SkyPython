@@ -32,7 +32,8 @@ from src.units.Vector3 import Vector3
 
 class ColoredQuad(object):
     '''
-    classdocs
+    Provides an abstraction so that colored rectangles
+    can be buffered and loaded into OpenGL
     '''
     def draw(self, gl):
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)

@@ -38,11 +38,13 @@ def construct_id_to_image_map(filename, id_map):
 
 class TextureManager(object):
     '''
-    classdocs
+    Manages the creation and organization of
+    textures. 
     '''
     class TextureReference(object):
         '''
-        classdocs
+        Contains a reference to a texture, it's id, and
+        allows for invalidation of that texture
         '''
         def bind(self, gl):
             self.check_valid()
@@ -70,7 +72,8 @@ class TextureManager(object):
             
     class TextureData(object):
         '''
-        classdocs
+        State on the number of times a 
+        texture has been referenced
         '''
         
         def __init__(self):

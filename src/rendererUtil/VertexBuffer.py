@@ -33,7 +33,9 @@ from GLBuffer import GLBuffer
 
 class VertexBuffer(object):
     '''
-    classdocs
+    Buffers the location of vertices such as stars (points)
+    to be loaded into OpenGL. Fixed point is not used in
+    PyOpenGL.
     '''
     def reset(self, num_verts):
         self.num_vertices = num_verts

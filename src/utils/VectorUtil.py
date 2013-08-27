@@ -70,14 +70,12 @@ def sum_vectors(v1, v2):
     return Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z)
 
 def difference(v1, v2):
+    '''
+    subtract v2 from v1
+    '''
     return sum_vectors(v1, negate(v2))
 
 def scale(v, factor):
     return Vector3(v.x * factor, v.y * factor, v.z * factor)
     
-if __name__ == "__main__":
-    '''
-    For debugging purposes
-    Ready for testing
-    '''
     

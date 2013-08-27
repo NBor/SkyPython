@@ -102,26 +102,10 @@ def create_perspective_projection(width, height, fovy_in_radians):
         0, 0, -2.0*far*near / float(far - near), 0])
 
 def create_view(look_dir, up, right):
-    return Matrix4x4([ \
-        right.x,
-        up.x,
-        -look_dir.x,
-        0,
-    
-        right.y,
-        up.y,
-        -look_dir.y,
-        0,
-    
-        right.z,
-        up.z,
-        -look_dir.z,
-        0,
-    
-        0,
-        0,
-        0,
-        1])
+    return Matrix4x4([right.x, up.x, -look_dir.x, 0,
+                      right.y, up.y, -look_dir.y, 0,
+                      right.z, up.z, -look_dir.z, 0,
+                      0, 0, 0, 1])
         
 def multiply_MM(mat1, mat2):
     m = mat1.values[:]
@@ -167,7 +151,8 @@ def transform_vector(mat, v):
 
 class Matrix4x4(object):
     '''
-    classdocs
+    4x4 matrix which is used in the rendering process
+    such as the view and perspective matrices
     '''
     values = [0.0] * 16
 
@@ -179,3 +164,5 @@ class Matrix4x4(object):
             self.values = [float(x) for x in contents]
         else:
             raise IndexError("input not of len 16")
+            
+            

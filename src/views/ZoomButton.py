@@ -10,7 +10,8 @@ from PySide.QtGui import QWidget
 
 class ZoomButton(QWidget, ZoomWidget.Ui_ZoomBar):
     '''
-    classdocs
+    A button widget that indirectly controls zoom in/out
+    on the model through a controller group.
     '''
     
     def __init__(self, parent=None):
@@ -21,6 +22,10 @@ class ZoomButton(QWidget, ZoomWidget.Ui_ZoomBar):
         self.setupUi(ZoomButton)
         
     def checkForButtonPress(self, source, event, controller):
+        '''
+        checks to see if the event is a button press of either
+        the zoom in or zoom out buttons.
+        '''
         
         if event.type() != QtCore.QEvent.MouseButtonPress:
             return False

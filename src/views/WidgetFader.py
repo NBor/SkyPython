@@ -8,10 +8,14 @@ from PySide.QtCore import QTimer
 
 class WidgetFader(object):
     '''
-    classdocs
+    For a given widget in the UI, this fader attaches a timer 
+    that hides that widget after a specified interval
     '''
     
     def make_active(self):
+        '''
+        shows the widget then sets the hide timer
+        '''
         self.controls.show()
         self.timer.start(self.time_out)
     

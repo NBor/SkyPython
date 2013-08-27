@@ -10,20 +10,18 @@ from PySide.QtGui import QWidget, QIcon, QPixmap
 
 class PreferencesButton(QWidget, createdMenu.Ui_menuBackground):
     '''
-    classdocs
+    Button widget that allows a user to enable or disable particular
+    layers at will. Once a button is clicked it's image will change
+    to become either the off icon or on icon for that layer.
     '''
 
     def __init__(self, parent=None):
         '''
-        This determines what should happen when the buttons are clicked
-        buttons are:
-        starButton
-        constellationButton
-        messierButton
-        planetsButton
-        meteorButton
-        gridButton
-        horizonButton
+        This class has the following buttons:
+        
+        starButton, constellationButton,
+        messierButton, planetsButton,
+        meteorButton, gridButton, horizonButton
         '''
         super(PreferencesButton, self).__init__(parent)
         self.setupUi(PreferencesButton)
@@ -37,6 +35,10 @@ class PreferencesButton(QWidget, createdMenu.Ui_menuBackground):
         self.horizonButtonActive = True
     
     def checkForButtonPress(self, source, event):
+        '''
+        Checks to see if any of the buttons have been pressed, then 
+        returns the names of the layers associated with those buttons.
+        '''
         
         if event.type() != QtCore.QEvent.MouseButtonPress:
             return False

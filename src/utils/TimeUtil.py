@@ -118,7 +118,6 @@ def clock_time_from_hrs(ut):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     from units.LatLong import LatLong
     print time.gmtime()

@@ -14,6 +14,10 @@ debug_opts = {"No debug settings"  : None,
               "Capture screen"     : "YES"}
 
 class Debug(object):
+    '''
+    This class exists to make taking pictures of a subset of 
+    objects easier at various location in the sky
+    '''
     LAYER = debug_opts["No debug settings"]
     DRAWING = debug_opts["No debug settings"]
     ALLREGIONS = debug_opts["No debug settings"]

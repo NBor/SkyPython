@@ -6,7 +6,9 @@ Created on 2013-06-07
 
 class Runnable(object):
     '''
-    classdocs
+    A Runnable class with a run method so that actions
+    can be queued and then run uniformly. This substitutes
+    for java's runnable interface.
     '''
     def run(self):
         raise Exception("This method must be overwritten")

@@ -6,6 +6,10 @@ Created on 2013-05-20
 
 from Enumeration import enum
 
+'''
+Create a colour enum for easy access to the
+hex values for all of the following colours
+'''
 colors = enum(\
 WHITE=0xFFFFFF, \
 IVORY=0xFFFFF0, \
@@ -151,6 +155,5 @@ BLACK=0x000000)
 if __name__ == "__main__":
     '''
     For debugging purposes
-    ready for testing
     '''
     print colors.NAVY

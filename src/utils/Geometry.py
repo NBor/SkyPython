@@ -170,7 +170,6 @@ def calculate_rotation_matrix(degrees, axis):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     import time
     import units.LatLong as LL

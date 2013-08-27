@@ -31,6 +31,10 @@ import math
 from Vector3 import Vector3
 
 def get_instance(orbital_ele=None, planet=None, t_struct=None):
+    '''
+    Get the location of an object in heliocentric coordinates
+    given either an orbital element or a planet.
+    '''
     if orbital_ele == None and planet == None: raise Exception("both None")
     
     if orbital_ele == None:
@@ -56,7 +60,7 @@ def get_instance(orbital_ele=None, planet=None, t_struct=None):
 
 class HeliocentricCoordinates(Vector3):
     '''
-    classdocs
+    Location of an object in heliocentric coordinates
     '''
     OBLIQUITY = 23.439281 * (math.pi / 180.0)
     radius = 0
@@ -91,7 +95,6 @@ class HeliocentricCoordinates(Vector3):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     from provider.OrbitalElements import OrbitalElements
     HC = HeliocentricCoordinates(1000, 1, 0, 0)

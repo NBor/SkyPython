@@ -28,13 +28,13 @@ Created on 2013-05-19
 '''
 
 def get_rowmatrix_from_vectors(v1, v2, v3):
-    return Matrix33(v1.x, v1.y, v1.z, \
-                    v2.x, v2.y, v2.z, \
+    return Matrix33(v1.x, v1.y, v1.z,
+                    v2.x, v2.y, v2.z,
                     v3.x, v3.y, v3.z)
 
 def get_colmatrix_from_vectors(v1, v2, v3):
-    return Matrix33(v1.x, v2.x, v3.x, \
-                    v1.y, v2.y, v3.y, \
+    return Matrix33(v1.x, v2.x, v3.x,
+                    v1.y, v2.y, v3.y,
                     v1.z, v2.z, v3.z)
     
 def get_identity_matrix():
@@ -42,21 +42,13 @@ def get_identity_matrix():
 
 class Matrix33(object):
     '''
-    classdocs
+    Represents a 3x3 matrix so that transformations
+    to objects in the sky can be performed
     '''
-    xx = 0.0
-    xy = 0.0
-    xz = 0.0
-    yx = 0.0
-    yy = 0.0
-    yz = 0.0
-    zx = 0.0
-    zy = 0.0
-    zz = 0.0
     
     def clone(self):
-        return Matrix33(self.xx, self.xy, self.xz, \
-                        self.yx, self.yy, self.yz, \
+        return Matrix33(self.xx, self.xy, self.xz,
+                        self.yx, self.yy, self.yz,
                         self.zx, self.zy, self.zz)
 
     def get_determinant(self):
@@ -70,31 +62,23 @@ class Matrix33(object):
     def get_inverse(self):
         det = self.get_determinant()
         if det == 0.0: return None
-        return Matrix33( (self.yy * self.zz - self.yz * self.zy) / det, \
-                         (self.xz * self.zy - self.xy * self.zz) / det, \
-                         (self.xy * self.yz - self.xz * self.yy) / det, \
-                         (self.yz * self.zx - self.yx * self.zz) / det, \
-                         (self.xx * self.zz - self.xz * self.zx) / det, \
-                         (self.xz * self.yx - self.xx * self.yz) / det, \
-                         (self.yx * self.zy - self.yy * self.zx) / det, \
-                         (self.xy * self.zx - self.xx * self.zy) / det, \
+        return Matrix33( (self.yy * self.zz - self.yz * self.zy) / det,
+                         (self.xz * self.zy - self.xy * self.zz) / det,
+                         (self.xy * self.yz - self.xz * self.yy) / det,
+                         (self.yz * self.zx - self.yx * self.zz) / det,
+                         (self.xx * self.zz - self.xz * self.zx) / det,
+                         (self.xz * self.yx - self.xx * self.yz) / det,
+                         (self.yx * self.zy - self.yy * self.zx) / det,
+                         (self.xy * self.zx - self.xx * self.zy) / det,
                          (self.xx * self.yy - self.xy * self.yx) / det)
         
     def transpose(self):
-        tmp = self.xy
-        self.xy = self.yx
-        self.yx = tmp
+        self.xy, self.yx = self.yx, self.xy
+        self.xz, self.zx = self.zx, self.xz
+        self.yz, self.zy = self.zy, self.yz
 
-        tmp = self.xz
-        self.xz = self.zx
-        self.zx = tmp
-
-        tmp = self.yz
-        self.yz = self.zy
-        self.zy = tmp
-
-    def __init__(self,  new_xx, new_xy, new_xz, \
-                        new_yx, new_yy, new_yz, \
+    def __init__(self,  new_xx, new_xy, new_xz,
+                        new_yx, new_yy, new_yz,
                         new_zx, new_zy, new_zz):
         '''
         New Matrix
@@ -115,7 +99,6 @@ class Matrix33(object):
 if __name__ == "__main__":
     '''
     for debugging purposes
-    Ready for testing
     '''
     M = get_identity_matrix()
     print M.get_determinant()

@@ -31,22 +31,37 @@ import math
 from Vector3 import Vector3
 
 def get_instance(ra, dec):
+    '''
+    Convert ra and dec to x,y,z where the point is place on the unit sphere.
+    '''
     coords = GeocentricCoordinates(0.0, 0.0, 0.0)
     coords.update_from_ra_dec(ra, dec)
     return coords
 
 def get_instance_from_list(l):
+    '''
+    Convert ra and dec to x,y,z where the point is place on the unit sphere.
+    '''
     return GeocentricCoordinates(l[0], l[1], l[2])
 
 def get_instance_from_vector3(v3):
+    '''
+    Convert ra and dec to x,y,z where the point is place on the unit sphere.
+    '''
     return GeocentricCoordinates(v3.x, v3.y, v3.z)
 
 class GeocentricCoordinates(Vector3):
     '''
-    classdocs
+    This class corresponds to an object's location in Euclidean space
+    when it is projected onto a unit sphere (with the Earth at the
+    center).
     '''
 
     def update_from_ra_dec(self, ra, dec):
+        '''
+        given radians and declination calculate
+        the x, y and z coords on the unit sphere
+        '''
         ra_radians = ra * (math.pi / 180.0)
         dec_radians = dec * (math.pi / 180.0)
         
@@ -71,7 +86,6 @@ class GeocentricCoordinates(Vector3):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    ready for testing
     '''
     GC = GeocentricCoordinates(4.0, 5.0, 0.0)
     print GC.x, GC.y, GC.z

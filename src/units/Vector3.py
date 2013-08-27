@@ -31,7 +31,8 @@ import math
 
 class Vector3(object):
     '''
-    classdocs
+    Basic Vector class in 3 dimensions. It is inherited by
+    [Geo/Helio]centric coordinates
     '''
     def assign(self, new_x=0.0, new_y=0.0, new_z=0.0, vector3=None):
         if vector3 != None:
@@ -94,7 +95,6 @@ class Vector3(object):
 if __name__ == "__main__":
     '''
     For Debugging purposes
-    Ready for testing
     '''
     A = Vector3(1, 2, 3)
     B = Vector3(9, 8, 7)

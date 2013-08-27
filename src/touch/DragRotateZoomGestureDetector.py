@@ -33,7 +33,8 @@ from src.utils.Enumeration import enum
 
 class DragRotateZoomGestureDetector(object):
     '''
-    classdocs
+    Handles events such as key presses and mouse button
+    presses, which allows for dragging and zooming
     '''
     STATES = enum(READY=0, DRAGGING=1, DRAGGING2=2)
     

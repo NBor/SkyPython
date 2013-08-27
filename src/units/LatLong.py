@@ -33,7 +33,7 @@ from src.utils.Geometry import cosine_similarity, radians_to_degrees
 
 class LatLong(object):
     '''
-    classdocs
+    Basic class that contains a latitude and a longitude
     '''
     latitude = None
     longitude = None
@@ -54,7 +54,6 @@ class LatLong(object):
 if __name__ == "__main__":
     '''
     for debugging purposes
-    Ready for testing
     '''
     A = LatLong(20, 4)
     B = LatLong(16, 9)

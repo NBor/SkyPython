@@ -36,15 +36,19 @@ planet_enum = enum(MERCURY=0, VENUS=1, SUN=2, MARS=3,
               JUPITER=4, SATURN=5, URANUS=6, 
               NEPTUNE=7, PLUTO=8, MOON=9)
 
-def get_instance(geo_coord=None, earth_coord=None, \
+def get_instance(geo_coord=None, earth_coord=None,
                  planet=None, time=None):
+    '''
+    Returns a RaDec instance given either geocentric coordinates
+    or heliocentric coordinates with a planet and the time.
+    '''
     
     if geo_coord == None and earth_coord == None: 
         raise Exception("must provide geo_coords or helio_coords")
     if geo_coord != None:
         raRad = math.atan2(geo_coord.y, geo_coord.x)
         if (raRad < 0): raRad += math.pi * 2.0
-        decRad = math.atan2(geo_coord.z, \
+        decRad = math.atan2(geo_coord.z,
                             math.sqrt(geo_coord.x * geo_coord.x + \
                                       geo_coord.y * geo_coord.y));
                                           
@@ -78,7 +82,7 @@ def calculate_ra_dec_dist(helio_coord):
 
 class RaDec(object):
     '''
-    classdocs
+    The radians and declination of a point in the sky
     '''
     ra = None
     dec = None
@@ -87,12 +91,24 @@ class RaDec(object):
         return "RA: " + self.ra + " degrees\nDec: " + self.dec + " degrees\n"
     
     def is_circumpolar_for(self, longlat):
+        '''
+        Return true if the given Ra/Dec is always above the horizon. Return
+        false otherwise.
+        In the northern hemisphere, objects never set if dec > 90 - lat.
+        In the southern hemisphere, objects never set if dec < -90 - lat.
+        '''
         if longlat.latitude > 0.0:
             return self.dec > (90.0 - longlat.latitude)
         else:
             return self.dec < (-90.0 - longlat.latitude)
         
     def is_never_visible(self, longlat):
+        '''
+        Return true if the given Ra/Dec is always below the horizon. Return
+        false otherwise.
+        In the northern hemisphere, objects never rise if dec < lat - 90.
+        In the southern hemisphere, objects never rise if dec > 90 - lat.
+        '''
         if longlat.latitude > 0.0:
             return self.dec < (longlat.latitude - 90.0)
         else:
@@ -108,7 +124,6 @@ class RaDec(object):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     from units.LatLong import LatLong
     from units.GeocentricCoordinates import GeocentricCoordinates as GC

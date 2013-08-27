@@ -31,7 +31,8 @@ from src.utils.Geometry import radians_to_degrees
 
 class MapMover(object):
     '''
-    classdocs
+    Responsible for updating the model when dragging, 
+    zooming or rotation occurs.
     '''
     
     def on_drag(self, x_pixels, y_pixels):

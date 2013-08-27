@@ -43,17 +43,20 @@ def construct_id_to_string_map(filename, index_to_string):
 
 class ProtobufAstronomicalSource(AbstractAstronomicalSource):
     '''
-    classdocs
+    Once SourceProto, using the buffer protocol, has extracted the
+    source from the binary file, this class abstracts and wraps 
+    access to that astronomical source providing a common interface.
+    This class is used for file based layers.
     '''
-    shape_map = {SourceProto.CIRCLE : shape_enum.CIRCLE, \
-                 SourceProto.STAR : shape_enum.CIRCLE, \
-                 SourceProto.ELLIPTICAL_GALAXY : shape_enum.ELLIPTICAL_GALAXY, \
-                 SourceProto.SPIRAL_GALAXY : shape_enum.SPIRAL_GALAXY, \
-                 SourceProto.IRREGULAR_GALAXY : shape_enum.IRREGULAR_GALAXY, \
-                 SourceProto.LENTICULAR_GALAXY : shape_enum.LENTICULAR_GALAXY, \
-                 SourceProto.GLOBULAR_CLUSTER : shape_enum.GLOBULAR_CLUSTER, \
-                 SourceProto.OPEN_CLUSTER : shape_enum.OPEN_CLUSTER, \
-                 SourceProto.NEBULA : shape_enum.NEBULA, \
+    shape_map = {SourceProto.CIRCLE : shape_enum.CIRCLE,
+                 SourceProto.STAR : shape_enum.CIRCLE,
+                 SourceProto.ELLIPTICAL_GALAXY : shape_enum.ELLIPTICAL_GALAXY,
+                 SourceProto.SPIRAL_GALAXY : shape_enum.SPIRAL_GALAXY,
+                 SourceProto.IRREGULAR_GALAXY : shape_enum.IRREGULAR_GALAXY,
+                 SourceProto.LENTICULAR_GALAXY : shape_enum.LENTICULAR_GALAXY,
+                 SourceProto.GLOBULAR_CLUSTER : shape_enum.GLOBULAR_CLUSTER,
+                 SourceProto.OPEN_CLUSTER : shape_enum.OPEN_CLUSTER,
+                 SourceProto.NEBULA : shape_enum.NEBULA,
                  SourceProto.HUBBLE_DEEP_FIELD : shape_enum.HUBBLE_DEEP_FIELD}
     
     strings = {}
@@ -121,6 +124,5 @@ class ProtobufAstronomicalSource(AbstractAstronomicalSource):
 if __name__ == "__main__":
     '''
     For debugging purposes
-    Ready for testing
     '''
     print SourceProto.STAR, ProtobufAstronomicalSource.shape_map[SourceProto.STAR]

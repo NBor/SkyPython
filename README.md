@@ -1,8 +1,8 @@
 This is SkyPython, a port of Google's Stardroid Android Java application.
 
 The goal of this project is to recreate Stardroid in the Python programming 
-language to so that it can be used for educational purposes as well as to use 
-it on other platforms. 
+language to so that it can be used for educational/research purposes as 
+well as to use it on platforms other than Android. 
 
 This port is as close to the original Java source as possible and for ease, 
 comments are often ported verbatim. In the absence of the Android framework,
@@ -10,7 +10,7 @@ PySide is used to complete SkyPython. The majority of the code that pertains
 to PySide is encapsulated in the src/skypython/SkyPython.py file
 
 
-Thank you to Allyson Wu and Morgan Redshaw for their contributions to this project.
+Thank you to Alyson Wu and Morgan Redshaw for their contributions to this project.
 
 
 NOTE: This project does not come with any guarantee of support,

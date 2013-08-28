@@ -1,3 +1,7 @@
+SKYPYTHON
+=========
+
+
 This is SkyPython, a port of Google's Stardroid Android Java application.
 
 The goal of this project is to recreate Stardroid in the Python programming 
@@ -17,18 +21,18 @@ NOTE: This project does not come with any guarantee of support,
 therefore you should not expect support if you use this code
 
 
-FEATURES NOT IMPLEMENTED:
+### FEATURES NOT IMPLEMENTED:
 
 Searching, Night Vision Mode, Image Gallery and Time Travel.
 
 
-KNOW ISSUSES:
+### KNOW ISSUSES:
 
 1) Sky Gradient is not quite aligned with the sun
 
 2) Text renders as a box, which is not as nice
 
-REQUIREMENTS:
+### REQUIREMENTS:
 
 1) Python 2.7 with standard library, Python 3 support is not available.
 
@@ -45,13 +49,13 @@ To obtain the libraries, you should be able to use pip or easy_install
 ex. :~>easy_install protobuf
 
 
-USAGE ECLIPSE:
+### USAGE ECLIPSE:
 
 This project was developed in eclipse with the PyDev plugin and therfore
 can be imported and run inside the eclipse IDE with this plugin.
 
 
-USAGE COMMANDLINE:
+### USAGE COMMANDLINE:
 
 This will start the program normally
 :~>python main.py

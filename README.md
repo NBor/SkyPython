@@ -10,6 +10,13 @@ PySide is used to complete SkyPython. The majority of the code that pertains
 to PySide is encapsulated in the src/skypython/SkyPython.py file
 
 
+Thank you to Allyson Wu and Morgan Redshaw for their contributions to this project.
+
+
+NOTE: This project does not come with any guarantee of support,
+therefore you should not expect support if you use this code
+
+
 FEATURES NOT IMPLEMENTED:
 
 Searching, Night Vision Mode, Image Gallery and Time Travel.
@@ -17,7 +24,7 @@ Searching, Night Vision Mode, Image Gallery and Time Travel.
 
 KNOW ISSUSES:
 
-1) Sky Gradient is not alligned with the sun
+1) Sky Gradient is not quite aligned with the sun
 
 2) Text renders as a box, which is not as nice
 
@@ -25,13 +32,17 @@ REQUIREMENTS:
 
 1) Python 2.7 with standard library, Python 3 support is not available.
 
-2) PySide 1.1.2, Python library with Qt bindings (run the post install script)
+2) PySide 1.1.2, Python library with Qt bindings. You may also need to
+run the post install script for pyside after installing it.
 
 3) PyOpenGL 3.0.2, OpenGL bindings for Python
 
 4) NumPy, Python library for numerical and scientific computing
 
 5) ProtoBuf, Google's data interchange format which is available for Python
+
+To obtain the libraries, you should be able to use pip or easy_install
+ex. :~>easy_install protobuf
 
 
 USAGE ECLIPSE:

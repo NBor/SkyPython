@@ -174,8 +174,17 @@ class SkyPython(QMainWindow):
     def initialize_model_view_controller(self):
         '''
         Set up the graphics view/scene and set the GLWidget.
-        Also sets up the controller for the model.
+        Also sets up the the model and the controller for the model.
         '''
+        self.model = AstronomerModel(ZMDC())
+        
+        # There is no onResume in python so start the controller group here
+        self.controller = create_controller_group(self.shared_prefs)
+        self.controller.set_model(self.model)
+        self.controller.start()
+        
+        self.layer_manager = instantiate_layer_manager(self.model, self.shared_prefs)
+        
         self.view = QGraphicsView()
         self.scene = QGraphicsScene()
         
@@ -197,8 +206,7 @@ class SkyPython(QMainWindow):
         
         self.layer_manager.register_with_renderer(self.renderer_controller)
         
-        self.controller = create_controller_group()
-        self.controller.set_model(self.model)
+        self.wire_up_screen_controls()
         
         # NOTE: THIS BOOLEAN WILL NEED TO BE REMOVED EVENTUALLY
         self.magnetic_switcher = MDCS(self.model, self.USE_AUTO_MODE)
@@ -265,11 +273,7 @@ class SkyPython(QMainWindow):
         self.USE_AUTO_MODE = False
         self.shared_prefs = SharedPreferences()
         
-        self.magnetic_switcher = None
-        self.model = AstronomerModel(ZMDC())
-        self.layer_manager = instantiate_layer_manager(self.model, self.shared_prefs)
         self.initialize_model_view_controller()
-        self.wire_up_screen_controls()
         self.controller.set_auto_mode(self.USE_AUTO_MODE)
         
         # put the window at the screen position (100, 30)

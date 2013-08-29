@@ -42,10 +42,11 @@ Created on 2013-06-09
 '''
 
 from Controller import Controller
+from LocationController import LocationController
 from ManualOrientationController import ManualOrientationController
 from ZoomController import ZoomController
 
-def create_controller_group():
+def create_controller_group(prefs):
     '''
     Creates an instance of a controller group and provides it
     with the necessary controllers to allow for manipulation
@@ -54,7 +55,7 @@ def create_controller_group():
     '''
     group = ControllerGroup()
     
-#     group.addController(new LocationController(context));
+    group.add_controller(LocationController(prefs))
 #     group.sensorOrientationController = new SensorOrientationController(context);
 #     group.addController(group.sensorOrientationController);
     group.manual_direction_controller = ManualOrientationController()

@@ -1,0 +1,2 @@
+# CSV config file for setting latitude and longitude respectively.
+0,0

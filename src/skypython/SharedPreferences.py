@@ -36,8 +36,13 @@ class SharedPreferences(object):
                    "source_provider.5" : True,
                    "source_provider.6" : True,
                    "source_provider.7" : True,
-                   "source_provider.8" : True }
+                   "source_provider.8" : True, 
+                   "no_auto_locate"    : False,
+                   "force_gps"         : False}
     ALLOW_ROTATION = False
+    
+    # The following is the location of Pisa.
+    LATITUDE, LONGITUDE = 43.7166667,10.3833333
 
     def __init__(self):
         '''

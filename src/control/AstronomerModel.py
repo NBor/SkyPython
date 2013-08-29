@@ -92,13 +92,6 @@ class AstronomerModel(object):
     SCREEN_UP_IN_PHONE_COORDS = Vector3(0, 1, 0)
     AXIS_OF_EARTHS_ROTATION = Vector3(0, 0, 1)
     MINIMUM_TIME_BETWEEN_CELESTIAL_COORD_UPDATES_MILLIS = 60000.0
-    
-    magnetic_declination_calc = None
-    auto_update_pointing = True
-    field_of_view = 45  #Degrees
-    location = LatLong(0, 0)
-    clock = RealClock()
-    celestial_coords_last_updated = -1
 
     def get_time(self):
         '''
@@ -267,6 +260,12 @@ class AstronomerModel(object):
         '''
         Constructor
         '''
+        self.auto_update_pointing = True
+        self.field_of_view = 45  #Degrees
+        self.location = LatLong(0, 0)
+        self.clock = RealClock()
+        self.celestial_coords_last_updated = -1
+        
         # provides correction from true North to magnetic North 
         self.magnetic_declination_calc = mag_dec_calc
         
